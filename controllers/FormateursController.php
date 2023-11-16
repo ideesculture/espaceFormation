@@ -7,6 +7,8 @@ use app\models\FormateursSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\User;
+use Yii;
 
 /**
  * FormateursController implements the CRUD actions for Formateurs model.
@@ -60,25 +62,32 @@ class FormateursController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Formateurs model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
         $model = new Formateurs();
+        $userModel = new User();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $userModel->load(Yii::$app->request->post())) {
+
+            $model->user_id = $userModel->id;
+            $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
+            $userModel->role = 'formateur';
+            if ($userModel->validate() && $userModel->save()) {
+
+
+                // Valide et sauvegarde le formateur
+                if ($model->validate() && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement du formateur.');
+                }
+            } else {
+                Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement de l\'utilisateur.');
             }
-        } else {
-            $model->loadDefaultValues();
         }
-
         return $this->render('create', [
             'model' => $model,
+            'userModel' => $userModel,
         ]);
     }
 

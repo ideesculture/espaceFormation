@@ -20,6 +20,7 @@ use Yii;
  */
 class Formateurs extends \yii\db\ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -34,10 +35,15 @@ class Formateurs extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nom', 'user_id', 'prenom','chemin_cv', 'liste_diplome', 'numero_decl_activite', 'qualiopi', 'siret', 'adresse', 'attestation_assurance_url'], 'string'],
+            [['nom', 'prenom', 'chemin_cv', 'liste_diplome', 'numero_decl_activite', 'qualiopi', 'siret', 'adresse', 'attestation_assurance_url'], 'string'],
+            [['user_id'], 'integer'],
         ];
     }
 
+  /**
+     * Relation avec le modèle User
+     * @return \yii\db\ActiveQuery
+     */
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
