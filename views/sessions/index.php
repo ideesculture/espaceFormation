@@ -18,7 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Sessions', ['create'], ['class' => 'btn btn-success']) ?>
+    <?php
+        $user = Yii::$app->user->identity;
+        if ($user && $user->role !== 'stagiaire'): ?>
+       <?= Html::a('Create Sessions', ['create'], ['class' => 'btn btn-success']) ?>
+       <?php endif; ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

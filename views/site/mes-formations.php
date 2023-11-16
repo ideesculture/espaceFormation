@@ -20,8 +20,12 @@ if (!empty($sessions)) {
     foreach ($sessions as $index => $session) {
         $formation = $formations[$index];
         $startDate = new DateTime($session->debut);
-        $endDate = new DateTime($session->fin);
+        $endDate = new DateTime($session->fin); ?>
+    <div>
     
+    <?=    Html::a(Html::encode($formation->name), ['sessions/view', 'id' => $formation->id]) ?>
+    </div>
+    <?php 
         echo 'Formation: ' . $formation->name . '<br>';
         echo 'Date de début: ' . $formatter->format(strtotime($session->debut)) . '<br>';
         echo 'Date de fin: ' . $formatter->format(strtotime($session->fin)) . '<br>';
@@ -42,5 +46,6 @@ if (!empty($sessions)) {
     echo 'Aucune formation en cours, à venir ou passée.';
 }
 ?>
+
 
 </div>

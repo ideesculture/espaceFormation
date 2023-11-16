@@ -8,6 +8,8 @@ use app\models\SessionStagiaire;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\ForbiddenHttpException;
+use Yii;
 
 /**
  * SessionsController implements the CRUD actions for Sessions model.
@@ -113,11 +115,18 @@ class SessionsController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
+    {  
+        // Vérifie si l'utilisateur est un stagiaire
+        $user = Yii::$app->user->identity;
+        if ($user && $user->role === 'stagiaire')
+         {
+            throw new ForbiddenHttpException('Accès interdit.');
+         } 
+        else {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
+}
 
     /**
      * Finds the Sessions model based on its primary key value.

@@ -134,7 +134,7 @@ CREATE TABLE `Utilisateurs` (
   `password` text DEFAULT NULL,
   `role` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE `Stagiaires`
 ADD COLUMN `user_id` INT,
@@ -151,11 +151,13 @@ REFERENCES `utilisateurs`(`id`) ON DELETE CASCADE;
 INSERT INTO `Centres` (`id`, `name`, `lieu`, `georeference`, `url_lieu1`, `url_lieu2`, `url_lieu3`) VALUES
 (1, 'IdéesCulture Salle de réunion', 'Laigné en belin', '', '', '', '');
 
+/* Le mot de passe crypté pour tous les users est admin */
 INSERT INTO `Utilisateurs` (`id`, `email`, `password`, `role`) VALUES
 (1, 'admin@test.fr', '$2y$10$OJYf315tkENrUHD1/wUq4ON0G.dpKCbUJQ8aBHmBX1dXOaiip7tG6', 'admin'),
 (2, 'stagiaire@test.fr', '$2y$10$OJYf315tkENrUHD1/wUq4ON0G.dpKCbUJQ8aBHmBX1dXOaiip7tG6', 'stagiaire'),
 (3, 'formateur@test.fr', '$2y$10$OJYf315tkENrUHD1/wUq4ON0G.dpKCbUJQ8aBHmBX1dXOaiip7tG6', 'formateur'),
-(4, 'stagiaire2@test.fr', '$2y$10$OJYf315tkENrUHD1/wUq4ON0G.dpKCbUJQ8aBHmBX1dXOaiip7tG6', 'stagiaire');
+(4, 'stagiaire2@test.fr', '$2y$10$OJYf315tkENrUHD1/wUq4ON0G.dpKCbUJQ8aBHmBX1dXOaiip7tG6', 'stagiaire'),
+(5, 'stagiaire3@test.fr', '$2y$10$OJYf315tkENrUHD1/wUq4ON0G.dpKCbUJQ8aBHmBX1dXOaiip7tG6', 'stagiaire');
 
 INSERT INTO `Formateurs` (`id`, `nom`, `prenom`, `chemin_cv`, `liste_diplome`, `numero_decl_activite`, `qualiopi`, `siret`, `adresse`, `attestation_assurance_url`, `user_id`) VALUES
 (1, 'Test', 'test', '', '', NULL, NULL, NULL, NULL, NULL, '3');
@@ -169,18 +171,23 @@ INSERT INTO `Formations` (`id`, `name`, `prerequis`, `objectif1`, `objectif2`, `
 (6, 'Analyse visuelle et expression', '', '', '', '', '', '', '', '', '', '', '', NULL, '');
 
 INSERT INTO `Sessions` (`id`, `formation_id`, `centre_id`, `debut`, `fin`, `contact_structure_ou_entreprise`, `contact_structure_ou_entreprise_email`, `contact_financeur`, `contact_financeur_email`, `adresse_structure_ou_entreprise`, `siret_structure_ou_entreprise`, `plan_de_formation`, `questionnaire_satisfaction_formateur`) VALUES
-(5, 1, 1, '2023-02-10 00:00:00', '2023-02-17 00:00:00', '', '', '', '', '', '', '', '');
+(1, 2, 1, '2023-02-10 00:00:00', '2023-02-17 00:00:00', '', '', '', '', '', '', '', ''),
+(2, 3, 1, '2023-02-20 00:00:00', '2023-02-23 00:00:00', '', '', '', '', '', '', '', ''),
+(3, 1, 1, '2023-12-10 00:00:00', '2023-12-17 00:00:00', '', '', '', '', '', '', '', ''),
+(4, 4, 1, '2023-11-09 00:00:00', '2023-11-12 00:00:00', '', '', '', '', '', '', '', ''),
+(5, 1, 1, '2023-08-10 00:00:00', '2023-08-17 00:00:00', '', '', '', '', '', '', '', '');
 
 INSERT INTO `SessionStagiaire` (`id`, `session_id`, `stagiaire_id`, `present_demij1`, `present_demij2`, `present_demij3`, `present_demij4`, `present_demij5`, `present_demij6`, `present_demij7`, `present_demij8`, `present_demij9`, `present_demij10`, `reponses_questionnaire_niveau_initial_json`, `reponses_questionnaire_niveau_final_json`, `reponses_satisfaction_json`, `stagiaire_hors_convention_auditeur_libre`) VALUES
-(4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(6, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(11, 5, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(4, 1, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, 2, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(6, 4, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(11, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (12, 5, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 INSERT INTO `Stagiaires` (`id`, `nom`, `prenom`, `email2`, `telephone`, `historique_sessions`, `derniere_version_reglement_interieur_accepte`, `derniere_version_cgv_acceptee`, `derniere_version_cgu_acceptee`, `user_id`) VALUES
 (1, 'Deruelle', 'Marine', '', '', '', '', '', '', '2'),
-(2, 'Simon', 'Nicolas 2', '', '', '', '', '', '', '4');
+(2, 'Simon', 'Nicolas 2', '', '', '', '', '', '', '4'),
+(3, 'Soufflo', 'Stagiaire 3', '', '', '', '', '', '', '4');
 
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
