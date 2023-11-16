@@ -13,20 +13,21 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <!-- Champs pour le modèle Formateurs -->
-    <?= $form->field($model, 'nom')->textarea(['rows' => 6]) ?>
-    <?= $form->field($model, 'prenom')->textarea(['rows' => 6]) ?>
-    <?= $form->field($model, 'chemin_cv')->textarea(['rows' => 6]) ?>
-    <?= $form->field($model, 'liste_diplome')->textarea(['rows' => 6]) ?>
-    <?= $form->field($model, 'numero_decl_activite')->textarea(['rows' => 6]) ?>
-    <?= $form->field($model, 'qualiopi')->textarea(['rows' => 6]) ?>
-    <?= $form->field($model, 'siret')->textarea(['rows' => 6]) ?>
-    <?= $form->field($model, 'adresse')->textarea(['rows' => 6]) ?>
-    <?= $form->field($model, 'attestation_assurance_url')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'nom')->textInput() ?>
+    <?= $form->field($model, 'prenom')->textInput() ?>
 
     <!-- Champs pour le modèle User -->
     <?= $form->field($userModel, 'email')->textInput() ?>
-    <?= $form->field($userModel, 'password')->passwordInput() ?>    
-
+    <?= $form->field($userModel, 'password')->passwordInput() ?>
+    
+    <!-- Autres champs formateurs -->
+    <?= $form->field($model, 'chemin_cv')->textInput() ?>
+    <?= $form->field($model, 'liste_diplome')->textarea() ?>
+    <?= $form->field($model, 'numero_decl_activite')->textInput() ?>
+    <?= $form->field($model, 'qualiopi')->textInput() ?>
+    <?= $form->field($model, 'siret')->textInput() ?>
+    <?= $form->field($model, 'adresse')->textarea(['rows' => 4]) ?>
+    <?= $form->field($model, 'attestation_assurance_url')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

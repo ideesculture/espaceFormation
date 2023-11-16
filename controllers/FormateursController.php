@@ -68,13 +68,15 @@ class FormateursController extends Controller
         $userModel = new User();
 
         if ($model->load(Yii::$app->request->post()) && $userModel->load(Yii::$app->request->post())) {
-
-            $model->user_id = $userModel->id;
+        
+            // Valide et sauvegarde l'utilisateur
             $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
             $userModel->role = 'formateur';
             if ($userModel->validate() && $userModel->save()) {
-
-
+                
+                // Associe le modèle User au modèle Formateurs
+                $model->user_id = $userModel->id;
+    
                 // Valide et sauvegarde le formateur
                 if ($model->validate() && $model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
@@ -111,6 +113,7 @@ class FormateursController extends Controller
         ]);
     }
 
+
     /**
      * Deletes an existing Formateurs model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -120,10 +123,23 @@ class FormateursController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+      
 
+        $model = $this->findModel($id);
+        Yii::error($model->user);
+        // On récupère le User et on le supprime
+        $user = $model->user;  
+          
+        if ($user) {
+
+            $user->delete();
+        }
+        // puis on Supprime le formateur
+        $model->delete();
+    
         return $this->redirect(['index']);
     }
+
 
     /**
      * Finds the Formateurs model based on its primary key value.
