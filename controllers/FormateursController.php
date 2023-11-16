@@ -103,13 +103,35 @@ class FormateursController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $userModel = $model->user;
+    
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $userModel->load($this->request->post())) {
+    
+                // Vérifie si les modif sont user
+                $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
+                // Si oui alors on save
+                if ($userAttributesChanged) {
+                    $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
+                    if (!$userModel->save()) {
+                        Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
+                        return $this->render('update', ['model' => $model]);
+                    }
+                }
+    
+                // Save modèle Formateurs
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Formateur mis à jour avec succès.');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour du formateur.');
+                }
+            }
         }
-
+    
         return $this->render('update', [
             'model' => $model,
+            'userModel' => $userModel,
         ]);
     }
 
@@ -123,10 +145,7 @@ class FormateursController extends Controller
      */
     public function actionDelete($id)
     {
-      
-
         $model = $this->findModel($id);
-        Yii::error($model->user);
         // On récupère le User et on le supprime
         $user = $model->user;  
           

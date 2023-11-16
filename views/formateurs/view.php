@@ -40,7 +40,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'adresse:ntext',
             'attestation_assurance_url:ntext',
             'user_id',
-            'email:email',
         ],
     ]) ?>
 

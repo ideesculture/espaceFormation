@@ -35,12 +35,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'chemin_cv:ntext',
             'liste_diplome:ntext',
             //'numero_decl_activite:ntext',
-            //'qualiopi:ntext',
+            'qualiopi:ntext',
             //'siret:ntext',
             //'adresse:ntext',
             //'attestation_assurance_url:ntext',
-            //'user_id',
-            //'email:email',
+            [
+                'attribute' => 'user.email', 
+                'label' => 'Adresse Email',
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Formateurs $model, $key, $index, $column) {
