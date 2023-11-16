@@ -28,18 +28,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'nom:ntext',
             'prenom:ntext',
-            'email:ntext',
-            'email2:ntext',
-            //'telephone:ntext',
+            'telephone:ntext',
             //'historique_sessions:ntext',
-            //'password:ntext',
             //'derniere_version_reglement_interieur_accepte:ntext',
             //'derniere_version_cgv_acceptee:ntext',
             //'derniere_version_cgu_acceptee:ntext',
+            [
+                'attribute' => 'user.email', 
+                'label' => 'Adresse Email',
+            ],
+            'email2:ntext',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Stagiaires $model, $key, $index, $column) {

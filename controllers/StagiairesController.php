@@ -71,30 +71,32 @@ class StagiairesController extends Controller
     public function actionCreate()
     {
         $model = new Stagiaires();
+        $userModel = new User();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                // Crée un nouvel utilisateur avec les info entrées dans le stagiaire
-                $user = new User();
-                $user->email = $model->email;
-                $user->password = Yii::$app->security->generatePasswordHash($model->password);
-                $user->role = 'stagiaire';
-
-                if ($user->validate()) {
-                    $user->save();
-                    // Associe le user_id du nouvel utilisateur au stagiaire
-                    $model->user_id = $user->id;
-                    // Valide et sauvegarde le stagiaire
-                    if ($model->validate()) {
-                        $model->save();
-                        return $this->redirect(['view', 'id' => $model->id]);
-                    }
+        if ($model->load(Yii::$app->request->post()) && $userModel->load(Yii::$app->request->post())) {
+        
+            // Valide et sauvegarde l'utilisateur
+            $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
+            $userModel->role = 'stagiaire';
+            if ($userModel->validate() && $userModel->save()) {
+                
+                // Associe le modèle User au modèle stagiaire
+                $model->user_id = $userModel->id;
+    
+                // Valide et sauvegarde le stagiaire
+                if ($model->validate() && $model->save()) {
+                    Yii::$app->session->setFlash('success', 'Stagiaire créé avec Succès !');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement du stagiaire.');
                 }
+            } else {
+                Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement de l\'utilisateur.');
             }
         }
-
         return $this->render('create', [
             'model' => $model,
+            'userModel' => $userModel,
         ]);
     }
 
@@ -108,38 +110,35 @@ class StagiairesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $user = $model->user;
-        
-      //TODO DEBUG UPDATE QUI NE MET PAS A JOUR L'EMAIL USER 
+        $userModel = $model->user;
+    
         if ($this->request->isPost) {
-            // Avant la sauvegarde du modèle
-            Yii::info('Model before save: ' . json_encode($model->attributes));
+            if ($model->load($this->request->post()) && $userModel->load($this->request->post())) {
     
-            //On charge les données du formulaire stagiaire et save
-            if ($model->load($this->request->post()) && $model->save()) {
-                // Après la sauvegarde du modèle
-                Yii::info('Model after save: ' . json_encode($model->attributes));
-    
-                // On charge et save le User
-                // Avant la sauvegarde de l'utilisateur
-                Yii::info('User before save: ' . json_encode($user->attributes));
-    
-                if ($user->load($this->request->post())) {
-                    $user->email = $model->email;
-                    $user->password = Yii::$app->security->generatePasswordHash($user->password);
-                    $user->save();
-    
-                    // Après la sauvegarde de l'utilisateur
-                    Yii::info('User after save: ' . json_encode($user->attributes));
+                // Vérifie si les modif sont sur le user
+                $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
+                // Si oui alors on save
+                if ($userAttributesChanged) {
+                    $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
+                    if (!$userModel->save()) {
+                        Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
+                        return $this->render('update', ['model' => $model]);
+                    }
                 }
     
-                return $this->redirect(['view', 'id' => $model->id]);
+                // Save modèle Formateurs
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Stagiaire mis à jour avec succès.');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour du stagiaire.');
+                }
             }
         }
-
+    
         return $this->render('update', [
             'model' => $model,
-            'user' => $user,
+            'userModel' => $userModel,
         ]);
     }
 
@@ -153,21 +152,16 @@ class StagiairesController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $user = $model->user;
-
+        $user = $model->user; 
         if ($this->request->isPost) {
-
             //On supprime les sessions pour la contriante de clé étrangère
             SessionStagiaire::deleteAll(['stagiaire_id' => $model->id]);
+            if ($user) {
+                $user->delete();
+            }
             $model->delete();
-            $user->delete();
-            return $this->redirect(['index']);
-        }
-
-        return $this->render('delete', [
-            'model' => $model,
-            'user' => $user,
-        ]);
+        }  
+        return $this->redirect(['index']);
     }
 
     /**

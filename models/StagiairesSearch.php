@@ -18,7 +18,7 @@ class StagiairesSearch extends Stagiaires
     {
         return [
             [['id'], 'integer'],
-            [['nom', 'prenom', 'email', 'email2', 'telephone', 'historique_sessions', 'password', 'derniere_version_reglement_interieur_accepte', 'derniere_version_cgv_acceptee', 'derniere_version_cgu_acceptee'], 'safe'],
+            [['nom', 'prenom', 'email2', 'telephone', 'historique_sessions', 'derniere_version_reglement_interieur_accepte', 'derniere_version_cgv_acceptee', 'derniere_version_cgu_acceptee'], 'safe'],
         ];
     }
 
@@ -63,11 +63,9 @@ class StagiairesSearch extends Stagiaires
 
         $query->andFilterWhere(['like', 'nom', $this->nom])
             ->andFilterWhere(['like', 'prenom', $this->prenom])
-            ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'email2', $this->email2])
             ->andFilterWhere(['like', 'telephone', $this->telephone])
             ->andFilterWhere(['like', 'historique_sessions', $this->historique_sessions])
-            ->andFilterWhere(['like', 'password', $this->password])
             ->andFilterWhere(['like', 'derniere_version_reglement_interieur_accepte', $this->derniere_version_reglement_interieur_accepte])
             ->andFilterWhere(['like', 'derniere_version_cgv_acceptee', $this->derniere_version_cgv_acceptee])
             ->andFilterWhere(['like', 'derniere_version_cgu_acceptee', $this->derniere_version_cgu_acceptee]);

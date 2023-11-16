@@ -8,14 +8,11 @@ use Yii;
  * This is the model class for table "Stagiaires".
  *
  * @property int $id
- * @property int $user_id
  * @property string|null $nom
  * @property string|null $prenom
- * @property string|null $email
  * @property string|null $email2
  * @property string|null $telephone
  * @property string|null $historique_sessions
- * @property string|null $password
  * @property string|null $derniere_version_reglement_interieur_accepte
  * @property string|null $derniere_version_cgv_acceptee
  * @property string|null $derniere_version_cgu_acceptee
@@ -41,7 +38,7 @@ class Stagiaires extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'integer'],
-            [['nom', 'prenom', 'email', 'email2', 'telephone', 'historique_sessions', 'password', 'derniere_version_reglement_interieur_accepte', 'derniere_version_cgv_acceptee', 'derniere_version_cgu_acceptee'], 'string'],
+            [['nom', 'prenom', 'email2', 'telephone', 'historique_sessions', 'derniere_version_reglement_interieur_accepte', 'derniere_version_cgv_acceptee', 'derniere_version_cgu_acceptee'], 'string'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -63,13 +60,11 @@ class Stagiaires extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'nom' => 'Nom',
-            'prenom' => 'Prenom',
-            'email' => 'Email',
-            'email2' => 'Email2',
-            'telephone' => 'Telephone',
+            'nom' => 'Nom *',
+            'prenom' => 'Prenom *',
+            'email2' => 'Email de secours',
+            'telephone' => 'Telephone *',
             'historique_sessions' => 'Historique Sessions',
-            'password' => 'Password',
             'derniere_version_reglement_interieur_accepte' => 'Derniere Version Reglement Interieur Accepte',
             'derniere_version_cgv_acceptee' => 'Derniere Version Cgv Acceptee',
             'derniere_version_cgu_acceptee' => 'Derniere Version Cgu Acceptee',

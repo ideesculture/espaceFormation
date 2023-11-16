@@ -21,15 +21,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'prenom') ?>
 
-    <?= $form->field($model, 'email') ?>
-
     <?= $form->field($model, 'email2') ?>
 
     <?php // echo $form->field($model, 'telephone') ?>
 
     <?php // echo $form->field($model, 'historique_sessions') ?>
-
-    <?php // echo $form->field($model, 'password') ?>
 
     <?php // echo $form->field($model, 'derniere_version_reglement_interieur_accepte') ?>
 

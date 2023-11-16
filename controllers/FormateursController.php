@@ -146,16 +146,11 @@ class FormateursController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        // On récupère le User et on le supprime
-        $user = $model->user;  
-          
+        $user = $model->user;   
         if ($user) {
-
             $user->delete();
         }
-        // puis on Supprime le formateur
         $model->delete();
-    
         return $this->redirect(['index']);
     }
 

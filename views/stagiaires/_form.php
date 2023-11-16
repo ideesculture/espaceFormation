@@ -12,25 +12,21 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'nom')->textarea(['rows' => 6]) ?>
+     <!-- Champs stagiaires -->
+    <?= $form->field($model, 'nom')->textInput() ?>
+    <?= $form->field($model, 'prenom')->textInput() ?>
 
-    <?= $form->field($model, 'prenom')->textarea(['rows' => 6]) ?>
+    <!-- Champs pour le modèle User -->
+    <?= $form->field($userModel, 'email')->textInput() ?>
+    <?= $form->field($userModel, 'password')->passwordInput() ?>
 
-    <?= $form->field($model, 'email')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'email2')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'telephone')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'historique_sessions')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'password')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'derniere_version_reglement_interieur_accepte')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'derniere_version_cgv_acceptee')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'derniere_version_cgu_acceptee')->textarea(['rows' => 6]) ?>
+    <!-- Autres champs stagiaires -->
+    <?= $form->field($model, 'telephone')->textInput() ?>
+    <?= $form->field($model, 'email2')->textInput() ?>
+    <?= $form->field($model, 'historique_sessions')->textInput() ?>
+    <?= $form->field($model, 'derniere_version_reglement_interieur_accepte')->textInput() ?>
+    <?= $form->field($model, 'derniere_version_cgv_acceptee')->textInput() ?>
+    <?= $form->field($model, 'derniere_version_cgu_acceptee')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
