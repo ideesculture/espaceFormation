@@ -18,7 +18,7 @@ class FormateursSearch extends Formateurs
     {
         return [
             [['id', 'user_id'], 'integer'],
-            [['nom', 'prenom', 'chemin_cv', 'liste_diplome', 'numero_decl_activite', 'qualiopi', 'siret', 'adresse', 'attestation_assurance_url', 'email'], 'safe'],
+            [['nom', 'prenom', 'chemin_cv', 'liste_diplome', 'numero_decl_activite', 'qualiopi', 'siret', 'adresse', 'attestation_assurance_url'], 'safe'],
         ];
     }
 
@@ -70,9 +70,7 @@ class FormateursSearch extends Formateurs
             ->andFilterWhere(['like', 'qualiopi', $this->qualiopi])
             ->andFilterWhere(['like', 'siret', $this->siret])
             ->andFilterWhere(['like', 'adresse', $this->adresse])
-            ->andFilterWhere(['like', 'attestation_assurance_url', $this->attestation_assurance_url])
-            ->andFilterWhere(['like', 'email', $this->email]);
-
+            ->andFilterWhere(['like', 'attestation_assurance_url', $this->attestation_assurance_url]);
         return $dataProvider;
     }
 }
