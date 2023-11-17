@@ -15,12 +15,16 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="formateurs-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>
+        <?= Html::encode($this->title) ?>
+    </h1>
 
     <p>
-        <?= Html::a('Create Formateurs', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
+        <?php $user = Yii::$app->user->identity;
+        if ($user && $user->role === 'admin'): ?>
+            <?= Html::a('Create Formateurs', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    <?php endif; ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -40,14 +44,14 @@ $this->params['breadcrumbs'][] = $this->title;
             //'adresse:ntext',
             //'attestation_assurance_url:ntext',
             [
-                'attribute' => 'user.email', 
+                'attribute' => 'user.email',
                 'label' => 'Adresse Email',
             ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Formateurs $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                return Url::toRoute([$action, 'id' => $model->id]);
+            }
             ],
         ],
     ]); ?>

@@ -51,6 +51,17 @@ if (Yii::$app->user->isGuest) {
         'visible' => $roleLabel === 'stagiaire',
     ];
 
+ 
+    if ($roleLabel === 'stagiaire') {
+        $stagiaireId = Yii::$app->user->identity->stagiaire->id;
+        $items[] = ['label' => 'Mes Infos', 'url' => ['/stagiaires/view', 'id' => $stagiaireId]];
+    }
+
+    if ($roleLabel === 'formateur') {
+        $formateurId = Yii::$app->user->identity->formateur->id;
+        $items[] = ['label' => 'Mes Infos', 'url' => ['/formateurs/view', 'id' => $formateurId]];
+    }
+
     if ($roleLabel === 'admin') {
         $items[] = ['label' => 'Formations', 'url' => ['/formation/index']];
         $items[] = ['label' => 'Centres', 'url' => ['/centres/index']];

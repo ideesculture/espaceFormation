@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\ForbiddenHttpException;
+use yii\filters\AccessControl;
 use Yii;
 
 /**
@@ -21,17 +22,29 @@ class SessionsController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {    
+                             $user = Yii::$app->user->identity;
+                            return $user->role === 'admin' || $user->role === 'stagiaire';},
                     ],
                 ],
-            ]
-        );
+                'denyCallback' => function ($rule, $action) {
+                    throw new ForbiddenHttpException('Access denied.');
+                },
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -76,8 +89,8 @@ class SessionsController extends Controller
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-            
-            
+
+
         } else {
             $model->loadDefaultValues();
         }
@@ -115,18 +128,23 @@ class SessionsController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {  
-        // Vérifie si l'utilisateur est un stagiaire
-        $user = Yii::$app->user->identity;
-        if ($user && $user->role === 'stagiaire')
-         {
-            throw new ForbiddenHttpException('Accès interdit.');
-         } 
-        else {
+    {
+        $this->verifStagiaire();
         $this->findModel($id)->delete();
         return $this->redirect(['index']);
+
     }
-}
+
+    public function verifStagiaire()
+    {
+        // Vérifie si l'utilisateur est un stagiaire
+        $user = Yii::$app->user->identity;
+        if ($user && ($user->role === 'stagiaire' || $user->role === 'formateur')){
+            throw new ForbiddenHttpException('Accès interdit.');
+        } else {
+            return;
+        }
+    }
 
     /**
      * Finds the Sessions model based on its primary key value.

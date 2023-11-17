@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
     <?php
         $user = Yii::$app->user->identity;
-        if ($user && $user->role !== 'stagiaire'): ?>
+        if ($user && $user->role === 'admin'): ?> 
        <?= Html::a('Create Sessions', ['create'], ['class' => 'btn btn-success']) ?>
        <?php endif; ?>
     </p>

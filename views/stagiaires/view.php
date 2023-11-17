@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+    <?php $user = Yii::$app->user->identity;
+        if ($user && $user->role === 'admin'): ?>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -23,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'confirm' => 'Etes-vous sûre de vouloir supprimer ?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ]) ?>  <?php endif; ?>
     </p>
 
     <?= DetailView::widget([
