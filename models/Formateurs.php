@@ -23,6 +23,9 @@ use Yii;
 class Formateurs extends \yii\db\ActiveRecord
 {
 
+    // Propriété temporaire pour gérer le téléchargement du fichier
+    public $uploadedListeDiplome;
+
     /**
      * {@inheritdoc}
      */
@@ -39,7 +42,8 @@ class Formateurs extends \yii\db\ActiveRecord
         return [
             [['nom', 'prenom', 'chemin_cv', 'liste_diplome', 'numero_decl_activite', 'qualiopi', 'siret', 'adresse', 'attestation_assurance_url'], 'string'],
             [['user_id'], 'integer'],
-        ];
+            [['uploadedListeDiplome'], 'file', 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 5, 'tooBig' => 'La taille maximale autorisée est 5MB.'],
+             ];
     }
 
   /**
@@ -49,6 +53,30 @@ class Formateurs extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+  /**
+     * Gère le téléchargement du fichier.
+     * @return bool true si le téléchargement est réussi, sinon false
+     */
+    public function uploadListeDiplome()
+    {
+        Yii::info('Début de la méthode uploadListeDiplome');
+        if ($this->validate(['uploadedListeDiplome']) && $this->uploadedListeDiplome instanceof UploadedFile) {
+            $path = 'uploads/' . $this->user_id . '/';
+            if (!is_dir($path)) {
+                mkdir($path, 0777, true);
+            }
+    
+            $filename = $path . $this->uploadedListeDiplome->baseName . '.' . $this->uploadedListeDiplome->extension;
+            if ($this->uploadedListeDiplome->saveAs($filename)) {
+                $this->liste_diplome = $filename;
+                Yii::info('Fin de la méthode uploadListeDiplome');
+                return true;
+            }
+        }
+    
+        return false;
     }
 
     /**
@@ -67,6 +95,7 @@ class Formateurs extends \yii\db\ActiveRecord
             'siret' => Yii::t('app', 'Siret'),
             'adresse' => Yii::t('app', 'Adresse'),
             'attestation_assurance_url' => Yii::t('app', 'Attestation Assurance Url'),
+            'uploadedListeDiplome' => 'Liste Diplome (PDF)',
         ];
     }
 }

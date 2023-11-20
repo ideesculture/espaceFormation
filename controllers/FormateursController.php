@@ -11,6 +11,7 @@ use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use yii\web\UploadedFile;
 
 /**
  * FormateursController implements the CRUD actions for Formateurs model.
@@ -91,7 +92,11 @@ class FormateursController extends Controller
                 
                 // Associe le modèle User au modèle Formateurs
                 $model->user_id = $userModel->id;
-    
+                
+                // Diplome upload
+                $model->uploadListeDiplome();
+                  
+
                 // Valide et sauvegarde le formateur
                 if ($model->validate() && $model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);

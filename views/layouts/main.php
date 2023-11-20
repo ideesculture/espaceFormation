@@ -42,7 +42,7 @@ $items = [
 ];
 
 if (Yii::$app->user->isGuest) {
-    $items[] = ['label' => 'Login', 'url' => ['/site/login']];
+    $items[] = ['label' => 'Connexion', 'url' => ['/site/login']];
 } else {
     $roleLabel = Yii::$app->user->identity->role; 
     $items[] = [
