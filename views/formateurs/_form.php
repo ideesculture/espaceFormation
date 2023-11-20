@@ -10,8 +10,10 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="formateurs-form">
-    <?php $form = ActiveForm::begin([
-    'options' => ['enctype' => 'multipart/form-data']]); ?>
+<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+
+<?= $form->field($model, 'imageFile')->fileInput() ?>
+
 
     <!-- Champs pour le modèle Formateurs -->
     <?= $form->field($model, 'nom')->textInput() ?>
@@ -29,7 +31,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'siret')->textInput() ?>
     <?= $form->field($model, 'adresse')->textarea(['rows' => 4]) ?>
     <?= $form->field($model, 'attestation_assurance_url')->textInput() ?>
-    <?= $form->field($model, 'uploadedListeDiplome')->fileInput() ?>
+
     
 
     <div class="form-group">

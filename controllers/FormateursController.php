@@ -78,6 +78,20 @@ class FormateursController extends Controller
         ]);
     }
 
+    public function actionUpload()
+    {
+        $model = new UploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->upload()) {
+                // le fichier a été chargé avec succès sur le serveur
+                return;
+            }
+        }
+        return $this->render('upload', ['model' => $model]);
+    }
+
     public function actionCreate()
     {
         $model = new Formateurs();
@@ -93,10 +107,11 @@ class FormateursController extends Controller
                 // Associe le modèle User au modèle Formateurs
                 $model->user_id = $userModel->id;
                 
-                // Diplome upload
-                $model->uploadListeDiplome();
+            //     // Diplome upload
+            // if( $model->uploadListeDiplome())   {
+                
+            // }
                   
-
                 // Valide et sauvegarde le formateur
                 if ($model->validate() && $model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
