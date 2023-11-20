@@ -12,8 +12,9 @@ use yii\widgets\ActiveForm;
 <div class="formateurs-form">
 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
-<?= $form->field($model, 'imageFile')->fileInput() ?>
 
+<!-- Champ pour l'image -->
+<?= $form->field($model, 'uploadedImage')->fileInput() ?>
 
     <!-- Champs pour le modèle Formateurs -->
     <?= $form->field($model, 'nom')->textInput() ?>

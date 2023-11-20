@@ -25,17 +25,8 @@ class Formateurs extends \yii\db\ActiveRecord
 {
 
     // Propriété temporaire pour gérer le téléchargement du fichier
-    public $imageFile;
+    public $uploadedImage; 
 
-    public function upload()
-    {
-        if ($this->validate()) {
-            $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * {@inheritdoc}
@@ -53,9 +44,30 @@ class Formateurs extends \yii\db\ActiveRecord
         return [
             [['nom', 'prenom', 'chemin_cv', 'liste_diplome', 'numero_decl_activite', 'qualiopi', 'siret', 'adresse', 'attestation_assurance_url'], 'string'],
             [['user_id'], 'integer'],
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
-             ];
+            [['uploadedImage'], 'file', 'extensions' => 'png, jpg, jpeg', 'maxSize' => 1024 * 1024 * 2, 'tooBig' => 'La taille maximale autorisée est 2MB.'],
+         ];
     }
+
+
+ /**
+     * Gère le téléchargement de l'image.
+     * @return bool true si le téléchargement est réussi, sinon false
+     */
+    public function uploadImage()
+    {
+        if ($this->validate(['uploadedImage']) && $this->uploadedImage instanceof UploadedFile) {
+            $path = 'uploads/images/';
+            $filename = $path . $this->uploadedImage->baseName . '.' . $this->uploadedImage->extension;
+            if ($this->uploadedImage->saveAs($filename)) {
+                $this->image = $filename;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
 
   /**
      * Relation avec le modèle User
@@ -66,50 +78,7 @@ class Formateurs extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
-//   /**
-//      * Gère le téléchargement du fichier.
-//      * @return bool true si le téléchargement est réussi, sinon false
-//      */
-//     public function uploadListeDiplome()
-// {
-//     Yii::error('Début de la méthode uploadListeDiplome');
-
-//     if ($this->validate(['uploadedListeDiplome'])) {
-//         Yii::error('Validation passed');
-
-//         if ($this->uploadedListeDiplome instanceof UploadedFile) {
-//             Yii::error('uploadedListeDiplome is an instance of UploadedFile');
-
-//             $uploadsPath = Yii::getAlias('@app/uploads');
-//             $path = $uploadsPath . '/' . $this->user_id;
-
-//             if (!is_dir($path)) {
-//                 mkdir($path, 0777, true);
-//             }
-
-//             $filename = $path . '/' . $this->uploadedListeDiplome->baseName . '.' . $this->uploadedListeDiplome->extension;
-
-//             if ($this->uploadedListeDiplome->saveAs($filename)) {
-//                 $this->liste_diplome = $filename;
-//                 Yii::info('File saved successfully');
-//                 return true;
-//             } else {
-//                 Yii::error('Failed to save file');
-//             }
-//         } else {
-//             Yii::error('uploadedListeDiplome is NOT an instance of UploadedFile');
-//         }
-//     } else {
-//         Yii::error('Validation failed');
-//     }
-
-//     return false;
-// }
     
-    
-        
-    
-
     /**
      * {@inheritdoc}
      */
@@ -126,7 +95,7 @@ class Formateurs extends \yii\db\ActiveRecord
             'siret' => Yii::t('app', 'Siret'),
             'adresse' => Yii::t('app', 'Adresse'),
             'attestation_assurance_url' => Yii::t('app', 'Attestation Assurance Url'),
-            'upload' => 'upload (img)',
+            'uploadedImage' => Yii::t('app', 'Image (PNG, JPG, JPEG)'),
         ];
     }
 }

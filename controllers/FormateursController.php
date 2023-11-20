@@ -78,46 +78,31 @@ class FormateursController extends Controller
         ]);
     }
 
-    public function actionUpload()
-    {
-        $model = new UploadForm();
-
-        if (Yii::$app->request->isPost) {
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if ($model->upload()) {
-                // le fichier a été chargé avec succès sur le serveur
-                return;
-            }
-        }
-        return $this->render('upload', ['model' => $model]);
-    }
-
     public function actionCreate()
     {
         $model = new Formateurs();
         $userModel = new User();
 
         if ($model->load(Yii::$app->request->post()) && $userModel->load(Yii::$app->request->post())) {
-        
+
             // Valide et sauvegarde l'utilisateur
             $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
             $userModel->role = 'formateur';
             if ($userModel->validate() && $userModel->save()) {
-                
+
                 // Associe le modèle User au modèle Formateurs
                 $model->user_id = $userModel->id;
-                
-            //     // Diplome upload
-            // if( $model->uploadListeDiplome())   {
-                
-            // }
+
+                // Upload de l'image
+                    $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
                   
-                // Valide et sauvegarde le formateur
-                if ($model->validate() && $model->save()) {
-                    return $this->redirect(['view', 'id' => $model->id]);
-                } else {
-                    Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement du formateur.');
-                }
+                    // Valide et sauvegarde le formateur
+                    if ($model->validate() && $model->save()) {
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    } else {
+                        Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement du formateur.');
+                    }
+               
             } else {
                 Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement de l\'utilisateur.');
             }
@@ -139,10 +124,10 @@ class FormateursController extends Controller
     {
         $model = $this->findModel($id);
         $userModel = $model->user;
-    
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $userModel->load($this->request->post())) {
-    
+
                 // Vérifie si les modif sont user
                 $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
                 // Si oui alors on save
@@ -153,7 +138,7 @@ class FormateursController extends Controller
                         return $this->render('update', ['model' => $model]);
                     }
                 }
-    
+
                 // Save modèle Formateurs
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', 'Formateur mis à jour avec succès.');
@@ -163,7 +148,7 @@ class FormateursController extends Controller
                 }
             }
         }
-    
+
         return $this->render('update', [
             'model' => $model,
             'userModel' => $userModel,
@@ -181,7 +166,7 @@ class FormateursController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $user = $model->user;   
+        $user = $model->user;
         if ($user) {
             $user->delete();
         }
