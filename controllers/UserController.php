@@ -9,6 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use Yii;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -33,7 +34,7 @@ class UserController extends Controller
                     ],
                 ],
                 'denyCallback' => function ($rule, $action) {
-                    throw new ForbiddenHttpException('Access denied.');
+                    throw new ForbiddenHttpException('Accès Interdit !');
                 },
             ],
             'verbs' => [

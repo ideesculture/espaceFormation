@@ -16,7 +16,6 @@ class LoginForm extends Model
     public $email;
     public $password;
     public $rememberMe = true;
-
     private $_user = false;
 
 
@@ -27,12 +26,24 @@ class LoginForm extends Model
     {
         return [
             // email and password are both required
-            [['email', 'password'], 'required'],
-            ['email','email'],
+            [['email', 'password'], 'required', 'message' => '{attribute} ne peut pas être vide.'],
+            ['email', 'email', 'message' => 'Format d\'email invalide.'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
+        ];
+    }
+
+    /**
+     * @return array customized attribute labels
+     */
+    public function attributeLabels()
+    {
+        return [
+            'email' => 'Adresse Email',
+            'password' => 'Mot de Passe',
+            'rememberMe' => 'Se souvenir de moi',
         ];
     }
 

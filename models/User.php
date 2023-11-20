@@ -48,8 +48,8 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             'id' => 'ID',
-            'email' => 'Email *',
-            'password' => 'Password *',
+            'email' => 'Email',
+            'password' => 'Mot de passe',
             'role' => 'Role',
             'authKey' => 'Auth Key',
         ];
