@@ -1,13 +1,13 @@
 <?php
-
 namespace app\models;
 
 use yii\base\Model;
 use yii\web\UploadedFile;
+use Yii;
 
 class UploadForm extends Model
 {
-    /**
+   /**
      * @var UploadedFile
      */
     public $pdfFile;
@@ -22,24 +22,17 @@ class UploadForm extends Model
     
     public function upload()
     {
-        if ($this->validate()) {
-            $uploadPath = 'uploads/';
-
-            if ($this->pdfFile !== null) {
-                $pdfFileName = $this->pdfFile->baseName . '.' . $this->pdfFile->extension;
-                $pdfFilePath = $uploadPath . $pdfFileName;
-                move_uploaded_file($this->pdfFile->tempName, $pdfFilePath);
+            if ($this->validate()) {
+                if ($this->pdfFile !== null) {
+                    $this->pdfFile->saveAs('uploads/' . $this->pdfFile->baseName . '.' . $this->pdfFile->extension);
+                }
+    
+                if ($this->uploadedCV !== null) {
+                    $this->uploadedCV->saveAs('uploads/' . $this->uploadedCV->baseName . '.' . $this->uploadedCV->extension);
+                }
+                return true;
+            } else {
+                return false;
             }
-
-            if ($this->uploadedCV !== null) {
-                $cvFileName = $this->uploadedCV->baseName . '.' . $this->uploadedCV->extension;
-                $cvFilePath = $uploadPath . $cvFileName;
-                move_uploaded_file($this->uploadedCV->tempName, $cvFilePath);
-            }
-
-            return true;
-        } else {
-            return false;
-        }
     }
 }
