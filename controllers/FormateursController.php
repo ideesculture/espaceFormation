@@ -134,6 +134,7 @@ class FormateursController extends Controller
     {
         $model = $this->findModel($id);
         $userModel = $model->user;
+        $uploadFormModel = new UploadForm();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $userModel->load($this->request->post())) {
@@ -162,6 +163,7 @@ class FormateursController extends Controller
         return $this->render('update', [
             'model' => $model,
             'userModel' => $userModel,
+            'uploadFormModel' => $uploadFormModel,
         ]);
     }
 
