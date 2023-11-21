@@ -13,8 +13,8 @@ use yii\widgets\ActiveForm;
 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
 
-<!-- Champ pour l'image -->
-<?= $form->field($model, 'uploadedImage')->fileInput() ?>
+<!-- Champ pour les PDF -->
+<?= $form->field($uploadFormModel, 'pdfFile')->fileInput() ?>
 
     <!-- Champs pour le modèle Formateurs -->
     <?= $form->field($model, 'nom')->textInput() ?>

@@ -8,8 +8,10 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
+use app\models\UploadForm;
 use app\models\ContactForm;
 use app\models\User;
+use yii\web\UploadedFile;
 
 class SiteController extends Controller
 {
@@ -53,6 +55,23 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    public function actionUpload()
+    {
+        $model = new UploadForm();
+    
+        if (Yii::$app->request->isPost) {
+            $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
+            if ($model->upload()) {
+                // Le fichier est téléchargé avec succès
+                Yii::$app->session->setFlash('success', 'Fichier téléchargé avec succès!');
+
+                return $this->redirect(['site/upload']);
+            }
+        }
+    
+        return $this->render('upload', ['model' => $model]);
     }
 
     /**

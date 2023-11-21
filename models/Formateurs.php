@@ -24,8 +24,7 @@ use Yii;
 class Formateurs extends \yii\db\ActiveRecord
 {
 
-    // Propriété temporaire pour gérer le téléchargement du fichier
-    public $uploadedImage; 
+
 
 
     /**
@@ -44,29 +43,9 @@ class Formateurs extends \yii\db\ActiveRecord
         return [
             [['nom', 'prenom', 'chemin_cv', 'liste_diplome', 'numero_decl_activite', 'qualiopi', 'siret', 'adresse', 'attestation_assurance_url'], 'string'],
             [['user_id'], 'integer'],
-            [['uploadedImage'], 'file', 'extensions' => 'png, jpg, jpeg', 'maxSize' => 1024 * 1024 * 2, 'tooBig' => 'La taille maximale autorisée est 2MB.'],
-         ];
+           
+           ];
     }
-
-
- /**
-     * Gère le téléchargement de l'image.
-     * @return bool true si le téléchargement est réussi, sinon false
-     */
-    public function uploadImage()
-    {
-        if ($this->validate(['uploadedImage']) && $this->uploadedImage instanceof UploadedFile) {
-            $path = 'uploads/images/';
-            $filename = $path . $this->uploadedImage->baseName . '.' . $this->uploadedImage->extension;
-            if ($this->uploadedImage->saveAs($filename)) {
-                $this->image = $filename;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 
 
   /**

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Formateurs;
 use app\models\FormateursSearch;
+use app\models\UploadForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -82,34 +83,43 @@ class FormateursController extends Controller
     {
         $model = new Formateurs();
         $userModel = new User();
+        $uploadFormModel = new UploadForm();
 
-        if ($model->load(Yii::$app->request->post()) && $userModel->load(Yii::$app->request->post())) {
+        if (Yii::$app->request->isPost) {
+            $model->load(Yii::$app->request->post());
+            $userModel->load(Yii::$app->request->post());
 
             // Valide et sauvegarde l'utilisateur
             $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
             $userModel->role = 'formateur';
-            if ($userModel->validate() && $userModel->save()) {
 
+            if ($userModel->validate() && $userModel->save()) {
                 // Associe le modèle User au modèle Formateurs
                 $model->user_id = $userModel->id;
 
-                // Upload de l'image
-                    $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
-                  
-                    // Valide et sauvegarde le formateur
-                    if ($model->validate() && $model->save()) {
-                        return $this->redirect(['view', 'id' => $model->id]);
-                    } else {
-                        Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement du formateur.');
-                    }
-               
+                // Upoad PDF et récupération du lien
+                $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
+                if ($uploadFormModel->upload()) {
+                    $model->attestation_assurance_url = 'uploads/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
+                }
+
+                // Valide et sauvegarde le formateur
+                if ($model->validate() && $model->save()) {
+                    Yii::$app->session->setFlash('success', 'Formateur créé avec succès!');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    Yii::error($model->getErrors(), 'save');
+                    Yii::$app->session->setFlash('error', 'Erreur lors de la validation du formateur.');
+                }
             } else {
                 Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement de l\'utilisateur.');
             }
         }
+
         return $this->render('create', [
             'model' => $model,
             'userModel' => $userModel,
+            'uploadFormModel' => $uploadFormModel,
         ]);
     }
 

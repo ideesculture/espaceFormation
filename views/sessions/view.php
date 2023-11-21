@@ -5,8 +5,6 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\models\Formations;
 use app\models\SessionStagiaire;
-use app\models\Stagiaires;
-use yii\web\Session;
 
 /** @var yii\web\View $this */
 /** @var app\models\Sessions $model */
@@ -27,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Supprimer', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Êtes-vous sûre de vouloir supprimer cet élément ?',
                 'method' => 'post',
             ],
         ]) ?> <?php endif; ?>
@@ -71,6 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <ul>
         <?php
+        // Affichage des Stagiaires inscrits à la session  
         foreach ($model->getSessionStagiaires()->all() as $response) {
             $sessionStagaire = SessionStagiaire::findOne($response["id"]);
             if ($sessionStagaire && $sessionStagaire->stagiaire0) {
