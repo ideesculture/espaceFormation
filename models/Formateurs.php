@@ -24,9 +24,6 @@ use Yii;
 class Formateurs extends \yii\db\ActiveRecord
 {
 
-
-
-
     /**
      * {@inheritdoc}
      */
@@ -43,10 +40,8 @@ class Formateurs extends \yii\db\ActiveRecord
         return [
             [['nom', 'prenom', 'chemin_cv', 'liste_diplome', 'numero_decl_activite', 'qualiopi', 'siret', 'adresse', 'attestation_assurance_url'], 'string'],
             [['user_id'], 'integer'],
-           
            ];
     }
-
 
   /**
      * Relation avec le modèle User
@@ -74,7 +69,6 @@ class Formateurs extends \yii\db\ActiveRecord
             'siret' => Yii::t('app', 'Siret'),
             'adresse' => Yii::t('app', 'Adresse'),
             'attestation_assurance_url' => Yii::t('app', 'Attestation Assurance Url'),
-            'uploadedImage' => Yii::t('app', 'Image (PNG, JPG, JPEG)'),
         ];
     }
 }

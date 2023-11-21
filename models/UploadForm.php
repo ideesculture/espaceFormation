@@ -1,4 +1,5 @@
 <?php
+
 namespace app\models;
 
 use yii\base\Model;
@@ -6,41 +7,39 @@ use yii\web\UploadedFile;
 
 class UploadForm extends Model
 {
-   /**
+    /**
      * @var UploadedFile
      */
     public $pdfFile;
+    public $uploadedCV;
 
     public function rules()
     {
         return [
-            [['pdfFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf'],
+            [['pdfFile', 'uploadedCV'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf'],
         ];
     }
     
     public function upload()
     {
         if ($this->validate()) {
-            $this->pdfFile->saveAs('uploads/' . $this->pdfFile->baseName . '.' . $this->pdfFile->extension);
+            $uploadPath = 'uploads/';
+
+            if ($this->pdfFile !== null) {
+                $pdfFileName = $this->pdfFile->baseName . '.' . $this->pdfFile->extension;
+                $pdfFilePath = $uploadPath . $pdfFileName;
+                move_uploaded_file($this->pdfFile->tempName, $pdfFilePath);
+            }
+
+            if ($this->uploadedCV !== null) {
+                $cvFileName = $this->uploadedCV->baseName . '.' . $this->uploadedCV->extension;
+                $cvFilePath = $uploadPath . $cvFileName;
+                move_uploaded_file($this->uploadedCV->tempName, $cvFilePath);
+            }
+
             return true;
         } else {
             return false;
         }
     }
-
-    // public function upload()
-    // {
-    //     if ($this->validate()) {
-    //         $pdfFileName = 'pdf_' . time() . '.' . $this->pdfFile->extension;
-    //         $pdfFilePath = 'uploads/' . $pdfFileName;
-
-    //         if ($this->pdfFile->saveAs($pdfFilePath)) {
-    //             return $pdfFilePath; 
-    //         } else {
-    //             return false;
-    //         }
-    //     } else {
-    //         return false;
-    //     }
-    // }
 }

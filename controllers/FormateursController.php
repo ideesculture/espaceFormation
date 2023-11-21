@@ -99,8 +99,13 @@ class FormateursController extends Controller
 
                 // Upoad PDF et récupération du lien
                 $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
-                if ($uploadFormModel->upload()) {
+                if ($uploadFormModel->pdfFile && $uploadFormModel->upload()) {
                     $model->attestation_assurance_url = 'uploads/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
+                }
+                $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
+                if ($uploadFormModel->uploadedCV && $uploadFormModel->upload()) {
+                    Yii::error($model->getErrors(), 'CV');
+                    $model->chemin_cv = 'uploads/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
                 }
 
                 // Valide et sauvegarde le formateur
