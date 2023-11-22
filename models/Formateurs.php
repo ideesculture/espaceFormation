@@ -1,7 +1,6 @@
 <?php
 
 namespace app\models;
-use yii\web\UploadedFile;
 use Yii;
 
 /**
@@ -20,6 +19,7 @@ use Yii;
  * 
  * 
  * @property User $user
+ * @property SessionFormateur[] $sessionFormateurs
  */
 class Formateurs extends \yii\db\ActiveRecord
 {
@@ -52,6 +52,19 @@ class Formateurs extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
+      /**
+     * Gets query for [[SessionFormateurs]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSessionFormateurs()
+    {
+        return $this->hasMany(SessionFormateur::class, ['formateur_id' => 'id']);
+    }
+
+    public function getDisplayName(){
+        return $this->nom." ".$this->prenom;
+    }
     
     /**
      * {@inheritdoc}

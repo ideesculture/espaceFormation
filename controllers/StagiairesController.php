@@ -49,6 +49,43 @@ class StagiairesController extends Controller
         ];
     }
 
+    public function actionMesFormations()
+    {
+        if (Yii::$app->user->isGuest || Yii::$app->user->identity->role !== 'stagiaire') {
+            return $this->goHome();
+        }
+        // Récupére user connecté
+        $user = User::findOne(Yii::$app->user->id);
+        // Récup Le stagiaire associé
+        $stagiaire = $user->stagiaire;
+        $sessions = [];
+        $formations = [];
+    
+        if ($user->role === 'stagiaire') {
+            $stagiaire = $user->stagiaire;
+          
+            if ($stagiaire !== null) {
+                
+                $sessionsStagiaire = $stagiaire->sessionStagiaires;
+                if (!empty($sessionsStagiaire)) {
+                    foreach ($sessionsStagiaire as $sessionStagiaire) {
+                        if ($sessionStagiaire->session0 !== null) {
+                            $formation = $sessionStagiaire->session0->formationrel;
+                            // Stocke les sessions et formations dans des tableaux
+                        $sessions[] = $sessionStagiaire->session0;
+                        $formations[] = $formation;
+                        }
+                    }
+                } 
+            } 
+          
+        } 
+        return $this->render('mes-formations', [
+            'sessions' => $sessions,
+            'formations' => $formations,
+        ]);
+    }
+
     /**
      * Lists all Stagiaires models.
      *

@@ -60,7 +60,7 @@ class SiteController extends Controller
     public function actionUpload()
     {
         $model = new UploadForm();
-    
+
         if (Yii::$app->request->isPost) {
             $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
             $model->uploadedCV = UploadedFile::getInstance($model, 'uploadedCV');
@@ -71,7 +71,7 @@ class SiteController extends Controller
                 return $this->redirect(['site/upload']);
             }
         }
-    
+
         return $this->render('upload', ['model' => $model]);
     }
 
@@ -105,7 +105,9 @@ class SiteController extends Controller
             //redirection selon le role
             switch ($role) {
                 case 'stagiaire':
-                    return $this->redirect(['site/mes-formations']);
+                    return $this->redirect(['stagiaires/mes-formations']);
+                case 'formateur':
+                    return $this->redirect(['formateurs/mes-formations']);
                 case 'admin':
                     return $this->goHome();
                 default:
@@ -115,44 +117,6 @@ class SiteController extends Controller
         $model->password = '';
         return $this->render('login', [
             'model' => $model,
-        ]);
-    }
-    
-
-    public function actionMesFormations()
-    {
-        if (Yii::$app->user->isGuest || Yii::$app->user->identity->role !== 'stagiaire') {
-            return $this->goHome();
-        }
-        // Récupére user connecté
-        $user = User::findOne(Yii::$app->user->id);
-        // Récup Le stagiaire associé
-        $stagiaire = $user->stagiaire;
-        $sessions = [];
-        $formations = [];
-    
-        if ($user->role === 'stagiaire') {
-            $stagiaire = $user->stagiaire;
-          
-            if ($stagiaire !== null) {
-                
-                $sessionsStagiaire = $stagiaire->sessionStagiaires;
-                if (!empty($sessionsStagiaire)) {
-                    foreach ($sessionsStagiaire as $sessionStagiaire) {
-                        if ($sessionStagiaire->session0 !== null) {
-                            $formation = $sessionStagiaire->session0->formationrel;
-                            // Stocke les sessions et formations dans des tableaux
-                        $sessions[] = $sessionStagiaire->session0;
-                        $formations[] = $formation;
-                        }
-                    }
-                } 
-            } 
-          
-        } 
-        return $this->render('mes-formations', [
-            'sessions' => $sessions,
-            'formations' => $formations,
         ]);
     }
 

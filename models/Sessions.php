@@ -24,6 +24,7 @@ use Yii;
  * @property Centres $centre0
  * @property Formations $formation0
  * @property SessionStagiaire[] $sessionStagiaires
+ * @property SessionFormateur[] $sessionFormateurs
  */
 class Sessions extends \yii\db\ActiveRecord
 {

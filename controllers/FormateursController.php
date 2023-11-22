@@ -265,5 +265,37 @@ public function actionDownloadCv($id)
     }
 }
 
+public function actionMesFormations()
+{
+    if (Yii::$app->user->isGuest) {
+        return $this->goHome();
+    }
+
+    $user = User::findOne(Yii::$app->user->id);
+    $formateur = $user->formateur;
+    $sessions = [];
+    $formations = [];
+
+    if ($user->role === 'formateur' && $formateur !== null) {
+        $sessionsFormateur = $formateur->sessionFormateurs;
+
+        if (!empty($sessionsFormateur)) {
+            foreach ($sessionsFormateur as $sessionFormateur) {
+                if ($sessionFormateur->session !== null) {
+                    $formation = $sessionFormateur->session->formationrel;
+
+                    // Stocke les sessions et formations dans des tableaux
+                    $sessions[] = $sessionFormateur->session;
+                    $formations[] = $formation;
+                }
+            }
+        }
+    }
+
+    return $this->render('mes-formations', [
+        'sessions' => $sessions,
+        'formations' => $formations,
+    ]);
+}
 
 }
