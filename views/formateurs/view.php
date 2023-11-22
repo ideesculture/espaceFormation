@@ -44,5 +44,12 @@ use yii\widgets\DetailView;
             'user_id',
         ],
     ]) ?>
+    <?= Html::a('Télécharger l\'attestation d\'assurance', ['download', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 
+    <div class="iframePDF">
+   <h3>Attestation Assurance</h3>
+    <iframe src="<?= Yii::$app->request->baseUrl.'/'.$model->attestation_assurance_url ?>" width="50%" height="600px"></iframe>
+    <h3>CV</h3>
+    <iframe src="<?= Yii::$app->request->baseUrl.'/'.$model->chemin_cv ?>" width="50%" height="600px"></iframe>
+ </div>
 </div>

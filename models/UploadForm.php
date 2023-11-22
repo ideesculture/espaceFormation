@@ -24,11 +24,11 @@ class UploadForm extends Model
     {
             if ($this->validate()) {
                 if ($this->pdfFile !== null) {
-                    $this->pdfFile->saveAs('uploads/' . $this->pdfFile->baseName . '.' . $this->pdfFile->extension);
+                    $this->pdfFile->saveAs('uploads/formateurs/' . $this->pdfFile->baseName . '.' . $this->pdfFile->extension);
                 }
     
                 if ($this->uploadedCV !== null) {
-                    $this->uploadedCV->saveAs('uploads/' . $this->uploadedCV->baseName . '.' . $this->uploadedCV->extension);
+                    $this->uploadedCV->saveAs('uploads/formateurs/' . $this->uploadedCV->baseName . '.' . $this->uploadedCV->extension);
                 }
                 return true;
             } else {

@@ -97,26 +97,24 @@ class FormateursController extends Controller
                 // Associe le modèle User au modèle Formateurs
                 $model->user_id = $userModel->id;
 
-                
                 // Upoad PDF et récupération du lien
                 $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
                 $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
+
                 if ($uploadFormModel->upload()) {
                     if ($uploadFormModel->pdfFile !== null) {
-                        $model->attestation_assurance_url = 'uploads/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
+                        $model->attestation_assurance_url = 'uploads/formateurs/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
                     }
                     if ($uploadFormModel->uploadedCV !== null) {
-                        $model->chemin_cv = 'uploads/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
+                        $model->chemin_cv = 'uploads/formateurs/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
                     }
                 }
-
 
                 // Valide et sauvegarde le formateur
                 if ($model->validate() && $model->save()) {
                     Yii::$app->session->setFlash('success', 'Formateur créé avec succès!');
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
-                    Yii::error($model->getErrors(), 'save');
                     Yii::$app->session->setFlash('error', 'Erreur lors de la validation du formateur.');
                 }
             } else {
@@ -164,16 +162,15 @@ class FormateursController extends Controller
             // Save modèle Formateurs
             if ($model->save()) {
 
-                // Si un fichier PDF est chargé, effectue le traitement
                 if ($uploadFormModel->pdfFile) {
                     $uploadFormModel->upload();
-                    $model->attestation_assurance_url = 'uploads/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
+                    $model->attestation_assurance_url = 'uploads/formateurs/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
                 }
 
                 // Si un fichier CV est chargé, effectue le traitement
                 if ($uploadFormModel->uploadedCV) {
                     $uploadFormModel->upload();
-                    $model->chemin_cv = 'uploads/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
+                    $model->chemin_cv = 'uploads/formateurs/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
                 }
 
                 $model->save();
@@ -206,16 +203,16 @@ class FormateursController extends Controller
         $user = $model->user;
 
         // Supprimer les fichiers PDF et CV associés
-        $pdfFilePath = 'uploads/' . $model->attestation_assurance_url;
-        $cvFilePath = 'uploads/' . $model->chemin_cv;
+        $pdfFilePath = 'uploads/formateurs/' . $model->attestation_assurance_url;
+        $cvFilePath = 'uploads/formateurs/' . $model->chemin_cv;
 
-        if (file_exists($pdfFilePath)) {
-            unlink($pdfFilePath);
-        }
+        // if (file_exists($pdfFilePath)) {
+        //     unlink($pdfFilePath);
+        // }
 
-        if (file_exists($cvFilePath)) {
-            unlink($cvFilePath);
-        }
+        // if (file_exists($cvFilePath)) {
+        //     unlink($cvFilePath);
+        // }
 
 
         if ($user) {
@@ -242,4 +239,19 @@ class FormateursController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionDownload($id)
+{
+    $model = $this->findModel($id);
+    $filePath = Yii::getAlias('@webroot').'/'.$model->attestation_assurance_url;
+    $filePath2 = Yii::getAlias('@webroot').'/'.$model->chemin_cv;
+
+    if (file_exists($filePath)) {
+        Yii::$app->response->sendFile($filePath)->send();
+    } else {
+        Yii::$app->session->setFlash('error', 'Le fichier PDF n\'existe pas.');
+        return $this->redirect(['view', 'id' => $id]);
+    }
+  
+}
 }
