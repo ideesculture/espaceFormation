@@ -31,7 +31,7 @@ class SessionsController extends Controller
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {    
                              $user = Yii::$app->user->identity;
-                            return $user->role === 'admin' || $user->role === 'stagiaire';},
+                            return $user->role === 'admin' || $user->role === 'stagiaire' || $user->role === 'formateur';},
                     ],
                 ],
                 'denyCallback' => function ($rule, $action) {

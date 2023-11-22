@@ -7,15 +7,16 @@ use yii\widgets\ActiveForm;
 /** @var  app\models\Stagiaires $model*/
 /** @var  app\models\User $user */
 
-$this->title = 'Delete Stagiaires';
-$this->params['breadcrumbs'][] = ['label' => 'Stagiaires', 'url' => ['index']];
+//$this->title = 'Supprimer Stagiaires';
+//$this->params['breadcrumbs'][] = ['label' => 'Stagiaires', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="stagiaires-delete">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Êtes vous sûre de vouloir supprimer ce Stagiaire, L'utilisateur associé au mail ci dessous sera supprimé lui aussi :<br><?= Html::encode($user->email) ?>?</p>
+    <p>Êtes vous sûre de vouloir supprimer ce Stagiaire ?
+     L'utilisateur associé au mail ci dessous sera supprimé lui aussi :<br><?= Html::encode($user->email) ?>?</p>
 
     <?php $form = ActiveForm::begin(); ?>
 

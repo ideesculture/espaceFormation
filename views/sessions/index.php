@@ -10,8 +10,8 @@ use yii\grid\GridView;
 /** @var app\models\SessionsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Sessions' ;
-$this->params['breadcrumbs'][] = $this->title;
+// $this->title = 'Sessions' ;
+// $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sessions-index">
 

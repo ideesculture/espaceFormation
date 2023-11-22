@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use DateTime;
 
 /**
  * This is the model class for table "Sessions".
@@ -101,4 +102,18 @@ class Sessions extends \yii\db\ActiveRecord
     {
         return $this->hasMany(SessionStagiaire::class, ['session_id' => 'id']);
     }
+
+    /**
+     * Vérifie si la session est le dernier jour de la formation.
+     *
+     * @return bool true si c'est le dernier jour, false sinon
+     */
+    public function isLastDay(): bool
+    {
+        $today = new DateTime();
+        $sessionEndDate = new DateTime($this->fin);
+
+        return $today->format('Y-m-d') == $sessionEndDate->format('Y-m-d');
+    }
+
 }

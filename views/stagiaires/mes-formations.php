@@ -29,17 +29,30 @@ if (!empty($sessions)) {
         echo 'Formation: ' . $formation->name . '<br>';
         echo 'Date de début: ' . $formatter->format(strtotime($session->debut)) . '<br>';
         echo 'Date de fin: ' . $formatter->format(strtotime($session->fin)) . '<br>';
-        echo '<hr>';
+        echo '<br>';
 
-        if ($endDate >= $today) {
-            if ($startDate > $today) {
-                echo 'Statut: À venir<br>';
-            } else {
-                echo 'Statut: En cours<br>';
-            }
+        // Supprimer les heures pour la comparaison
+        $today->setTime(0, 0, 0);
+        $startDate->setTime(0, 0, 0);
+        $endDate->setTime(0, 0, 0);
+
+        if ($endDate < $today) {           
+            // Si la date de fin est passée
+            echo 'Statut: Passée<br>';
+        } elseif ($startDate > $today) {
+            // Si la date de début est à venir
+            echo 'Statut: À venir<br>';
         } else {
-            echo 'Statut: Passé<br>';
+            // Si la date de début est passée et la date de fin est à venir
+            echo 'Statut: En cours<br>';
         }
+
+
+         if ($session->isLastDay()): ?>
+            <!-- Afficher le lien vers le formulaire Google -->
+            <span style="color:red;">Merci de remplir le formulaire de d'évaluation -> </span>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeFJjPox-8jXsVkcf4kE0JfHvf45tlIx8GOYAoUCsUcxm1YOw/viewform" target="_blank">Formulaire d'évaluation de formation</a>
+        <?php endif;
         echo '<hr>';
     }
 } else {

@@ -16,7 +16,7 @@ use Yii;
  * @property string|null $siret
  * @property string|null $adresse
  * @property string|null $attestation_assurance_url
- * 
+ * @property int $user_id
  * 
  * @property User $user
  * @property SessionFormateur[] $sessionFormateurs

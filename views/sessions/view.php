@@ -10,8 +10,8 @@ use app\models\SessionStagiaire;
 /** @var app\models\Sessions $model */
 
 $this->title = $model->formationrel->name . " - " . date("d/m/Y", strtotime($model->debut)) . " au " . date("d/m/Y", strtotime($model->fin));
-$this->params['breadcrumbs'][] = ['label' => 'Sessions', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+// $this->params['breadcrumbs'][] = ['label' => 'Sessions', 'url' => ['index']];
+// $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="sessions-view">
@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]);
 
 
-    if ($user && $user->role !== 'stagiaire' && $user->role !== 'formateur'): ?>
+    if ($user && $user->role === 'admin'): ?>
     <h1> Liste des stagiaires </h1>
     <a class="btn btn-primary" href="/index.php?r=session-stagiaire%2Fcreate&session_id=<?=$model->id?>">Ajouter un stagiaire</a>
 

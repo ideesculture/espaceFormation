@@ -15,6 +15,7 @@ use Yii;
  * @property string $role
  * @property string $authKey
  *
+ * @property Formateurs $formateur
  * @property Stagiaires $stagiaire
  * @property SessionStagiaire[] $stagiaireSessions
  */
