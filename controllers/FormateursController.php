@@ -244,7 +244,6 @@ class FormateursController extends Controller
 {
     $model = $this->findModel($id);
     $filePath = Yii::getAlias('@webroot').'/'.$model->attestation_assurance_url;
-    $filePath2 = Yii::getAlias('@webroot').'/'.$model->chemin_cv;
 
     if (file_exists($filePath)) {
         Yii::$app->response->sendFile($filePath)->send();
@@ -252,6 +251,19 @@ class FormateursController extends Controller
         Yii::$app->session->setFlash('error', 'Le fichier PDF n\'existe pas.');
         return $this->redirect(['view', 'id' => $id]);
     }
-  
 }
+
+public function actionDownloadCv($id)
+{
+    $model = $this->findModel($id);
+    $filePath = Yii::getAlias('@webroot') . '/' . $model->chemin_cv;
+
+    if (file_exists($filePath)) {
+        Yii::$app->response->sendFile($filePath)->send();
+    } else {
+        throw new NotFoundHttpException('Le fichier CV n\'existe pas.');
+    }
+}
+
+
 }

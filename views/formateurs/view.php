@@ -20,7 +20,6 @@ use yii\widgets\DetailView;
     <p>
         <?php $user = Yii::$app->user->identity;
         if ($user && ($user->role == 'admin')): ?>
-            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
@@ -28,6 +27,9 @@ use yii\widgets\DetailView;
                     'method' => 'post',
                 ],
             ]) ?>
+        <?php endif; ?>
+        <?php if ($user && ($user->role == 'formateur')): ?>
+            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php endif; ?>
     </p>
 
@@ -47,23 +49,32 @@ use yii\widgets\DetailView;
             'user_id',
         ],
     ]) ?>
-  
-    <div class="iframePDF">
 
+
+    <div class="pdf-container">
         <?php if (!empty($model->attestation_assurance_url)): ?>
-            <?= Html::a('Télécharger l\'attestation d\'assurance', ['download', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <h3>Attestation Assurance</h3>
-            <iframe src="<?= Yii::$app->request->baseUrl . '/' . $model->attestation_assurance_url ?>" width="50%"
-                height="600px"></iframe>
+            <div class="pdf-section">
+                <h3>Attestation Assurance</h3>
+                <iframe class="pdf-iframe"
+                    src="<?= Yii::$app->request->baseUrl . '/' . $model->attestation_assurance_url ?>" width="100%"
+                    height="400px"></iframe>
+                <?= Html::a('Télécharger l\'attestation d\'assurance', ['download', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            </div>
         <?php else: ?>
             <p>Aucun fichier d'attestation d'assurance disponible.</p>
         <?php endif; ?>
-        <?php if (!empty($model->chemin_cv)): ?>
-            <h3>CV</h3>
-            <iframe src="<?= Yii::$app->request->baseUrl . '/' . $model->chemin_cv ?>" width="50%" height="600px"></iframe>
-        <?php else: ?>
-            <p>Aucun CV de disponible.</p>
-        <?php endif; ?>
 
+        <?php if (!empty($model->chemin_cv)): ?>
+            <div class="pdf-section">
+                <h3>CV</h3>
+                <iframe class="pdf-iframe" src="<?= Yii::$app->request->baseUrl . '/' . $model->chemin_cv ?>" width="100%"
+                    height="400px"></iframe>
+                    <?= Html::a('Télécharger le CV', ['download-cv', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+
+            </div>
+        <?php else: ?>
+            <p>Aucun CV disponible.</p>
+        <?php endif; ?>
     </div>
+
 </div>
