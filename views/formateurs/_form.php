@@ -35,7 +35,6 @@ use yii\widgets\ActiveForm;
     <?= $form->field($uploadFormModel, 'pdfFile')->fileInput() ?>
 
     
-
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

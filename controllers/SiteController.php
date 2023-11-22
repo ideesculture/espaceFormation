@@ -63,6 +63,7 @@ class SiteController extends Controller
     
         if (Yii::$app->request->isPost) {
             $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
+            $model->uploadedCV = UploadedFile::getInstance($model, 'uploadedCV');
             if ($model->upload()) {
                 // Le fichier est téléchargé avec succès
                 Yii::$app->session->setFlash('success', 'Fichier téléchargé avec succès!');

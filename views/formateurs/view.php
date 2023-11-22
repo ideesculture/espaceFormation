@@ -6,9 +6,9 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Formateurs $model */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Formateurs', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+//$this->title = $model->nom;
+//$this->params['breadcrumbs'][] = ['label' => 'Formateurs', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="formateurs-view">
