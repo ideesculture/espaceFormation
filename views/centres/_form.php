@@ -12,17 +12,13 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'name')->textInput() ?>
 
-    <?= $form->field($model, 'lieu')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'lieu')->textInput() ?>
 
-    <?= $form->field($model, 'georeference')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'georeference')->textInput() ?>
 
-    <?= $form->field($model, 'url_lieu1')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'url_lieu2')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'url_lieu3')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'url_lieu1')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

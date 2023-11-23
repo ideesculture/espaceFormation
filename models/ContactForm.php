@@ -43,25 +43,22 @@ class ContactForm extends Model
     }
 
     /**
-     * Sends an email to the specified email address using the information collected by this model.
-     * @param string $email the target email address
+     * Envoi un mail à une adresse spécifique en utilsant les données du model récoltées
+     * @param string $email  email adresse Cible
      * @return bool whether the model passes validation
      */
     public function contact($email)
     {
         if ($this->validate()) {
 
-           Yii::$app->mailer->compose()
+            Yii::$app->mailer->compose()
                 ->setTo($email)
                 ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
-             //   ->setReplyTo([$this->email => $this->name])
                 ->setSubject($this->subject)
                 ->setTextBody($this->body)
                 ->send();
 
-// Envoi de l'e-mail de confirmation à la personne qui a rempli le formulaire
-$this->sendConfirmationEmail();
-
+            $this->sendConfirmationEmail();
             return true;
         }
         return false;
@@ -71,7 +68,7 @@ $this->sendConfirmationEmail();
     {
         // Envoi de l'e-mail de confirmation à la personne qui a rempli le formulaire
         Yii::$app->mailer->compose()
-            ->setTo($this->email) 
+            ->setTo($this->email)
             ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
             ->setSubject('Confirmation de votre demande')
             ->setTextBody('Merci pour votre demande. Nous avons bien reçu votre message et nous vous contacterons bientôt.')

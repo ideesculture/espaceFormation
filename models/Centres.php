@@ -32,6 +32,7 @@ class Centres extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'lieu', 'georeference', 'url_lieu1', 'url_lieu2', 'url_lieu3'], 'string'],
+            [['name', 'lieu'], 'required', 'message' => 'Le champ {attribute} ne peut pas être vide'],
         ];
     }
 
@@ -42,12 +43,12 @@ class Centres extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
+            'name' => Yii::t('app', 'Nom'),
             'lieu' => Yii::t('app', 'Lieu'),
             'georeference' => Yii::t('app', 'Georeference'),
             'url_lieu1' => Yii::t('app', 'Url Lieu1'),
-            'url_lieu2' => Yii::t('app', 'Url Lieu2'),
-            'url_lieu3' => Yii::t('app', 'Url Lieu3'),
+           // 'url_lieu2' => Yii::t('app', 'Url Lieu2'),
+           // 'url_lieu3' => Yii::t('app', 'Url Lieu3'),
         ];
     }
 }

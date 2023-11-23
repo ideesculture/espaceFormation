@@ -28,6 +28,9 @@ main>.container {
 .pdf-iframe {
     border: 1px solid #ddd;
 }
+.help-block {
+    color: red; /* Change the color to red or any other desired style */
+}
 
 .logo{
     max-width: 50%;
