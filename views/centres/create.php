@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Centres $model */
 
-$this->title = Yii::t('app', 'Create Centres');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Centres'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('app', 'Créer un Centre de formation');
+//$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Centres'), 'url' => ['index']];
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="centres-create">
 

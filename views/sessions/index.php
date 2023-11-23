@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var app\models\SessionsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-// $this->title = 'Sessions' ;
+ $this->title = 'Sessions' ;
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sessions-index">
@@ -21,7 +21,7 @@ use yii\grid\GridView;
     <?php
         $user = Yii::$app->user->identity;
         if ($user && $user->role === 'admin'): ?> 
-       <?= Html::a('Create Sessions', ['create'], ['class' => 'btn btn-success']) ?>
+       <?= Html::a('Créer Session', ['create'], ['class' => 'btn btn-success']) ?>
        <?php endif; ?>
     </p>
 

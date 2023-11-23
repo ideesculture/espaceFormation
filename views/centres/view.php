@@ -7,8 +7,8 @@ use yii\widgets\DetailView;
 /** @var app\models\Centres $model */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Centres'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+// $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Centres'), 'url' => ['index']];
+// $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="centres-view">

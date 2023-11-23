@@ -54,13 +54,28 @@ class ContactForm extends Model
            Yii::$app->mailer->compose()
                 ->setTo($email)
                 ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
-                ->setReplyTo([$this->email => $this->name])
+             //   ->setReplyTo([$this->email => $this->name])
                 ->setSubject($this->subject)
                 ->setTextBody($this->body)
                 ->send();
+
+// Envoi de l'e-mail de confirmation à la personne qui a rempli le formulaire
+$this->sendConfirmationEmail();
 
             return true;
         }
         return false;
     }
+
+    public function sendConfirmationEmail()
+    {
+        // Envoi de l'e-mail de confirmation à la personne qui a rempli le formulaire
+        Yii::$app->mailer->compose()
+            ->setTo($this->email) 
+            ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
+            ->setSubject('Confirmation de votre demande')
+            ->setTextBody('Merci pour votre demande. Nous avons bien reçu votre message et nous vous contacterons bientôt.')
+            ->send();
+    }
+
 }

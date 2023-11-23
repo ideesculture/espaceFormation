@@ -27,20 +27,34 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 
       
-        <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+<?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
-        <?= $form->field($model, 'password')->passwordInput() ?>
+<?php if (!$model->resetPasswordToken): ?>
+    <?= $form->field($model, 'password')->passwordInput() ?>
+<?php else: ?>
+    <?= $form->field($model, 'password')->passwordInput(['placeholder' => 'Nouveau mot de passe']) ?>
+<?php endif; ?>
 
-        <?= $form->field($model, 'rememberMe')->checkbox([
-            'template' => "<div class=\"col-lg-3 custom-control custom-checkbox\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        ]) ?>
 
-        <div class="form-group">
-            <div class="col-lg-11">
-                <?= Html::submitButton('Se Connecter', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-            </div>
+<?= $form->field($model, 'rememberMe')->checkbox([
+    'template' => "<div class=\"col-lg-3 custom-control custom-checkbox\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}". 
+    Html::a('Mot de passe oublié ?', ['site/request-password-reset'])."</div>",
+]) ?>
+
+<?php if (!$model->resetPasswordToken): ?>
+    <div class="form-group">
+        <div class="col-lg-11">
+            <?= Html::submitButton('Se Connecter', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
         </div>
+    </div>
+<?php else: ?>
+    <div class="form-group">
+        <div class="col-lg-11">
+            <?= Html::submitButton('Réinitialiser le mot de passe', ['class' => 'btn btn-primary', 'name' => 'reset-password-button']) ?>
+        </div>
+    </div>
+<?php endif; ?>
 
-    <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 </div>

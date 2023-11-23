@@ -28,7 +28,7 @@ use yii\widgets\DetailView;
                 ],
             ]) ?>
         <?php endif; ?>
-        <?php if ($user && ($user->role == 'formateur')): ?>
+        <?php if ($user && (($user->role == 'formateur') || ($user->role == 'admin')  )): ?>
             <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php endif; ?>
     </p>
