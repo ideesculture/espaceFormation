@@ -16,22 +16,24 @@ class LoginForm extends Model
     public $email;
     public $password;
     public $rememberMe = true;
-    public $resetPasswordToken; 
+    private $_user = false;
 
 
     /**
      * @return array the validation rules.
      */
     public function rules()
-{
-    $rules = [
-        [['email', 'password'], 'required', 'message' => '{attribute} ne peut pas être vide.'],
-        ['email', 'email', 'message' => 'Format d\'email invalide.'],
-        ['rememberMe', 'boolean'],
-        ['password', 'validatePassword'],
-    ];
-    return $rules;
-}
+    {
+        return [
+            // email and password are both required
+            [['email', 'password'], 'required', 'message' => '{attribute} ne peut pas être vide.'],
+            ['email', 'email', 'message' => 'Format d\'email invalide.'],
+            // rememberMe must be a boolean value
+            ['rememberMe', 'boolean'],
+            // password is validated by validatePassword()
+            ['password', 'validatePassword'],
+        ];
+    }
 
     /**
      * @return array customized attribute labels
@@ -42,7 +44,6 @@ class LoginForm extends Model
             'email' => 'Adresse Email',
             'password' => 'Mot de Passe',
             'rememberMe' => 'Se souvenir de moi',
-            'resetPasswordToken' => 'Token de réinitialisation du mot de passe',
         ];
     }
 
@@ -89,5 +90,4 @@ class LoginForm extends Model
 
         return $this->_user;
     }
-
 }
