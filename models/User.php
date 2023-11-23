@@ -13,6 +13,7 @@ use Yii;
  * @property string $email
  * @property string $password
  * @property string $role
+ * @property string $password_reset_token
  * @property string $authKey
  *
  * @property Formateurs $formateur
@@ -22,8 +23,6 @@ use Yii;
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
     public $authKey;
-  //  public $special_attribute;
-    public $password_reset_token;
 
     public static function tableName()
     {
@@ -106,6 +105,21 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return static::findOne(['accessToken' => $token]);
     }
 
+    /**
+     * Set mot de passe haché
+     */
+    public function setPassword($password)
+    {
+        $this->password = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    /**
+     * Méthode pour supprimer le token Reset Password aprés utilisation
+    */
+    public function removePasswordResetToken()
+    {
+        $this->password_reset_token = null;
+    }
 
     /**
      * {@inheritdoc}
@@ -152,5 +166,26 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
         return $this->password_reset_token;
+    }
+
+    /**
+     * Finds a user by the given password reset token.
+     *
+     * @param string $token The password reset token
+     * @return User|null The user model, or `null` if a user with the given token is not found
+     */
+    public static function findByPasswordResetToken($token)
+    {
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+       
+        // Vérifie si le token a expiré
+        if ($timestamp + $expire < time()) {
+            return null;
+        }
+
+        return static::findOne([
+            'password_reset_token' => $token,
+        ]);
     }
 }

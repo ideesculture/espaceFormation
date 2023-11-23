@@ -10,9 +10,10 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\UploadForm;
 use app\models\ContactForm;
-use app\models\User;
+use app\models\ResetPasswordForm;
 use yii\web\UploadedFile;
-use yii\mail\MessageInterface;
+use app\models\User;
+
 
 class SiteController extends Controller
 {
@@ -162,19 +163,51 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    /**
+     * Demande de réinitialisation de mot de passe
+     */
     public function actionRequestPasswordReset()
     {
         $model = new \app\models\PasswordResetRequestForm();
-    
+
         if ($model->load(Yii::$app->request->post()) && $model->sendPasswordResetEmail()) {
             Yii::$app->session->setFlash('success', 'Vérifiez votre boîte de réception pour les instructions de réinitialisation du mot de passe.');
             return $this->goHome();
         }
-    
+
         return $this->render('requestPasswordResetToken', [
             'model' => $model,
         ]);
     }
 
+
+    /**
+     * Reset User password.
+     *
+     * @param string $token The password reset token
+     * @return string|Response
+     */
+    public function actionResetPassword($token)
+    {
+        $model = new ResetPasswordForm(['token' => $token]);
+        $user = User::findByPasswordResetToken($token);
+    
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+    
+            if ($user === null) {
+                Yii::$app->session->setFlash('error', 'Le lien de réinitialisation du mot de passe est expiré ou invalide.');
+            } else {
+                Yii::$app->session->setFlash('success', 'Votre mot de passe a été réinitialisé avec succès.');
+            }
+    
+            return $this->redirect(['site/login']); // Redirige l'utilisateur vers la page de connexion
+        }
+    
+        return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
     }
+
+
+}
 

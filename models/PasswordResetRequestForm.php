@@ -33,6 +33,7 @@ class PasswordResetRequestForm extends Model
             if ($user) {
                 $user->generatePasswordResetToken();
                 if ($user->save()) {
+                  
                     return Yii::$app
                         ->mailer
                         ->compose(
