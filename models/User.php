@@ -22,7 +22,8 @@ use Yii;
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
     public $authKey;
-    public $special_attribute;
+  //  public $special_attribute;
+    public $password_reset_token;
 
     public static function tableName()
     {
@@ -139,5 +140,17 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);
+    }
+
+    /**
+     * Génère Un Token de mot de passe
+     * Cette méthode est appelée avant de sauvegarder en base.
+     *
+     * @return string Le Token de Reset de Mot de passe
+     */
+    public function generatePasswordResetToken()
+    {
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+        return $this->password_reset_token;
     }
 }

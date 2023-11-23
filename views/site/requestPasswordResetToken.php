@@ -1,10 +1,9 @@
 <?php
 
-/** @var yii\web\View $this */
-/** @var app\models\LoginForm $model */
-
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
+
+/** @var yii\web\View $this */
 
 $this->title = 'Demande de réinitialisation du mot de passe';
 $this->params['breadcrumbs'][] = $this->title;

@@ -164,16 +164,10 @@ class SiteController extends Controller
 
     public function actionRequestPasswordReset()
     {
-        Yii::error('Action Request Password Reset called', 'app');
-        $model = new LoginForm();
-       
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            Yii::error('Form data loaded and validated', 'app');
-            if ($model->sendPasswordResetEmail()) {
-                Yii::$app->session->setFlash('success', 'Vérifiez votre boîte de réception pour les instructions de réinitialisation du mot de passe.');
-            } else {
-                Yii::$app->session->setFlash('error', 'Désolé, nous ne pouvons pas réinitialiser le mot de passe pour l\'adresse e-mail fournie.');
-            }
+        $model = new \app\models\PasswordResetRequestForm();
+    
+        if ($model->load(Yii::$app->request->post()) && $model->sendPasswordResetEmail()) {
+            Yii::$app->session->setFlash('success', 'Vérifiez votre boîte de réception pour les instructions de réinitialisation du mot de passe.');
             return $this->goHome();
         }
     

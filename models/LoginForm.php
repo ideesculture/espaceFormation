@@ -13,13 +13,11 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
-    const SCENARIO_REQUEST_PASSWORD_RESET = 'requestPasswordReset';
     public $email;
     public $password;
     public $rememberMe = true;
     public $resetPasswordToken; 
 
-    private $user;
 
     /**
      * @return array the validation rules.
@@ -32,12 +30,6 @@ class LoginForm extends Model
         ['rememberMe', 'boolean'],
         ['password', 'validatePassword'],
     ];
-
-    // règle spécifique pour le scénario requestPasswordReset
-    if ($this->scenario === self::SCENARIO_REQUEST_PASSWORD_RESET) {
-        $rules[] = [['email'], 'validateEmailExistence'];
-    }
-
     return $rules;
 }
 
@@ -72,24 +64,6 @@ class LoginForm extends Model
         }
     }
 
-     /**
-     * Validates the resetPasswordToken.
-     *
-     * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
-     */
-    public function validateResetPasswordToken($attribute, $params)
-    {
-        if (!$this->hasErrors()) {
-            $user = $this->getUser();
-
-            if ($user && !$user->validatePasswordResetToken($this->resetPasswordToken)) {
-                $this->addError($attribute, 'Token de réinitialisation du mot de passe invalide.');
-            }
-        }
-    }
-
-
     /**
      * Logs in a user using the provided email and password.
      * @return bool whether the user is logged in successfully
@@ -115,55 +89,5 @@ class LoginForm extends Model
 
         return $this->_user;
     }
-
-    /**
-     * Méthode pour Reset Paswword.
-     *
-     * @return bool whether the password reset was successful
-     */
-    public function resetPassword()
-    {
-        if ($this->validate()) {
-            $user = $this->getUser();
-
-            if ($user) {
-                $user->setPassword($this->password);
-                $user->removePasswordResetToken();
-
-                return $user->save(false);
-            }
-        }
-
-        return false;
-    }
-
-    public function validateEmailExistence($attribute, $params)
-{
-    if (!$this->hasErrors()) {
-        $user = $this->getUser();
-
-        if (!$user) {
-            $this->addError($attribute, 'Aucun utilisateur trouvé avec cette adresse e-mail.');
-        }
-    }
-}
-
-public function sendPasswordResetEmail()
-{
-    // Génére token de réinitialisation du mot de passe
-    $user = $this->getUser();
-    if ($user) {
-        $user->generatePasswordResetToken();
-        if ($user->save(false)) { 
-        
-            return Yii::$app->mailer->compose('passwordResetToken', ['user' => $user])
-                ->setTo($this->email)
-                ->setSubject('Réinitialisation du mot de passe')
-                ->send();
-        }
-    }
-
-    return false;
-}
 
 }
