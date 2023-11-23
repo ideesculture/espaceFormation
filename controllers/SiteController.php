@@ -12,6 +12,7 @@ use app\models\UploadForm;
 use app\models\ContactForm;
 use app\models\User;
 use yii\web\UploadedFile;
+use yii\mail\MessageInterface;
 
 class SiteController extends Controller
 {
@@ -114,6 +115,7 @@ class SiteController extends Controller
                     return $this->goBack();
             }
         }
+
         $model->password = '';
         return $this->render('login', [
             'model' => $model,
