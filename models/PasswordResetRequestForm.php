@@ -24,7 +24,7 @@ class PasswordResetRequestForm extends Model
     /**
      * Envoie un e-mail avec un lien de réinitialisation de mot de passe.
      *
-     * @return bool whether the email was sent
+     * @return bool selon si l'email est envoyé
      */
     public function sendPasswordResetEmail()
     {
@@ -36,7 +36,7 @@ class PasswordResetRequestForm extends Model
                     return Yii::$app
                         ->mailer
                         ->compose(
-                            ['html' => 'passwordResetToken-html'],
+                            ['html' => 'reset-password.php'],
                             ['user' => $user]
                         )
                         ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->params['senderName']])
