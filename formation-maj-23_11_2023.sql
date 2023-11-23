@@ -6,7 +6,7 @@
 -- Database: formation
 -- Generation Time: 2023-02-03 15:22:26.8880
 -- -------------------------------------------------------------
-
+use formation;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -87,6 +87,41 @@ CREATE TABLE `Sessions` (
   CONSTRAINT `sessions_ibfk_2` FOREIGN KEY (`centre_id`) REFERENCES `Centres` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS `Stagiaires`;
+CREATE TABLE `Stagiaires` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` text DEFAULT NULL,
+  `prenom` text DEFAULT NULL,
+  `email2` text DEFAULT NULL,
+  `telephone` text DEFAULT NULL,
+  `historique_sessions` longtext DEFAULT NULL,
+  `derniere_version_reglement_interieur_accepte` text DEFAULT NULL,
+  `derniere_version_cgv_acceptee` text DEFAULT NULL,
+  `derniere_version_cgu_acceptee` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `Utilisateurs`;
+CREATE TABLE `Utilisateurs` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `email` text DEFAULT NULL,
+  `password` text DEFAULT NULL,
+  `role` text DEFAULT NULL,
+  `password_reset_token` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `SessionFormateur` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` int(11) DEFAULT NULL,
+  `formateur_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `session` (`session_id`),
+  KEY `formateur` (`formateur_id`),
+  CONSTRAINT `sessionformateur_ibfk_1` FOREIGN KEY (`session_id`) REFERENCES `Sessions` (`id`),
+  CONSTRAINT `sessionformateur_ibfk_2` FOREIGN KEY (`formateur_id`) REFERENCES `Formateurs` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 DROP TABLE IF EXISTS `SessionStagiaire`;
 CREATE TABLE `SessionStagiaire` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -113,28 +148,6 @@ CREATE TABLE `SessionStagiaire` (
   CONSTRAINT `sessionstagiaire_ibfk_2` FOREIGN KEY (`stagiaire_id`) REFERENCES `Stagiaires` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `Stagiaires`;
-CREATE TABLE `Stagiaires` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` text DEFAULT NULL,
-  `prenom` text DEFAULT NULL,
-  `email2` text DEFAULT NULL,
-  `telephone` text DEFAULT NULL,
-  `historique_sessions` longtext DEFAULT NULL,
-  `derniere_version_reglement_interieur_accepte` text DEFAULT NULL,
-  `derniere_version_cgv_acceptee` text DEFAULT NULL,
-  `derniere_version_cgu_acceptee` text DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
-
-DROP TABLE IF EXISTS `Utilisateurs`;
-CREATE TABLE `Utilisateurs` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `email` text DEFAULT NULL,
-  `password` text DEFAULT NULL,
-  `role` text DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 ALTER TABLE `Stagiaires`
 ADD COLUMN `user_id` INT,
@@ -151,7 +164,6 @@ REFERENCES `utilisateurs`(`id`) ON DELETE CASCADE;
 INSERT INTO `Centres` (`id`, `name`, `lieu`, `georeference`, `url_lieu1`, `url_lieu2`, `url_lieu3`) VALUES
 (1, 'IdéesCulture Salle de réunion', 'Laigné en belin', '', '', '', '');
 
-/* Le mot de passe crypté pour tous les users est admin */
 INSERT INTO `Utilisateurs` (`id`, `email`, `password`, `role`) VALUES
 (1, 'admin@test.fr', '$2y$10$OJYf315tkENrUHD1/wUq4ON0G.dpKCbUJQ8aBHmBX1dXOaiip7tG6', 'admin'),
 (2, 'stagiaire@test.fr', '$2y$10$OJYf315tkENrUHD1/wUq4ON0G.dpKCbUJQ8aBHmBX1dXOaiip7tG6', 'stagiaire'),
@@ -185,10 +197,12 @@ INSERT INTO `SessionStagiaire` (`id`, `session_id`, `stagiaire_id`, `present_dem
 (12, 5, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 INSERT INTO `Stagiaires` (`id`, `nom`, `prenom`, `email2`, `telephone`, `historique_sessions`, `derniere_version_reglement_interieur_accepte`, `derniere_version_cgv_acceptee`, `derniere_version_cgu_acceptee`, `user_id`) VALUES
-(1, 'Deruelle', 'Marine', '', '', '', '', '', '', '2'),
-(2, 'Simon', 'Nicolas 2', '', '', '', '', '', '', '4'),
-(3, 'Soufflo', 'Stagiaire 3', '', '', '', '', '', '', '4');
+(1, 'Deruelle', 'Marine', 'email@secours.fr', '0620346464', '', '', '', '', '2'),
+(2, 'Simon', 'Nicolas 2', 'email@secours.fr', '0742723278', '', '', '', '', '4'),
+(3, 'Sairien', 'Jean', 'email@secours.fr', '0610813837', '', '', '', '', '4');
 
+INSERT INTO `SessionFormateur` (`session_id`, `formateur_id`) VALUES (1, 1);
+INSERT INTO `SessionFormateur` (`session_id`, `formateur_id`) VALUES (3, 1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
