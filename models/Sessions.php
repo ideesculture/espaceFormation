@@ -48,6 +48,10 @@ class Sessions extends \yii\db\ActiveRecord
             [['contact_structure_ou_entreprise', 'contact_structure_ou_entreprise_email', 'contact_financeur', 'contact_financeur_email', 'adresse_structure_ou_entreprise', 'siret_structure_ou_entreprise', 'plan_de_formation', 'questionnaire_satisfaction_formateur'], 'string'],
             [['formationrel'], 'exist', 'skipOnError' => true, 'targetClass' => Formations::class, 'targetAttribute' => ['formation_id' => 'id']],
             [['centrerel'], 'exist', 'skipOnError' => true, 'targetClass' => Centres::class, 'targetAttribute' => ['centre_id' => 'id']],
+            [['debut', 'fin'], 'required', 'message' => 'Le champ {attribute} ne peut pas être vide'],
+            [['debut', 'fin'], 'date', 'format' => 'dd-MM-yyyy'],
+            ['fin', 'compare', 'compareAttribute' => 'debut', 'operator' => '>', 'message' => 'La date de fin doit être ultérieure à la date de début'],
+            //  ['debut', 'compare', 'compareAttribute' => 'fin', 'operator' => '<', 'message' => 'La date de début doit être antèrieure à la date de fin'],
         ];
     }
 
@@ -114,6 +118,29 @@ class Sessions extends \yii\db\ActiveRecord
         $sessionEndDate = new DateTime($this->fin);
 
         return $today->format('Y-m-d') == $sessionEndDate->format('Y-m-d');
+    }
+
+    /**
+     * Méthode pour formater les dates avant insertion en Base
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->debut = Yii::$app->formatter->asDate($this->debut, 'php:Y-m-d');
+            $this->fin = Yii::$app->formatter->asDate($this->fin, 'php:Y-m-d');
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Méthode pour formater les dates aprés récupération en base
+     */
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->debut = Yii::$app->formatter->asDate($this->debut, 'php:d-m-Y');
+        $this->fin = Yii::$app->formatter->asDate($this->fin, 'php:d-m-Y');
     }
 
 }

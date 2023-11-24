@@ -84,6 +84,8 @@ class SessionsController extends Controller
     public function actionCreate()
     {
         $model = new Sessions();
+        // $model->debut = Yii::$app->formatter->asDate(DateTime::createFromFormat('d-m-Y', $model->debut), 'yyyy-MM-dd');
+        // $model->fin = Yii::$app->formatter->asDate(DateTime::createFromFormat('d-m-Y', $model->fin), 'yyyy-MM-dd');
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -110,7 +112,7 @@ class SessionsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+      
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }

@@ -40,6 +40,7 @@ class Formateurs extends \yii\db\ActiveRecord
         return [
             [['nom', 'prenom', 'chemin_cv', 'liste_diplome', 'numero_decl_activite', 'qualiopi', 'siret', 'adresse', 'attestation_assurance_url'], 'string'],
             [['user_id'], 'integer'],
+            [['nom', 'prenom'], 'required', 'message' => 'Le champ {attribute} ne peut pas être vide'],
            ];
     }
 
