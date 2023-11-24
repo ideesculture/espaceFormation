@@ -34,7 +34,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['email', 'password', 'role'], 'required'],
+            [['email', 'password', 'role'],'required', 'message' => 'Le champ {attribute} ne peut pas être vide'],
             ['role', 'string'],
             ['email', 'email'],
             ['email', 'unique'],

@@ -7,8 +7,8 @@ use yii\widgets\ActiveForm;
 /** @var app\models\User $model */
 
 $this->title = 'Create User';
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="user-form">

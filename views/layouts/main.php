@@ -66,7 +66,7 @@ if (Yii::$app->user->isGuest) {
         $items[] = ['label' => 'Sessions', 'url' => ['/sessions/index']];
         $items[] = ['label' => 'Stagiaires', 'url' => ['/stagiaires/index']];
         $items[] = ['label' => 'A propos', 'url' => ['/site/about']];
-        $items[] = ['label' => 'Users', 'url' => ['/user/index']];
+       // $items[] = ['label' => 'Users', 'url' => ['/user/index']];
         $items[] = ['label' => 'Contact', 'url' => ['/site/contact']];
     }
 
