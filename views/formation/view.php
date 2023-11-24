@@ -13,7 +13,9 @@ $this->title = $model->name;
 ?>
 <div class="formations-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>
+        <?= Html::encode($this->title) ?>
+    </h1>
 
     <p>
         <?= Html::a(Yii::t('app', 'Modifier'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -47,4 +49,17 @@ $this->title = $model->name;
         ],
     ]) ?>
 
+    <div class="pdf-container">
+        <?php if (!empty($model->url_planformation)): ?>
+            <div class="pdf-section">
+                <h3>Plan de formation</h3>
+                <iframe class="pdf-iframe" src="<?= Yii::$app->request->baseUrl . '/' . $model->url_planformation ?>"
+                    width="100%" height="400px"></iframe>
+                <?= Html::a('Télécharger l\'attestation d\'assurance', ['download', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            </div>
+        <?php else: ?>
+            <p>Aucun plan de formation disponible.</p>
+        <?php endif; ?>
+
+    </div>
 </div>

@@ -76,59 +76,62 @@ class FormationController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Formations model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-    public function actionCreate()
-    {
-        $model = new Formations();
-        $uploadFormModel = new UploadForm();
+/**
+ * Creates a new Formations model.
+ * If creation is successful, the browser will be redirected to the 'view' page.
+ * @return string|\yii\web\Response
+ */
+public function actionCreate()
+{
+    $model = new Formations();
+    $uploadFormModel = new UploadForm();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                // Crée un sous-dossier avec l'ID de la formation
-                $folderPath = 'uploads/planFormation/' . $model->id;
-                if (!is_dir($folderPath)) {
-                    mkdir($folderPath, 0777, true);
-                }
+    if ($this->request->isPost) {
+        if ($model->load($this->request->post()) && $model->save()) {
+            // Crée un sous-dossier avec l'ID de la formation
+            $folderPath = 'uploads/planFormation/' . $model->id;
+            if (!is_dir($folderPath)) {
+                mkdir($folderPath, 0777, true);
+            }
 
-                $uploadFormModel->planFormation = UploadedFile::getInstance($uploadFormModel, 'planFormation');
+            $uploadFormModel->planFormation = UploadedFile::getInstance($uploadFormModel, 'planFormation');
 
-                // Vérification de l'upload du fichier
-                if ($uploadFormModel->upload($folderPath)) {
-                    if ($uploadFormModel->planFormation !== null) {
-                        // Enregistre le fichier dans le sous-dossier
-                        $uploadFormModel->planFormation->saveAs($folderPath . '/' . $uploadFormModel->planFormation->baseName .
-                            '.' . $uploadFormModel->planFormation->extension);
+            // Vérification de l'upload du fichier
+            if ($uploadFormModel->planFormation !== null && $uploadFormModel->upload($folderPath)) {
+                // Enregistre le fichier dans le sous-dossier
+                $uploadFormModel->planFormation->saveAs($folderPath . '/' . $uploadFormModel->planFormation->baseName .
+                    '.' . $uploadFormModel->planFormation->extension);
 
-                        // Enregistre le chemin complet dans le modèle
-                        $model->url_planformation = $folderPath . '/' . $uploadFormModel->planFormation->baseName .
-                            '.' . $uploadFormModel->planFormation->extension;
+                // Enregistre le chemin complet dans le modèle
+                $model->url_planformation = $folderPath . '/' . $uploadFormModel->planFormation->baseName .
+                    '.' . $uploadFormModel->planFormation->extension;
 
-                        // Sauvegarde à nouveau le modèle avec le chemin complet
-                        if ($model->save()) {
-                            return $this->redirect(['view', 'id' => $model->id]);
-                        } else {
-                            Yii::$app->session->setFlash('error', 'Erreur lors de la sauvegarde du modèle Formations après ajout de l\'url_planformation.');
-                        }
-                    } else {
-                        Yii::$app->session->setFlash('error', 'Fichier planFormation non trouvé.');
-                    }
+                // Sauvegarde à nouveau le modèle avec le chemin complet
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Formations créée avec succès!');
+                    return $this->redirect(['view', 'id' => $model->id]);
                 } else {
-                    Yii::$app->session->setFlash('error', 'Erreur lors de l\'upload du fichier.');
+                    Yii::$app->session->setFlash('error', 'Erreur lors de la sauvegarde du modèle Formations après ajout de l\'url_planformation.');
+                }
+            } else {
+                // pas de fichier, on sauvegarde
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Formations créée avec succès!');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    Yii::$app->session->setFlash('error', 'Erreur lors de la sauvegarde du modèle Formations.');
                 }
             }
-        } else {
-            $model->loadDefaultValues();
         }
-
-        return $this->render('create', [
-            'model' => $model,
-            'uploadFormModel' => $uploadFormModel,
-        ]);
+    } else {
+        $model->loadDefaultValues();
     }
+
+    return $this->render('create', [
+        'model' => $model,
+        'uploadFormModel' => $uploadFormModel,
+    ]);
+}
 
 
     /**
@@ -234,6 +237,19 @@ class FormationController extends Controller
         }
     }
 
+    public function actionDownload($id)
+    {
+        $model = $this->findModel($id);
+        $filePath = Yii::getAlias('@webroot') . '/' . $model->url_planformation;
+    
+        if (file_exists($filePath)) {
+            return Yii::$app->response->sendFile($filePath, $model->name . '_plan_formation.pdf', ['inline' => false]); 
+            // true pour affcher le document en ligne plutot que le télécharger
+        } else {
+            throw new NotFoundHttpException('Le fichier demandé n\'existe pas.');
+        }
+    }
+
 
     /**
      * Finds the Formations model based on its primary key value.
@@ -247,7 +263,7 @@ class FormationController extends Controller
         if (($model = Formations::findOne(['id' => $id])) !== null) {
             return $model;
         }
-
+ 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }

@@ -79,55 +79,70 @@ class FormateursController extends Controller
         ]);
     }
 
-    public function actionCreate()
-    {
-        $model = new Formateurs();
-        $userModel = new User();
-        $uploadFormModel = new UploadForm();
+ /**
+ * Creates a new Formateurs model.
+ * If creation is successful, the browser will be redirected to the 'view' page.
+ * @return string|\yii\web\Response
+ */
+public function actionCreate()
+{
+    $model = new Formateurs();
+    $userModel = new User();
+    $uploadFormModel = new UploadForm();
 
-        if (Yii::$app->request->isPost) {
-            $model->load(Yii::$app->request->post());
-            $userModel->load(Yii::$app->request->post());
+    if ($this->request->isPost) {
+        $model->load($this->request->post());
+        $userModel->load($this->request->post());
+        $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
+        $userModel->role = 'formateur';
 
-            // Valide et sauvegarde l'utilisateur
-            $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
-            $userModel->role = 'formateur';
+        if ($userModel->validate() && $userModel->save()) {
+            // Associe le modèle User au modèle Formateurs
+            $model->user_id = $userModel->id;
 
-            if ($userModel->validate() && $userModel->save()) {
-                // Associe le modèle User au modèle Formateurs
-                $model->user_id = $userModel->id;
+            // Valide et sauvegarde le formateur (pour récupérer l'ID)
+            if ($model->validate() && $model->save()) {
+                // Crée un sous-dossier pour chaque formateur avec son ID
+                $uploadDir = 'uploads/formateurs/' . $model->id;
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
 
                 // Upoad PDF et récupération du lien
                 $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
                 $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
 
-                if ($uploadFormModel->upload()) {
+                if ($uploadFormModel->upload($uploadDir)) {
                     if ($uploadFormModel->pdfFile !== null) {
-                        $model->attestation_assurance_url = 'uploads/formateurs/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
+                        $model->attestation_assurance_url = $uploadDir . '/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
                     }
                     if ($uploadFormModel->uploadedCV !== null) {
-                        $model->chemin_cv = 'uploads/formateurs/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
+                        $model->chemin_cv = $uploadDir . '/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
                     }
                 }
 
-                // Valide et sauvegarde le formateur
-                if ($model->validate() && $model->save()) {
+                // Sauvegarde à nouveau le modèle avec les chemins complets
+                if ($model->save()) {
                     Yii::$app->session->setFlash('success', 'Formateur créé avec succès!');
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
-                    Yii::$app->session->setFlash('error', 'Erreur lors de la validation du formateur.');
+                    Yii::$app->session->setFlash('error', 'Erreur lors de la sauvegarde du modèle Formateurs après ajout des chemins complets.');
                 }
             } else {
-                Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement de l\'utilisateur.');
+                Yii::$app->session->setFlash('error', 'Erreur lors de la validation du formateur.');
             }
+        } else {
+            Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement de l\'utilisateur.');
         }
-
-        return $this->render('create', [
-            'model' => $model,
-            'userModel' => $userModel,
-            'uploadFormModel' => $uploadFormModel,
-        ]);
     }
+
+    return $this->render('create', [
+        'model' => $model,
+        'userModel' => $userModel,
+        'uploadFormModel' => $uploadFormModel,
+    ]);
+}
+
 
     /**
      * Updates an existing Formateurs model.
@@ -241,61 +256,61 @@ class FormateursController extends Controller
     }
 
     public function actionDownload($id)
-{
-    $model = $this->findModel($id);
-    $filePath = Yii::getAlias('@webroot').'/'.$model->attestation_assurance_url;
+    {
+        $model = $this->findModel($id);
+        $filePath = Yii::getAlias('@webroot') . '/' . $model->attestation_assurance_url;
 
-    if (file_exists($filePath)) {
-        Yii::$app->response->sendFile($filePath)->send();
-    } else {
-        Yii::$app->session->setFlash('error', 'Le fichier PDF n\'existe pas.');
-        return $this->redirect(['view', 'id' => $id]);
-    }
-}
-
-public function actionDownloadCv($id)
-{
-    $model = $this->findModel($id);
-    $filePath = Yii::getAlias('@webroot') . '/' . $model->chemin_cv;
-
-    if (file_exists($filePath)) {
-        Yii::$app->response->sendFile($filePath)->send();
-    } else {
-        throw new NotFoundHttpException('Le fichier CV n\'existe pas.');
-    }
-}
-
-public function actionMesFormations()
-{
-    if (Yii::$app->user->isGuest) {
-        return $this->goHome();
-    }
-
-    $user = User::findOne(Yii::$app->user->id);
-    $formateur = $user->formateur;
-    $sessions = [];
-    $formations = [];
-
-    if ($user->role === 'formateur' && $formateur !== null) {
-        $sessionsFormateur = $formateur->sessionFormateurs;
-
-        if (!empty($sessionsFormateur)) {
-            foreach ($sessionsFormateur as $sessionFormateur) {
-                if ($sessionFormateur->session !== null) {
-                    $formation = $sessionFormateur->session->formationrel;
-
-                    // Stocke les sessions et formations dans des tableaux
-                    $sessions[] = $sessionFormateur->session;
-                    $formations[] = $formation;
-                }
-            }
+        if (file_exists($filePath)) {
+            Yii::$app->response->sendFile($filePath)->send();
+        } else {
+            Yii::$app->session->setFlash('error', 'Le fichier PDF n\'existe pas.');
+            return $this->redirect(['view', 'id' => $id]);
         }
     }
 
-    return $this->render('mes-formations', [
-        'sessions' => $sessions,
-        'formations' => $formations,
-    ]);
-}
+    public function actionDownloadCv($id)
+    {
+        $model = $this->findModel($id);
+        $filePath = Yii::getAlias('@webroot') . '/' . $model->chemin_cv;
+
+        if (file_exists($filePath)) {
+            Yii::$app->response->sendFile($filePath)->send();
+        } else {
+            throw new NotFoundHttpException('Le fichier CV n\'existe pas.');
+        }
+    }
+
+    public function actionMesFormations()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $user = User::findOne(Yii::$app->user->id);
+        $formateur = $user->formateur;
+        $sessions = [];
+        $formations = [];
+
+        if ($user->role === 'formateur' && $formateur !== null) {
+            $sessionsFormateur = $formateur->sessionFormateurs;
+
+            if (!empty($sessionsFormateur)) {
+                foreach ($sessionsFormateur as $sessionFormateur) {
+                    if ($sessionFormateur->session !== null) {
+                        $formation = $sessionFormateur->session->formationrel;
+
+                        // Stocke les sessions et formations dans des tableaux
+                        $sessions[] = $sessionFormateur->session;
+                        $formations[] = $formation;
+                    }
+                }
+            }
+        }
+
+        return $this->render('mes-formations', [
+            'sessions' => $sessions,
+            'formations' => $formations,
+        ]);
+    }
 
 }
