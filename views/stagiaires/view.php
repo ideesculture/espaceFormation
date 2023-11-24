@@ -18,11 +18,11 @@ $this->title = $model->nom;
     <p>
     <?php $user = Yii::$app->user->identity;
         if ($user && $user->role === 'admin'): ?>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Modifier', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Supprimer', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Etes-vous sûre de vouloir supprimer ?',
+                'confirm' => 'Etes-vous sûr(e) de vouloir supprimer cet élément?',
                 'method' => 'post',
             ],
         ]) ?>  <?php endif; ?>

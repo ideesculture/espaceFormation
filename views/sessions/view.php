@@ -25,7 +25,7 @@ $this->title = $model->formationrel->name . " - " . date("d/m/Y", strtotime($mod
         <?= Html::a('Supprimer', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Êtes-vous sûre de vouloir supprimer cet élément ?',
+                'confirm' => 'Etes-vous sûr(e) de vouloir supprimer cet élément?',
                 'method' => 'post',
             ],
         ]) ?> <?php endif; ?>

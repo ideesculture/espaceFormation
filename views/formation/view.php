@@ -22,7 +22,7 @@ $this->title = $model->name;
         <?= Html::a(Yii::t('app', 'Supprimer'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'Êtes-vous sûre de vouloir supprimer cet élément ?'),
+                'confirm' => Yii::t('app', 'Etes-vous sûr(e) de vouloir supprimer cet élément?'),
                 'method' => 'post',
             ],
         ]) ?>
