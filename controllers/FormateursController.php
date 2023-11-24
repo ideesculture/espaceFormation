@@ -83,6 +83,7 @@ class FormateursController extends Controller
  * Creates a new Formateurs model.
  * If creation is successful, the browser will be redirected to the 'view' page.
  * @return string|\yii\web\Response
+ * @throws \Exception en cas d'échec de la transaction
  */
 public function actionCreate()
 {
@@ -90,50 +91,60 @@ public function actionCreate()
     $userModel = new User();
     $uploadFormModel = new UploadForm();
 
-    if ($this->request->isPost) {
-        $model->load($this->request->post());
-        $userModel->load($this->request->post());
-        $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
-        $userModel->role = 'formateur';
+    //Mise en place d'une transaction pour ne pas créer le User si erreur sur la création du formateur.
+    $transaction = Yii::$app->db->beginTransaction();
 
-        if ($userModel->validate() && $userModel->save()) {
+    try {
+        if ($this->request->isPost) {
+            $model->load($this->request->post());
+            $userModel->load($this->request->post());
+            $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
+            $userModel->role = 'formateur';
+
+            // Valide et sauvegarde l'utilisateur
+            if (!$userModel->validate() || !$userModel->save()) {
+                throw new \Exception('Erreur lors de la validation ou de la sauvegarde de l\'utilisateur.');
+            }
+
             // Associe le modèle User au modèle Formateurs
             $model->user_id = $userModel->id;
 
-            // Valide et sauvegarde le formateur (pour récupérer l'ID)
-            if ($model->validate() && $model->save()) {
-                // Crée un sous-dossier pour chaque formateur avec son ID
-                $uploadDir = 'uploads/formateurs/' . $model->id;
-                if (!file_exists($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
-
-                // Upoad PDF et récupération du lien
-                $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
-                $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
-
-                if ($uploadFormModel->upload($uploadDir)) {
-                    if ($uploadFormModel->pdfFile !== null) {
-                        $model->attestation_assurance_url = $uploadDir . '/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
-                    }
-                    if ($uploadFormModel->uploadedCV !== null) {
-                        $model->chemin_cv = $uploadDir . '/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
-                    }
-                }
-
-                // Sauvegarde à nouveau le modèle avec les chemins complets
-                if ($model->save()) {
-                    Yii::$app->session->setFlash('success', 'Formateur créé avec succès!');
-                    return $this->redirect(['view', 'id' => $model->id]);
-                } else {
-                    Yii::$app->session->setFlash('error', 'Erreur lors de la sauvegarde du modèle Formateurs après ajout des chemins complets.');
-                }
-            } else {
-                Yii::$app->session->setFlash('error', 'Erreur lors de la validation du formateur.');
+            // Valide et sauvegarde le formateur
+            if (!$model->validate() || !$model->save()) {
+                throw new \Exception('Erreur lors de la validation ou de la sauvegarde du formateur.');
             }
-        } else {
-            Yii::$app->session->setFlash('error', 'Erreur lors de l\'enregistrement de l\'utilisateur.');
+
+            // Crée un sous-dossier pour chaque formateur avec son ID
+            $uploadDir = 'uploads/formateurs/' . $model->id;
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            // Upoad PDF et récupération du lien
+            $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
+            $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
+
+            if ($uploadFormModel->upload($uploadDir)) {
+                if ($uploadFormModel->pdfFile !== null) {
+                    $model->attestation_assurance_url = $uploadDir . '/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
+                }
+                if ($uploadFormModel->uploadedCV !== null) {
+                    $model->chemin_cv = $uploadDir . '/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
+                }
+            }
+
+            // Sauvegarde le modèle Formateurs avec les chemins des pdf
+            if (!$model->save()) {
+                throw new \Exception('Erreur lors de la sauvegarde du modèle Formateurs après ajout des chemins complets.');
+            }
+
+            $transaction->commit();
+            Yii::$app->session->setFlash('success', 'Formateur créé avec succès!');
+            return $this->redirect(['view', 'id' => $model->id]);
         }
+    } catch (\Exception $e) {
+        $transaction->rollBack();
+        Yii::$app->session->setFlash('error', $e->getMessage());
     }
 
     return $this->render('create', [
@@ -144,99 +155,134 @@ public function actionCreate()
 }
 
 
-    /**
-     * Updates an existing Formateurs model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-        $userModel = $model->user;
-        $uploadFormModel = new UploadForm();
 
-        if ($this->request->isPost) {
-            $model->load($this->request->post());
-            $userModel->load($this->request->post());
-            $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
-            $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
+ /**
+ * Updates an existing Formateurs model.
+ * If update is successful, the browser will be redirected to the 'view' page.
+ * @param int $id ID
+ * @return string|\yii\web\Response
+ * @throws NotFoundHttpException if the model cannot be found
+ */
+public function actionUpdate($id)
+{
+    $model = $this->findModel($id);
+    $userModel = $model->user;
+    $uploadFormModel = new UploadForm();
 
-            // Vérifie si les modif sont user
-            $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
-            // Si oui alors on save
-            if ($userAttributesChanged) {
-                $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
-                if (!$userModel->save()) {
-                    Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
-                    return $this->render('update', ['model' => $model]);
-                }
-            }
+    // Sauvegarde des anciens chemins pour les PDF
+    $oldAttestationUrl = $model->attestation_assurance_url;
+    $oldCVUrl = $model->chemin_cv;
 
-            // Save modèle Formateurs
-            if ($model->save()) {
+    if ($this->request->isPost) {
+        $model->load($this->request->post());
+        $userModel->load($this->request->post());
+        $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
+        $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
 
-                if ($uploadFormModel->pdfFile) {
-                    $uploadFormModel->upload();
-                    $model->attestation_assurance_url = 'uploads/formateurs/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
-                }
-
-                // Si un fichier CV est chargé, effectue le traitement
-                if ($uploadFormModel->uploadedCV) {
-                    $uploadFormModel->upload();
-                    $model->chemin_cv = 'uploads/formateurs/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
-                }
-
-                $model->save();
-
-                Yii::$app->session->setFlash('success', 'Formateur mis à jour avec succès.');
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour du formateur.');
+        // Vérifie si les modifs sont sur les champs user
+        $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
+        // Si oui alors on save
+        if ($userAttributesChanged) {
+            $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
+            if (!$userModel->save()) {
+                Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
+                return $this->render('update', ['model' => $model]);
             }
         }
 
-        return $this->render('update', [
-            'model' => $model,
-            'userModel' => $userModel,
-            'uploadFormModel' => $uploadFormModel,
-        ]);
-    }
+        // Save modèle Formateurs
+        if ($model->save()) {
 
+            // Traitement des fichiers PDF et CV 
+            //TODO SOUCIS si on essaye de modifier les deux PDF en même temps.
+            $uploadDir = 'uploads/formateurs/' . $model->id;
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
 
-    /**
-     * Deletes an existing Formateurs model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $model = $this->findModel($id);
-        $user = $model->user;
+            // Si un nouveau fichier PDF est chargé, effectue le traitement
+            if ($uploadFormModel->pdfFile) {
+                $uploadFormModel->upload($uploadDir);
+                $model->attestation_assurance_url = $uploadDir . '/' . $uploadFormModel->pdfFile->baseName . '.' . $uploadFormModel->pdfFile->extension;
+                // Supprime l'ancien fichier PDF
+                if (!empty($oldAttestationUrl) && file_exists($oldAttestationUrl)) {
+                    unlink($oldAttestationUrl);
+                }
+            }
+            if ($uploadFormModel->uploadedCV) {
+                $uploadFormModel->upload($uploadDir);
+                $model->chemin_cv = $uploadDir . '/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
+                if (!empty($oldCVUrl) && file_exists($oldCVUrl)) {
+                    unlink($oldCVUrl);
+                }
+            }
 
-        // Supprimer les fichiers PDF et CV associés
-        $pdfFilePath = 'uploads/formateurs/' . $model->attestation_assurance_url;
-        $cvFilePath = 'uploads/formateurs/' . $model->chemin_cv;
+            $model->save();
 
-        // if (file_exists($pdfFilePath)) {
-        //     unlink($pdfFilePath);
-        // }
-
-        // if (file_exists($cvFilePath)) {
-        //     unlink($cvFilePath);
-        // }
-
-
-        if ($user) {
-            $user->delete();
+            Yii::$app->session->setFlash('success', 'Formateur mis à jour avec succès.');
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour du formateur.');
         }
-
-        $model->delete();
-        return $this->redirect(['index']);
     }
+
+    return $this->render('update', [
+        'model' => $model,
+        'userModel' => $userModel,
+        'uploadFormModel' => $uploadFormModel,
+    ]);
+}
+
+/**
+ * Deletes an existing Formateurs model.
+ * If deletion is successful, the browser will be redirected to the 'index' page.
+ * @param int $id ID
+ * @return \yii\web\Response
+ * @throws NotFoundHttpException if the model cannot be found
+ */
+public function actionDelete($id)
+{
+    $model = $this->findModel($id);
+    $attestationUrl = $model->attestation_assurance_url;
+    $cvUrl = $model->chemin_cv;
+
+    // Suppression du modèle Formateurs et user associé
+    $model->delete();
+    $model->user->delete();
+
+    // Suppression des dossiers et fichiers
+    if (!empty($attestationUrl) && file_exists($attestationUrl)) {
+        unlink($attestationUrl);
+        $this->deleteDirectory(dirname($attestationUrl));
+    }
+    if (!empty($cvUrl) && file_exists($cvUrl)) {
+        unlink($cvUrl);
+        $this->deleteDirectory(dirname($cvUrl));
+    }
+
+    Yii::$app->session->setFlash('success', 'Formateur supprimé avec succès.');
+    return $this->redirect(['index']);
+}
+
+/**
+ * Supprime un dossier et son contenu récursivement.
+ * @param string $dir Le chemin du dossier à supprimer.
+ */
+private function deleteDirectory($dir) {
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+        foreach ($objects as $object) {
+            if ($object != "." && $object != "..") {
+                if (is_dir($dir . "/" . $object)) {
+                    $this->deleteDirectory($dir . "/" . $object);
+                } else {
+                    unlink($dir . "/" . $object);
+                }
+            }
+        }
+        rmdir($dir);
+    }
+}
 
 
     /**
