@@ -14,8 +14,8 @@ use yii\widgets\ActiveForm;
 
 
     <!-- Champs pour le modèle Formateurs -->
-    <?= $form->field($model, 'nom')->textInput() ?>
-    <?= $form->field($model, 'prenom')->textInput() ?>
+    <?= $form->field($model, 'nom', ['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
+    <?= $form->field($model, 'prenom',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
 
     <!-- Champs pour le modèle User -->
     <?= $form->field($userModel, 'email')->textInput() ?>

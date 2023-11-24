@@ -22,12 +22,14 @@ use yii\helpers\ArrayHelper;
     <?=$form->field($model, 'centre_id')->dropDownList(
         ArrayHelper::map(Centres::find()->all(),'id','name')); ?>
 
-    <?= $form->field($model, 'debut')->textInput()->widget(\yii\jui\DatePicker::className(), [
+    <?= $form->field($model, 'debut',['labelOptions' => ['class' => 'required-label control-label']])
+    ->textInput()->widget(\yii\jui\DatePicker::className(), [
     'options' => ['class' => 'form-control'],
     'language' => 'fr',
     'dateFormat' => "dd-MM-yyyy"]) ?>
 
-    <?= $form->field($model, 'fin')->textInput()->widget(\yii\jui\DatePicker::className(), [
+    <?= $form->field($model, 'fin',['labelOptions' => ['class' => 'required-label control-label']])
+    ->textInput()->widget(\yii\jui\DatePicker::className(), [
     'options' => ['class' => 'form-control'],
     'language' => 'fr',
     'dateFormat' => "dd-MM-yyyy"]) ?>

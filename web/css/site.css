@@ -179,3 +179,7 @@ a.desc:after {
 .btn-success {
     background-color: #156dcf;
 }
+
+.required-label::after{
+    content: ' *';
+}

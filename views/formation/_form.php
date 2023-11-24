@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'name')->textInput() ?>
+    <?= $form->field($model, 'name',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
 
     <?= $form->field($model, 'prerequis')->textInput() ?>
 

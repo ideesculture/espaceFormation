@@ -74,8 +74,8 @@ class Formateurs extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'nom' => Yii::t('app', 'Nom *'),
-            'prenom' => Yii::t('app', 'Prenom *'),
+            'nom' => Yii::t('app', 'Nom'),
+            'prenom' => Yii::t('app', 'Prenom'),
             'chemin_cv' => Yii::t('app', 'Chemin Cv'),
             'liste_diplome' => Yii::t('app', 'Liste Diplome'),
             'numero_decl_activite' => Yii::t('app', 'Numero Decl Activite'),

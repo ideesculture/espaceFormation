@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput() ?>
+    <?= $form->field($model, 'name',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
 
     <?= $form->field($model, 'lieu')->textInput() ?>
 

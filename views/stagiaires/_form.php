@@ -13,8 +13,8 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
      <!-- Champs stagiaires -->
-    <?= $form->field($model, 'nom')->textInput() ?>
-    <?= $form->field($model, 'prenom')->textInput() ?>
+    <?= $form->field($model, 'nom',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
+    <?= $form->field($model, 'prenom',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
 
     <!-- Champs pour le modèle User -->
     <?= $form->field($userModel, 'email')->textInput() ?>
