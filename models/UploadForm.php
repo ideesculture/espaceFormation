@@ -12,11 +12,12 @@ class UploadForm extends Model
      */
     public $pdfFile;
     public $uploadedCV;
+    public $planFormation;
 
     public function rules()
     {
         return [
-            [['pdfFile', 'uploadedCV'], 'file', 'skipOnEmpty' => true, 'extensions' => ['pdf', 'png', 'jpeg', 'jpg', 'bmp', 'tiff']],
+            [['pdfFile', 'uploadedCV', 'planFormation'], 'file', 'skipOnEmpty' => true, 'extensions' => ['pdf', 'png', 'jpeg', 'jpg', 'bmp', 'tiff']],
         ];
     }
     
@@ -29,6 +30,10 @@ class UploadForm extends Model
     
                 if ($this->uploadedCV !== null) {
                     $this->uploadedCV->saveAs('uploads/formateurs/' . $this->uploadedCV->baseName . '.' . $this->uploadedCV->extension);
+                }
+
+                if ($this->planFormation !== null) {
+                    $this->planFormation->saveAs('uploads/planFormation/' . $this->planFormation->baseName . '.' . $this->planFormation->extension);
                 }
                 return true;
             } else {

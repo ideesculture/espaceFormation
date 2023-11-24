@@ -10,40 +10,38 @@ use yii\widgets\ActiveForm;
 
 <div class="formations-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'name')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'name')->textInput() ?>
 
-    <?= $form->field($model, 'prerequis')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'prerequis')->textInput() ?>
 
-    <?= $form->field($model, 'objectif1')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'objectif1')->textInput() ?>
 
-    <?= $form->field($model, 'objectif2')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'objectif2')->textInput() ?>
 
-    <?= $form->field($model, 'objectif3')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'objectif3')->textInput() ?>
 
-    <?= $form->field($model, 'objectif4')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'objectif4')->textInput() ?>
 
-    <?= $form->field($model, 'objectif5')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'objectif6')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'objectif7')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'objectif8')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'objectif9')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'objectif10')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'objectif5')->textInput() ?>
 
     <?= $form->field($model, 'nbmax')->textInput() ?>
 
-    <?= $form->field($model, 'url_planformation')->textarea(['rows' => 6]) ?>
-
+    <?= $form->field($model, 'url_planformation')->textInput() ?>
+    <?= $form->field($uploadFormModel, 'planFormation')->fileInput() ?>
+    
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Sauvegarder'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+
+     <!-- Afficher les erreurs d'upload -->
+     <?php if ($uploadFormModel->hasErrors()): ?>
+        <div class="alert alert-danger">
+            <?= $form->errorSummary($uploadFormModel); ?>
+        </div>
+    <?php endif; ?>
 
 </div>

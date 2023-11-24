@@ -41,6 +41,7 @@ class Formations extends \yii\db\ActiveRecord
         return [
             [['name', 'prerequis', 'objectif1', 'objectif2', 'objectif3', 'objectif4', 'objectif5', 'objectif6', 'objectif7', 'objectif8', 'objectif9', 'objectif10', 'url_planformation'], 'string'],
             [['nbmax'], 'integer'],
+            [['name'], 'required', 'message' => 'Le champ {attribute} ne peut pas être vide'],
         ];
     }
 
@@ -51,7 +52,7 @@ class Formations extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
+            'name' => Yii::t('app', 'Nom'),
             'prerequis' => Yii::t('app', 'Prerequis'),
             'objectif1' => Yii::t('app', 'Objectif1'),
             'objectif2' => Yii::t('app', 'Objectif2'),

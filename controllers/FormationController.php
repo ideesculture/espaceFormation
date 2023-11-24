@@ -4,11 +4,13 @@ namespace app\controllers;
 
 use app\models\Formations;
 use app\models\FormationSearch;
+use app\models\UploadForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use yii\web\UploadedFile;
 use Yii;
 
 /**
@@ -18,7 +20,7 @@ class FormationController extends Controller
 {
     /**
      * @inheritDoc
-     */    public function behaviors()
+     */public function behaviors()
     {
         return [
             'access' => [
@@ -82,19 +84,44 @@ class FormationController extends Controller
     public function actionCreate()
     {
         $model = new Formations();
-
+        $uploadFormModel = new UploadForm();
+    
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                // Vérification de la sauvegarde du modèle Formations
+                if ($model->save()) {
+                    $uploadFormModel->planFormation = UploadedFile::getInstance($uploadFormModel, 'planFormation');
+                    // Vérification de l'upload du fichier
+                    if ($uploadFormModel->upload()) {
+                        if ($uploadFormModel->planFormation !== null) {
+                            $model->url_planformation = 'uploads/planFormation/' . $uploadFormModel->planFormation->baseName .
+                                '.' . $uploadFormModel->planFormation->extension;
+                            // Vérification de la sauvegarde après ajout de l'url_planformation
+                            if ($model->save()) {
+                                return $this->redirect(['view', 'id' => $model->id]);
+                            } else {
+                                Yii::$app->session->setFlash('error', 'Erreur lors de la sauvegarde du modèle Formations après ajout de l\'url_planformation.');
+                            }
+                        } else {
+                            Yii::$app->session->setFlash('error', 'Fichier planFormation non trouvé.');
+                        }
+                    } else {
+                        Yii::$app->session->setFlash('error', 'Erreur lors de l\'upload du fichier.');
+                    }
+                } else {
+                    Yii::$app->session->setFlash('error', 'Erreur lors de la sauvegarde du modèle Formations.');
+                }
             }
         } else {
             $model->loadDefaultValues();
         }
-
+    
         return $this->render('create', [
             'model' => $model,
+            'uploadFormModel' => $uploadFormModel,
         ]);
     }
+    
 
     /**
      * Updates an existing Formations model.
@@ -106,6 +133,7 @@ class FormationController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $uploadFormModel = new UploadForm();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -113,6 +141,7 @@ class FormationController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'uploadFormModel' => $uploadFormModel,
         ]);
     }
 

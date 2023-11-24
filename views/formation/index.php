@@ -18,7 +18,7 @@ $this->title = Yii::t('app', 'Formations');
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Formations'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Créer une Formation'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -33,7 +33,7 @@ $this->title = Yii::t('app', 'Formations');
             'name:ntext',
             'prerequis:ntext',
             'objectif1:ntext',
-            'objectif2:ntext',
+            //'objectif2:ntext',
             //'objectif3:ntext',
             //'objectif4:ntext',
             //'objectif5:ntext',
@@ -42,8 +42,8 @@ $this->title = Yii::t('app', 'Formations');
             //'objectif8:ntext',
             //'objectif9:ntext',
             //'objectif10:ntext',
-            //'nbmax',
-            //'url_planformation:ntext',
+            'nbmax',
+            'url_planformation:ntext',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Formations $model, $key, $index, $column) {

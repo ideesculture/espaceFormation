@@ -6,15 +6,15 @@ $this->title = 'IdéesFormation';
 ?>
 <div class="site-index">
 
-    <div class="jumbotron text-center bg-transparent home-jumbotron">
-        <h1 class="display-4">Espace formation</h1>
+<div class="jumbotron text-center bg-transparent home-jumbotron">
+    <img src="<?= Yii::$app->request->baseUrl ?>/images/logo.png" alt="Logo de l'entreprise" class="logo-img">
+    <h1 class="display-4">Espace formation</h1>
+    <p class="lead">Accédez à votre espace, téléchargez vos attestations de suivi...</p>
 
-        <p class="lead">Accédez à votre espace, téléchargez vos attestations de suivi...</p>
-
-       <?php if (Yii::$app->user->isGuest): ?>
-    <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['site/login']) ?>">Je me connecte</a></p>
-        <?php endif; ?>
-    </div>
+    <?php if (Yii::$app->user->isGuest): ?>
+        <p><a class="btn btn-lg btn-success" href="<?= \yii\helpers\Url::to(['site/login']) ?>">Je me connecte</a></p>
+    <?php endif; ?>
+</div>
 
     <div class="body-content">
 

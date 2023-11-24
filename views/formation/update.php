@@ -18,6 +18,7 @@ $this->title = Yii::t('app', 'Update Formations: {name}', [
 
     <?= $this->render('_form', [
         'model' => $model,
+        'uploadFormModel' => $uploadFormModel,
     ]) ?>
 
 </div>
