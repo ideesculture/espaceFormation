@@ -85,48 +85,56 @@ class FormationController extends Controller
     {
         $model = new Formations();
         $uploadFormModel = new UploadForm();
-    
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                // Vérification de la sauvegarde du modèle Formations
-                if ($model->save()) {
-                    $uploadFormModel->planFormation = UploadedFile::getInstance($uploadFormModel, 'planFormation');
-                    // Vérification de l'upload du fichier
-                    if ($uploadFormModel->upload()) {
-                        if ($uploadFormModel->planFormation !== null) {
-                            $model->url_planformation = 'uploads/planFormation/' . $uploadFormModel->planFormation->baseName .
-                                '.' . $uploadFormModel->planFormation->extension;
-                            // Vérification de la sauvegarde après ajout de l'url_planformation
-                            if ($model->save()) {
-                                return $this->redirect(['view', 'id' => $model->id]);
-                            } else {
-                                Yii::$app->session->setFlash('error', 'Erreur lors de la sauvegarde du modèle Formations après ajout de l\'url_planformation.');
-                            }
+                // Crée un sous-dossier avec l'ID de la formation
+                $folderPath = 'uploads/planFormation/' . $model->id;
+                if (!is_dir($folderPath)) {
+                    mkdir($folderPath, 0777, true);
+                }
+
+                $uploadFormModel->planFormation = UploadedFile::getInstance($uploadFormModel, 'planFormation');
+
+                // Vérification de l'upload du fichier
+                if ($uploadFormModel->upload($folderPath)) {
+                    if ($uploadFormModel->planFormation !== null) {
+                        // Enregistre le fichier dans le sous-dossier
+                        $uploadFormModel->planFormation->saveAs($folderPath . '/' . $uploadFormModel->planFormation->baseName .
+                            '.' . $uploadFormModel->planFormation->extension);
+
+                        // Enregistre le chemin complet dans le modèle
+                        $model->url_planformation = $folderPath . '/' . $uploadFormModel->planFormation->baseName .
+                            '.' . $uploadFormModel->planFormation->extension;
+
+                        // Sauvegarde à nouveau le modèle avec le chemin complet
+                        if ($model->save()) {
+                            return $this->redirect(['view', 'id' => $model->id]);
                         } else {
-                            Yii::$app->session->setFlash('error', 'Fichier planFormation non trouvé.');
+                            Yii::$app->session->setFlash('error', 'Erreur lors de la sauvegarde du modèle Formations après ajout de l\'url_planformation.');
                         }
                     } else {
-                        Yii::$app->session->setFlash('error', 'Erreur lors de l\'upload du fichier.');
+                        Yii::$app->session->setFlash('error', 'Fichier planFormation non trouvé.');
                     }
                 } else {
-                    Yii::$app->session->setFlash('error', 'Erreur lors de la sauvegarde du modèle Formations.');
+                    Yii::$app->session->setFlash('error', 'Erreur lors de l\'upload du fichier.');
                 }
             }
         } else {
             $model->loadDefaultValues();
         }
-    
+
         return $this->render('create', [
             'model' => $model,
             'uploadFormModel' => $uploadFormModel,
         ]);
     }
-    
+
 
     /**
      * Updates an existing Formations model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
+     * @param integer $id
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -135,8 +143,42 @@ class FormationController extends Controller
         $model = $this->findModel($id);
         $uploadFormModel = new UploadForm();
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost) {
+            $model->load($this->request->post());
+            // Charge le fichier existant dans le modèle UploadForm
+            $uploadFormModel->planFormation = UploadedFile::getInstance($uploadFormModel, 'planFormation');
+
+            if ($model->save()) {
+                // Vérifier s'il y a un fichier à télécharger
+                if ($uploadFormModel->planFormation !== null) {
+                    // Supprime le fichier existant s'il y en a un
+                    if ($model->url_planformation) {
+                        unlink(Yii::getAlias('@webroot') . '/' . $model->url_planformation);
+                    }
+
+                    // Crée un sous-dossier avec l'ID de la formation
+                    $folderPath = 'uploads/planFormation/' . $model->id;
+                    if (!is_dir($folderPath)) {
+                        mkdir($folderPath, 0777, true);
+                    }
+
+                    // Télécharge le nouveau fichier dans le sous-dossier
+                    if ($uploadFormModel->upload($folderPath)) {
+                        $model->url_planformation = $folderPath . '/' . $uploadFormModel->planFormation->baseName .
+                            '.' . $uploadFormModel->planFormation->extension;
+
+                        // Sauvegarde le modèle après l'upload du fichier
+                        if ($model->save()) {
+                            return $this->redirect(['view', 'id' => $model->id]);
+                        } else {
+                            Yii::$app->session->setFlash('error', 'Erreur lors de la sauvegarde du modèle Formations après ajout de l\'url_planformation.');
+                        }
+                    } else {
+                        Yii::$app->session->setFlash('error', 'Erreur lors de l\'upload du fichier.');
+                    }
+                }
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
@@ -144,6 +186,8 @@ class FormationController extends Controller
             'uploadFormModel' => $uploadFormModel,
         ]);
     }
+
+
 
     /**
      * Deletes an existing Formations model.
@@ -154,10 +198,42 @@ class FormationController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
+        if ($model->url_planformation && file_exists(Yii::getAlias('@webroot') . '/' . $model->url_planformation)) {
+            unlink(Yii::getAlias('@webroot') . '/' . $model->url_planformation);
+        }
+
+        // Supprimer le dossier s'il existe
+        $folderPath = 'uploads/planFormation/' . $id;
+        if (is_dir($folderPath)) {
+            $this->removeDirectory($folderPath);
+        }
+        $model->delete();
         return $this->redirect(['index']);
     }
+
+    /**
+     * Récursivement supprime un dossier et son contenu.
+     * @param string $dir Chemin du dossier à supprimer
+     */
+    private function removeDirectory($dir)
+    {
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != '.' && $object != '..') {
+                    if (is_dir($dir . '/' . $object)) {
+                        $this->removeDirectory($dir . '/' . $object);
+                    } else {
+                        unlink($dir . '/' . $object);
+                    }
+                }
+            }
+            rmdir($dir);
+        }
+    }
+
 
     /**
      * Finds the Formations model based on its primary key value.

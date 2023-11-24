@@ -21,7 +21,7 @@ class UploadForm extends Model
         ];
     }
     
-    public function upload()
+    public function upload($folderPath)
     {
             if ($this->validate()) {
                 if ($this->pdfFile !== null) {
@@ -33,7 +33,7 @@ class UploadForm extends Model
                 }
 
                 if ($this->planFormation !== null) {
-                    $this->planFormation->saveAs('uploads/planFormation/' . $this->planFormation->baseName . '.' . $this->planFormation->extension);
+                    $this->planFormation->saveAs($folderPath . '/' . $this->planFormation->baseName . '.' . $this->planFormation->extension);
                 }
                 return true;
             } else {
