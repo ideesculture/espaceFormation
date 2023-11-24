@@ -6,7 +6,7 @@ use yii\bootstrap5\Html;
 /** @var yii\web\View $this */
 
 $this->title = 'Demande de réinitialisation du mot de passe';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-request-password-reset">
     <h1><?= Html::encode($this->title) ?></h1>

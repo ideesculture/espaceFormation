@@ -29,7 +29,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'derniere_version_cgu_acceptee')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Sauvegarder', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

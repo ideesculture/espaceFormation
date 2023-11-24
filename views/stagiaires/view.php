@@ -42,12 +42,14 @@ $this->title = $model->nom;
                 $sessions = $model->sessionStagiaires;
                 $sessionNames = [];
                 $today = new DateTime();
-    
+                $today->setTime(0, 0, 0); 
+
                 foreach ($sessions as $sessionStagiaire) {
                     $session = $sessionStagiaire->session0;
                     // Vérifier si la session est passée
                     $sessionEndDate = new DateTime($session->fin);
-                    
+                     $sessionEndDate->setTime(0, 0, 0);
+                     
                     if ($sessionEndDate < $today) {
                         $formationName = $session->formationrel->name;
                         $formattedStartDate = Yii::$app->formatter->asDate($session->debut, 'php:d M. Y');

@@ -48,7 +48,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'stagiaire_hors_convention_auditeur_libre')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Sauvegarder', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

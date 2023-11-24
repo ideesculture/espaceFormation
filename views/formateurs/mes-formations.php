@@ -15,7 +15,7 @@ $params['breadcrumbs'][] = $title;
     <?php
 if (!empty($sessions)) {
     $today = new DateTime();
-    $formatter = new \IntlDateFormatter('fr_FR', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);       //Format des dates
+    $formatter = new \IntlDateFormatter('fr_FR', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
 
     foreach ($sessions as $index => $session) {
         $formation = $formations[$index];

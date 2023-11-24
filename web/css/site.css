@@ -46,7 +46,7 @@ main>.container {
     border: 1px solid #ddd;
 }
 .help-block {
-    color: red; /* Change the color to red or any other desired style */
+    color: red;
 }
 
 .logo{
@@ -54,9 +54,15 @@ main>.container {
 }
 
 .logo-img {
-    max-width: 200px; /* Ajustez la taille selon vos besoins */
-    margin-bottom: 20px; /* Ajoute de l'espacement en bas du logo */
+    max-width: 200px;
+    margin-bottom: 20px;
 }
+
+.site-login, .site-request-password-reset{
+    margin-top: 20px;
+}
+
+
 
 .footer {
     background-color: #f5f5f5;
