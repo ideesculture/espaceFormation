@@ -2,6 +2,23 @@ main>.container {
     padding: 70px 15px 20px;
 }   
 
+.formation {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.passe {
+    background-color: #f8d7da;
+}
+
+.avenir {
+    background-color: #d4edda;
+}
+
+.encours {
+    background-color: #cce5ff;
+}
 
 .navbar-nav > li > a {
     transition: background-color 0.3s;

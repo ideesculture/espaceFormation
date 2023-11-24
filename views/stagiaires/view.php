@@ -29,17 +29,39 @@ $this->title = $model->nom;
     </p>
 
     <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'nom:ntext',
-            'prenom:ntext',
-            'email2:ntext',
-            'telephone:ntext',
-            'historique_sessions:ntext',
-            'derniere_version_reglement_interieur_accepte:ntext',
-            'derniere_version_cgv_acceptee:ntext',
-            'derniere_version_cgu_acceptee:ntext',
+    'model' => $model,
+    'attributes' => [
+        'nom:ntext',
+        'prenom:ntext',
+        'email2:ntext',
+        'telephone:ntext',
+        [
+            'label' => 'Historique Sessions',
+            'format' => 'html',
+            'value' => function ($model) {
+                $sessions = $model->sessionStagiaires;
+                $sessionNames = [];
+                $today = new DateTime();
+    
+                foreach ($sessions as $sessionStagiaire) {
+                    $session = $sessionStagiaire->session0;
+                    // Vérifier si la session est passée
+                    $sessionEndDate = new DateTime($session->fin);
+                    
+                    if ($sessionEndDate < $today) {
+                        $formationName = $session->formationrel->name;
+                        $formattedStartDate = Yii::$app->formatter->asDate($session->debut, 'php:d M. Y');
+                        $formattedEndDate = Yii::$app->formatter->asDate($session->fin, 'php:d M. Y');
+                        $sessionNames[] = '- ' . $formationName . ' - Du ' . $formattedStartDate . ' Au ' . $formattedEndDate;
+                    }
+                }
+                return implode('<br>', $sessionNames);
+            },
         ],
-    ]) ?>
+        'derniere_version_reglement_interieur_accepte:ntext',
+        'derniere_version_cgv_acceptee:ntext',
+        'derniere_version_cgu_acceptee:ntext',
+    ],
+]) ?>
 
 </div>
