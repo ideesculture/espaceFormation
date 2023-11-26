@@ -36,5 +36,3 @@ tests/_support/_generated
 /.vagrant
 
 config/*
-config.zip
-web/uploads/Formation.pdf
