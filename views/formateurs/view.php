@@ -36,7 +36,11 @@ use yii\widgets\DetailView;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+          //  'id',
+          [
+            'attribute' => 'user.email',
+            'label' => 'Adresse Email',
+        ],
             'nom:ntext',
             'prenom:ntext',
             'chemin_cv:ntext',
@@ -46,7 +50,7 @@ use yii\widgets\DetailView;
             'siret:ntext',
             'adresse:ntext',
             'attestation_assurance_url:ntext',
-            'user_id',
+           // 'user_id',
         ],
     ]) ?>
 

@@ -18,8 +18,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'prenom',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
 
     <!-- Champs pour le modèle User -->
-    <?= $form->field($userModel, 'email')->textInput() ?>
-    <?= $form->field($userModel, 'password')->passwordInput() ?>
+    <!-- $form->field($userModel, 'email')->textInput()  -->
+    <!-- $form->field($userModel, 'password')->passwordInput()  -->
     
     <!-- Autres champs formateurs -->
     <?= $form->field($model, 'chemin_cv')->textInput() ?>

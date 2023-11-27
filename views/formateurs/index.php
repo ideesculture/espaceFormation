@@ -32,7 +32,12 @@ $this->title = 'Formateurs';
         'filterModel' => $searchModel,
         'columns' => [
          //   ['class' => 'yii\grid\SerialColumn'],
-
+         [
+            'label' => 'Adresse Email',
+            'value' => function (Formateurs $model) {
+                return $model->user->email;
+            },
+        ],
           //  'id',
             'nom:ntext',
             'prenom:ntext',

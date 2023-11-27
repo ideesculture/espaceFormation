@@ -183,3 +183,39 @@ a.desc:after {
 .required-label::after{
     content: ' *';
 }
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 14px;
+    color: #555;
+}
+
+/* .card.future {
+    border-color: #28a745;
+}
+
+.card.current {
+    border-color: #4991de;
+}
+
+.card.past {
+    border-color: transparent;
+} */
