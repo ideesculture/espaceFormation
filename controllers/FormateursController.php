@@ -335,38 +335,38 @@ class FormateursController extends Controller
         }
     }
 
-    public function actionMesFormations()
-    {
-        if (Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+    /**
+     * Liste des diplomes disponibles.
+     */
+    public function actionListDiplomes($id)
+{
+    $model = $this->findModel($id);
+    $diplomesDir = 'uploads/formateurs/' . $model->id . '/diplomes';
 
-        $user = User::findOne(Yii::$app->user->id);
-        $formateur = $user->formateur;
-        $sessions = [];
-        $formations = [];
-
-        if ($user->role === 'formateur' && $formateur !== null) {
-            $sessionsFormateur = $formateur->sessionFormateurs;
-
-            if (!empty($sessionsFormateur)) {
-                foreach ($sessionsFormateur as $sessionFormateur) {
-                    if ($sessionFormateur->session !== null) {
-                        $formation = $sessionFormateur->session->formationrel;
-
-                        // Stocke les sessions et formations dans des tableaux
-                        $sessions[] = $sessionFormateur->session;
-                        $formations[] = $formation;
-                    }
-                }
-            }
-        }
-
-        return $this->render('mes-formations', [
-            'sessions' => $sessions,
-            'formations' => $formations,
+    if (file_exists($diplomesDir) && is_dir($diplomesDir)) {
+        $diplomes = scandir($diplomesDir);
+        unset($diplomes[0], $diplomes[1]); // Supprime les entrées '.' et '..'
+        return $this->render('list-diplomes', [
+            'model' => $model,
+            'diplomes' => $diplomes,
         ]);
+    } else {
+        Yii::$app->session->setFlash('error', 'Le répertoire des diplômes n\'existe pas.');
+        return $this->redirect(['view', 'id' => $id]);
     }
+}
 
+public function actionDownloadDiplome($id, $diplome)
+{
+    $model = $this->findModel($id);
+    $diplomePath = 'uploads/formateurs/' . $model->id . '/diplomes/' . $diplome;
+
+    if (file_exists($diplomePath)) {
+        return Yii::$app->response->sendFile($diplomePath, $diplome, ['inline' => true]);
+    } else {
+        Yii::$app->session->setFlash('error', 'Le diplôme n\'existe pas.');
+        return $this->redirect(['view', 'id' => $id]);
+    }
+}
 
 }

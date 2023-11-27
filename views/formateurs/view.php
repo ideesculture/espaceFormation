@@ -53,8 +53,8 @@ $this->registerJsFile('@web/js/formateur.js', ['depends' => [\yii\web\JqueryAsse
             // 'user_id',
         ],
     ]) ?>
-    <?= Html::button('Voir mes diplômes', ['class' => 'btn btn-primary', 'id' => 'voirDiplomesBtn']) ?>
-    <div id="listeDiplomes"></div>
+
+    <?= Html::a('Lister Diplômes', ['list-diplomes', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
 
     <div class="pdf-container">
         <?php if (!empty($model->attestation_assurance_url)): ?>
