@@ -79,19 +79,13 @@ class FormateursController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Formateurs model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     * @throws \Exception en cas d'échec de la transaction
-     */
     public function actionCreate()
     {
         $model = new Formateurs();
         $userModel = new User();
         $uploadFormModel = new UploadForm();
 
-        //Mise en place d'une transaction pour ne pas créer le User si erreur sur la création du formateur.
+        // Mise en place d'une transaction pour ne pas créer le User si erreur sur la création du formateur.
         $transaction = Yii::$app->db->beginTransaction();
 
         try {
@@ -120,9 +114,16 @@ class FormateursController extends Controller
                     mkdir($uploadDir, 0777, true);
                 }
 
+                // Crée un sous-dossier pour les diplômes
+                $diplomesDir = $uploadDir . '/diplomes';
+                if (!file_exists($diplomesDir)) {
+                    mkdir($diplomesDir, 0777, true);
+                }
+
                 // Upoad PDF et récupération du lien
                 $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
                 $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
+                $uploadFormModel->listeDiplome = UploadedFile::getInstances($uploadFormModel, 'listeDiplome');
 
                 if ($uploadFormModel->upload($uploadDir)) {
                     if ($uploadFormModel->pdfFile !== null) {
@@ -131,7 +132,10 @@ class FormateursController extends Controller
                     if ($uploadFormModel->uploadedCV !== null) {
                         $model->chemin_cv = $uploadDir . '/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
                     }
+                    if ($uploadFormModel->listeDiplome !== null) {
+                    $model->liste_diplome = $uploadDir . '/diplomes';
                 }
+            }
 
                 // Sauvegarde le modèle Formateurs avec les chemins des pdf
                 if (!$model->save()) {
@@ -153,6 +157,7 @@ class FormateursController extends Controller
             'uploadFormModel' => $uploadFormModel,
         ]);
     }
+
 
 
 
@@ -179,16 +184,16 @@ class FormateursController extends Controller
             $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
             $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
 
-                // // Vérifie si les modifs sont sur les champs user
-                // $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
-                // // Si oui alors on save
-                // if ($userAttributesChanged) {
-                //     $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
-                //     if (!$userModel->save()) {
-                //         Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
-                //         return $this->render('update', ['model' => $model]);
-                //     }
-                // }
+            // // Vérifie si les modifs sont sur les champs user
+            // $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
+            // // Si oui alors on save
+            // if ($userAttributesChanged) {
+            //     $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
+            //     if (!$userModel->save()) {
+            //         Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
+            //         return $this->render('update', ['model' => $model]);
+            //     }
+            // }
 
             // Save modèle Formateurs
             if ($model->save()) {

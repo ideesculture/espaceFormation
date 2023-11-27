@@ -7,23 +7,33 @@ use Yii;
 
 class UploadForm extends Model
 {
-   /**
+    /**
      * @var UploadedFile
      */
     public $pdfFile;
     public $uploadedCV;
     public $planFormation;
+    public $listeDiplome;
+    
 
     public function rules()
     {
         return [
             [['pdfFile', 'uploadedCV', 'planFormation'], 'file', 'skipOnEmpty' => true, 'extensions' => ['pdf', 'png', 'jpeg', 'jpg', 'bmp', 'tiff']],
+            [['listeDiplome'], 'file', 'skipOnEmpty' => true, 'extensions' => ['pdf', 'png', 'jpeg', 'jpg', 'bmp', 'tiff'], 'maxFiles' => 5],
         ];
     }
     
     public function upload($folderPath)
     {
             if ($this->validate()) {
+                if ($this->listeDiplome !== null) {
+                foreach ($this->listeDiplome as $file) {
+                    $filePath = $folderPath . '/diplomes/' . $file->baseName . '.' . $file->extension;
+                    $file->saveAs($filePath);
+                    // Vous pouvez stocker le chemin du fichier dans la base de données si nécessaire
+                }
+            }
                 if ($this->pdfFile !== null) {
                     $this->pdfFile->saveAs($folderPath .'/' . $this->pdfFile->baseName . '.' . $this->pdfFile->extension);
                 }

@@ -12,12 +12,18 @@ use yii\widgets\ActiveForm;
 <div class="formateurs-form">
     <div class="card">
         <div class="card-body">
-        
+
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
             <div class="row">
                 <div class="col-md-6">
-
+<!-- Champs pour le modèle User -->
+<div class="mb-3">
+                    <?=$form->field($userModel, 'email')->textInput()->label('Email') ?>
+                    </div>
+                    <div class="mb-3">
+                    <?= $form->field($userModel, 'password')->passwordInput()->label('Mot de passe') ?>
+                    </div> 
                     <!-- Champs pour le modèle Formateurs -->
                     <div class="mb-3">
                         <?= $form->field($model, 'nom')->textInput()->label('Nom') ?>
@@ -27,6 +33,8 @@ use yii\widgets\ActiveForm;
                     </div>
                     <div class="mb-3">
                         <?= $form->field($model, 'liste_diplome')->textarea(['rows' => 4])->label('Liste des diplômes') ?>
+
+                        <?= $form->field($uploadFormModel, 'listeDiplome[]')->fileInput(['multiple' => true])->label('Diplômes (PDF)') ?>
                     </div>
                     <div class="mb-3">
                         <?= $form->field($model, 'numero_decl_activite')->textInput()->label('Numéro de déclaration d\'activité') ?>
@@ -37,15 +45,6 @@ use yii\widgets\ActiveForm;
 
                 </div>
                 <div class="col-md-6">
-
-                    <!-- Champs pour le modèle User -->
-                    <!-- <div class="mb-3">
-                    $form->field($userModel, 'email')->textInput()->label('Email') ?>
-                    </div>
-                    <div class="mb-3">
-                     $form->field($userModel, 'password')->passwordInput()->label('Mot de passe') ?>
-                    </div> -->
-
                     <div class="mb-3">
                         <?= $form->field($model, 'siret')->textInput()->label('Siret') ?>
                     </div>
