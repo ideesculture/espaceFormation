@@ -6,10 +6,10 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Formateurs $model */
 
-//$this->title = $model->nom;
-//$this->params['breadcrumbs'][] = ['label' => 'Formateurs', 'url' => ['index']];
-//$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+// Fichier Javascript
+$this->registerJsFile('@web/js/formateur.js', ['depends' => [\yii\web\JqueryAsset::class]]);
+
 ?>
 <div class="formateurs-view">
 
@@ -28,7 +28,7 @@ use yii\widgets\DetailView;
                 ],
             ]) ?>
         <?php endif; ?>
-        <?php if ($user && (($user->role == 'formateur') || ($user->role == 'admin')  )): ?>
+        <?php if ($user && (($user->role == 'formateur') || ($user->role == 'admin'))): ?>
             <?= Html::a('Modifier', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php endif; ?>
     </p>
@@ -36,11 +36,11 @@ use yii\widgets\DetailView;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-          //  'id',
-          [
-            'attribute' => 'user.email',
-            'label' => 'Adresse Email',
-        ],
+            //  'id',
+            [
+                'attribute' => 'user.email',
+                'label' => 'Adresse Email',
+            ],
             'nom:ntext',
             'prenom:ntext',
             'chemin_cv:ntext',
@@ -50,10 +50,11 @@ use yii\widgets\DetailView;
             'siret:ntext',
             'adresse:ntext',
             'attestation_assurance_url:ntext',
-           // 'user_id',
+            // 'user_id',
         ],
     ]) ?>
-
+    <?= Html::button('Voir mes diplômes', ['class' => 'btn btn-primary', 'id' => 'voirDiplomesBtn']) ?>
+    <div id="listeDiplomes"></div>
 
     <div class="pdf-container">
         <?php if (!empty($model->attestation_assurance_url)): ?>
@@ -73,7 +74,7 @@ use yii\widgets\DetailView;
                 <h3>CV</h3>
                 <iframe class="pdf-iframe" src="<?= Yii::$app->request->baseUrl . '/' . $model->chemin_cv ?>" width="100%"
                     height="400px"></iframe>
-                    <?= Html::a('Télécharger le CV', ['download-cv', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('Télécharger le CV', ['download-cv', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 
             </div>
         <?php else: ?>
