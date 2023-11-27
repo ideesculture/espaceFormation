@@ -35,6 +35,6 @@ tests/_support/_generated
 #vagrant folder
 /.vagrant
 #config
-/config
-web/uploads/formateurs/1/qualiopi-criteres-certification.png
-web/uploads/formateurs/1/Projet plateforme Qualiopi IdéesCulture.pdf
+config/*
+web/uploads/*
+
