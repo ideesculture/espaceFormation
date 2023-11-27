@@ -179,16 +179,16 @@ class FormateursController extends Controller
             $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
             $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
 
-            // // Vérifie si les modifs sont sur les champs user
-            // $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
-            // // Si oui alors on save
-            // if ($userAttributesChanged) {
-            //     $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
-            //     if (!$userModel->save()) {
-            //         Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
-            //         return $this->render('update', ['model' => $model]);
-            //     }
-            // }
+                // // Vérifie si les modifs sont sur les champs user
+                // $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
+                // // Si oui alors on save
+                // if ($userAttributesChanged) {
+                //     $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
+                //     if (!$userModel->save()) {
+                //         Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
+                //         return $this->render('update', ['model' => $model]);
+                //     }
+                // }
 
             // Save modèle Formateurs
             if ($model->save()) {

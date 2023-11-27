@@ -10,34 +10,67 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="formateurs-form">
-<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+    <div class="card">
+        <div class="card-body">
+        
+            <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
+            <div class="row">
+                <div class="col-md-6">
 
-    <!-- Champs pour le modèle Formateurs -->
-    <?= $form->field($model, 'nom', ['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
-    <?= $form->field($model, 'prenom',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
+                    <!-- Champs pour le modèle Formateurs -->
+                    <div class="mb-3">
+                        <?= $form->field($model, 'nom')->textInput()->label('Nom') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($model, 'prenom')->textInput()->label('Prénom') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($model, 'liste_diplome')->textarea(['rows' => 4])->label('Liste des diplômes') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($model, 'numero_decl_activite')->textInput()->label('Numéro de déclaration d\'activité') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($model, 'qualiopi')->textInput()->label('Qualiopi') ?>
+                    </div>
 
-    <!-- Champs pour le modèle User -->
-    <!-- $form->field($userModel, 'email')->textInput()  -->
-    <!-- $form->field($userModel, 'password')->passwordInput()  -->
-    
-    <!-- Autres champs formateurs -->
-    <?= $form->field($model, 'chemin_cv')->textInput() ?>
-    <?= $form->field($uploadFormModel, 'uploadedCV')->fileInput() ?>
+                </div>
+                <div class="col-md-6">
 
-    <?= $form->field($model, 'liste_diplome')->textarea() ?>
-    <?= $form->field($model, 'numero_decl_activite')->textInput() ?>
-    <?= $form->field($model, 'qualiopi')->textInput() ?>
-    <?= $form->field($model, 'siret')->textInput() ?>
-    <?= $form->field($model, 'adresse')->textarea(['rows' => 4]) ?>
-    <?= $form->field($model, 'attestation_assurance_url')->textInput() ?>
-    <!-- Champ pour les PDF -->
-    <?= $form->field($uploadFormModel, 'pdfFile')->fileInput() ?>
+                    <!-- Champs pour le modèle User -->
+                    <!-- <div class="mb-3">
+                    $form->field($userModel, 'email')->textInput()->label('Email') ?>
+                    </div>
+                    <div class="mb-3">
+                     $form->field($userModel, 'password')->passwordInput()->label('Mot de passe') ?>
+                    </div> -->
 
-    
-    <div class="form-group">
-        <?= Html::submitButton('Sauvegarder', ['class' => 'btn btn-success']) ?>
+                    <div class="mb-3">
+                        <?= $form->field($model, 'siret')->textInput()->label('Siret') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($model, 'adresse')->textarea(['rows' => 4])->label('Adresse') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($model, 'chemin_cv')->textInput()->label('Chemin CV') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($uploadFormModel, 'uploadedCV')->fileInput()->label('CV') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($model, 'attestation_assurance_url')->textInput()->label('Attestation assurance') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($uploadFormModel, 'pdfFile')->fileInput()->label('PDF') ?>
+                    </div>
+                </div>
+            </div>
+
+            <d  iv class="form-group mt-4 text-center">
+                <?= Html::submitButton('Sauvegarder', ['class' => 'btn btn-success']) ?>
+            </div>
+            <?php ActiveForm::end(); ?>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
 </div>
