@@ -31,7 +31,7 @@ $this->title = $model->name;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+           // 'id',
             'name:ntext',
             'prerequis:ntext',
             'objectif1:ntext',

@@ -22,7 +22,7 @@ $this->title = 'Formateurs';
     <p>
         <?php $user = Yii::$app->user->identity;
         if ($user && $user->role === 'admin'): ?>
-            <?= Html::a('Create Formateurs', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Créer Formateurs', ['create'], ['class' => 'btn btn-success']) ?>
         </p>
     <?php endif; ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -31,9 +31,9 @@ $this->title = 'Formateurs';
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+         //   ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+          //  'id',
             'nom:ntext',
             'prenom:ntext',
             'chemin_cv:ntext',

@@ -27,8 +27,8 @@ $this->title = 'Stagiaires';
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'id',
+          //  ['class' => 'yii\grid\SerialColumn'],
+           // 'id',
             'nom:ntext',
             'prenom:ntext',
             'telephone:ntext',

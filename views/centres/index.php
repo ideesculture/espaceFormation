@@ -27,9 +27,9 @@ $this->title = Yii::t('app', 'Centres');
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+           // ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'name:ntext',
             'lieu:ntext',
             'georeference:ntext',

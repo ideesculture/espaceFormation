@@ -27,9 +27,9 @@ $this->title = Yii::t('app', 'Formations');
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+           // ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+           // 'id',
             'name:ntext',
             'prerequis:ntext',
             'objectif1:ntext',

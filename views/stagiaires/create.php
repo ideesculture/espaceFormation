@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Stagiaires $model */
 
-$this->title = 'Create Stagiaires';
+$this->title = 'Créer Stagiaires';
 //$this->params['breadcrumbs'][] = ['label' => 'Stagiaires', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
