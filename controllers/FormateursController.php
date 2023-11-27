@@ -199,7 +199,7 @@ class FormateursController extends Controller
                     mkdir($uploadDir, 0777, true);
                 }
 
-                $pdfUploadFormModel = new UploadForm();
+                $pdfUploadFormModel = new UploadForm(); //une instance par fichier
                 $pdfUploadFormModel->pdfFile = $uploadFormModel->pdfFile;
                 if ($pdfUploadFormModel->pdfFile) {
                     $pdfUploadFormModel->upload($uploadDir);
