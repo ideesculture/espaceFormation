@@ -9,7 +9,7 @@ $this->title = 'Modifier Formateur';
 ?>
 <div class="formateurs-update">
 
-<h1 class="text-center"><?= Html::encode($this->title) ?></h1>
+<h1 class="text-center m-3"><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

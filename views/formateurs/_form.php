@@ -67,7 +67,7 @@ use yii\widgets\ActiveForm;
                 </div>
             </div>
 
-            <d  iv class="form-group mt-4 text-center">
+            <div class="form-group mt-4 text-center">
                 <?= Html::submitButton('Sauvegarder', ['class' => 'btn btn-success']) ?>
             </div>
             <?php ActiveForm::end(); ?>
