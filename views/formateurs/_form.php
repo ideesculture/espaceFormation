@@ -17,13 +17,13 @@ use yii\widgets\ActiveForm;
 
             <div class="row">
                 <div class="col-md-6">
-<!-- Champs pour le modèle User -->
-<div class="mb-3">
-                    <?=$form->field($userModel, 'email')->textInput()->label('Email') ?>
+                    <!-- Champs pour le modèle User -->
+                    <div class="mb-3">
+                        <?= $form->field($userModel, 'email')->textInput()->label('Email') ?>
                     </div>
                     <div class="mb-3">
-                    <?= $form->field($userModel, 'password')->passwordInput()->label('Mot de passe') ?>
-                    </div> 
+                        <?= $form->field($userModel, 'password')->passwordInput()->label('Mot de passe') ?>
+                    </div>
                     <!-- Champs pour le modèle Formateurs -->
                     <div class="mb-3">
                         <?= $form->field($model, 'nom')->textInput()->label('Nom') ?>
@@ -32,23 +32,7 @@ use yii\widgets\ActiveForm;
                         <?= $form->field($model, 'prenom')->textInput()->label('Prénom') ?>
                     </div>
                     <div class="mb-3">
-                        <?= $form->field($model, 'liste_diplome')->textarea(['rows' => 4])->label('Liste des diplômes') ?>
-
-                        <?= $form->field($uploadFormModel, 'listeDiplome[]')->fileInput(['multiple' => true])->label('Diplômes (PDF)') ?>
-                    </div>
-                    <div class="mb-3">
-                        <?= $form->field($model, 'numero_decl_activite')->textInput()->label('Numéro de déclaration d\'activité') ?>
-                    </div>
-                    <div class="mb-3">
-                        <?= $form->field($model, 'qualiopi')->textInput()->label('Qualiopi') ?>
-                    </div>
-
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <?= $form->field($model, 'siret')->textInput()->label('Siret') ?>
-                    </div>
-                    <div class="mb-3">
+                   
                         <?= $form->field($model, 'adresse')->textarea(['rows' => 4])->label('Adresse') ?>
                     </div>
                     <div class="mb-3">
@@ -56,6 +40,23 @@ use yii\widgets\ActiveForm;
                     </div>
                     <div class="mb-3">
                         <?= $form->field($uploadFormModel, 'uploadedCV')->fileInput()->label('CV') ?>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                <div class="mb-3">
+                        <?= $form->field($model, 'liste_diplome')->textarea(['rows' => 4])->label('Liste des diplômes') ?>
+
+                        <?= $form->field($uploadFormModel, 'listeDiplome[]')->fileInput(['multiple' => true])->label('Diplômes (PDF)') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($model, 'siret')->textInput()->label('Siret') ?>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <?= $form->field($model, 'qualiopi')->textInput()->label('Qualiopi') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($model, 'numero_decl_activite')->textInput()->label('Numéro de déclaration d\'activité') ?>
                     </div>
                     <div class="mb-3">
                         <?= $form->field($model, 'attestation_assurance_url')->textInput()->label('Attestation assurance') ?>
