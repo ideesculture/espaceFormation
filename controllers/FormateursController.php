@@ -79,6 +79,11 @@ class FormateursController extends Controller
         ]);
     }
 
+    /**
+     * Creates a new Formateurs model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string|\yii\web\Response
+     */
     public function actionCreate()
     {
         $model = new Formateurs();
@@ -133,9 +138,9 @@ class FormateursController extends Controller
                         $model->chemin_cv = $uploadDir . '/' . $uploadFormModel->uploadedCV->baseName . '.' . $uploadFormModel->uploadedCV->extension;
                     }
                     if ($uploadFormModel->listeDiplome !== null) {
-                    $model->liste_diplome = $uploadDir . '/diplomes';
+                        $model->liste_diplome = $uploadDir . '/diplomes';
+                    }
                 }
-            }
 
                 // Sauvegarde le modèle Formateurs avec les chemins des pdf
                 if (!$model->save()) {
@@ -310,6 +315,10 @@ class FormateursController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    /**
+     * Downloads the attestation PDF file.
+     * @param int $id ID
+     */
     public function actionDownload($id)
     {
         $model = $this->findModel($id);
@@ -339,34 +348,40 @@ class FormateursController extends Controller
      * Liste des diplomes disponibles.
      */
     public function actionListDiplomes($id)
-{
-    $model = $this->findModel($id);
-    $diplomesDir = 'uploads/formateurs/' . $model->id . '/diplomes';
+    {
+        $model = $this->findModel($id);
+        $diplomesDir = 'uploads/formateurs/' . $model->id . '/diplomes';
 
-    if (file_exists($diplomesDir) && is_dir($diplomesDir)) {
-        $diplomes = scandir($diplomesDir);
-        unset($diplomes[0], $diplomes[1]); // Supprime les entrées '.' et '..'
-        return $this->render('list-diplomes', [
-            'model' => $model,
-            'diplomes' => $diplomes,
-        ]);
-    } else {
-        Yii::$app->session->setFlash('error', 'Le répertoire des diplômes n\'existe pas.');
-        return $this->redirect(['view', 'id' => $id]);
+        if (file_exists($diplomesDir) && is_dir($diplomesDir)) {
+            $diplomes = scandir($diplomesDir);
+            unset($diplomes[0], $diplomes[1]); // Supprime les entrées '.' et '..'
+            return $this->render('list-diplomes', [
+                'model' => $model,
+                'diplomes' => $diplomes,
+            ]);
+        } else {
+            Yii::$app->session->setFlash('error', 'Le répertoire des diplômes n\'existe pas.');
+            return $this->redirect(['view', 'id' => $id]);
+        }
     }
-}
 
-public function actionDownloadDiplome($id, $diplome)
-{
-    $model = $this->findModel($id);
-    $diplomePath = 'uploads/formateurs/' . $model->id . '/diplomes/' . $diplome;
+    /**
+     * Télécharge le diplome spécifique
+     * @param int $id ID
+     * @param string $diplome Nom du diplome
+     * @param bool $inline vue ou download true or false
+     * @return mixed
+     */
+    public function actionDownloadDiplome($id, $diplome, $inline = false)
+    {
+        $model = $this->findModel($id);
+        $diplomePath = 'uploads/formateurs/' . $model->id . '/diplomes/' . $diplome;
 
-    if (file_exists($diplomePath)) {
-        return Yii::$app->response->sendFile($diplomePath, $diplome, ['inline' => true]);
-    } else {
-        Yii::$app->session->setFlash('error', 'Le diplôme n\'existe pas.');
-        return $this->redirect(['view', 'id' => $id]);
+        if (file_exists($diplomePath)) {
+            return Yii::$app->response->sendFile($diplomePath, $diplome, ['inline' => $inline]);
+        } else {
+            Yii::$app->session->setFlash('error', 'Le diplôme n\'existe pas.');
+            return $this->redirect(['view', 'id' => $id]);
+        }
     }
-}
-
 }

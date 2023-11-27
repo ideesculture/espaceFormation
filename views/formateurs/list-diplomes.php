@@ -20,14 +20,15 @@ $this->title = $model->getDisplayName();
 
     <h3>Liste des Diplômes :</h3>
 
-<?php if (!empty($diplomes)) : ?>
+    <?php if (!empty($diplomes)) : ?>
     <ul>
         <?php foreach ($diplomes as $diplome) : ?>
-            <li><?= Html::a(Html::encode($diplome), ['download-diplome', 'id' => $model->id, 'diplome' => $diplome]) ?></li>
+            <li>
+                <?= Html::a(Html::encode($diplome), ['download-diplome', 'id' => $model->id, 'diplome' => $diplome, 'inline' => true], ['target' => '_blank']) ?>
+                <?= Html::a('Télécharger', ['download-diplome', 'id' => $model->id, 'diplome' => $diplome, 'inline' => false], ['class' => 'btn btn-success']) ?>
+            </li>
         <?php endforeach; ?>
     </ul>
 <?php else : ?>
     <p>Aucun diplôme trouvé.</p>
 <?php endif; ?>
-
-</div>
