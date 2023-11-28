@@ -183,11 +183,14 @@ class FormateursController extends Controller
         $oldAttestationUrl = $model->attestation_assurance_url;
         $oldCVUrl = $model->chemin_cv;
 
+
+
         if ($this->request->isPost) {
             $model->load($this->request->post());
             $userModel->load($this->request->post());
             $uploadFormModel->pdfFile = UploadedFile::getInstance($uploadFormModel, 'pdfFile');
             $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
+            $uploadFormModel->listeDiplome = UploadedFile::getInstances($uploadFormModel, 'listeDiplome');
 
             // // Vérifie si les modifs sont sur les champs user
             // $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
@@ -230,7 +233,18 @@ class FormateursController extends Controller
                         unlink($oldCVUrl);
                     }
                 }
-                $model->save();
+
+                // Enregistrez les nouveaux diplômes téléchargés
+                  $diplomeUploadFormModel = new UploadForm(); 
+                  $diplomeUploadFormModel->listeDiplome = $uploadFormModel->listeDiplome;
+                  if ($diplomeUploadFormModel->listeDiplome) {          
+                    $diplomesDir = $uploadDir . '/diplomes';
+                    if (!file_exists($diplomesDir)) {
+                        mkdir($diplomesDir, 0777, true);
+                    }
+                    $diplomeUploadFormModel->upload($uploadDir);
+                    $model->liste_diplome = $uploadDir;
+                }
 
                 Yii::$app->session->setFlash('success', 'Formateur mis à jour avec succès.');
                 return $this->redirect(['view', 'id' => $model->id]);

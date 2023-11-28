@@ -27,11 +27,11 @@ class UploadForm extends Model
     public function upload($folderPath)
     {
             if ($this->validate()) {
+
                 if ($this->listeDiplome !== null) {
                 foreach ($this->listeDiplome as $file) {
                     $filePath = $folderPath . '/diplomes/' . $file->baseName . '.' . $file->extension;
                     $file->saveAs($filePath);
-                    // Vous pouvez stocker le chemin du fichier dans la base de données si nécessaire
                 }
             }
                 if ($this->pdfFile !== null) {

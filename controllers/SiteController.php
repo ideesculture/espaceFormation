@@ -59,23 +59,23 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionUpload()
-    {
-        $model = new UploadForm();
+    // public function actionUpload()
+    // {
+    //     $model = new UploadForm();
 
-        if (Yii::$app->request->isPost) {
-            $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
-            $model->uploadedCV = UploadedFile::getInstance($model, 'uploadedCV');
-            if ($model->upload()) {
-                // Le fichier est téléchargé avec succès
-                Yii::$app->session->setFlash('success', 'Fichier téléchargé avec succès!');
+    //     if (Yii::$app->request->isPost) {
+    //         $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
+    //         $model->uploadedCV = UploadedFile::getInstance($model, 'uploadedCV');
+    //         if ($model->upload()) {
+    //             // Le fichier est téléchargé avec succès
+    //             Yii::$app->session->setFlash('success', 'Fichier téléchargé avec succès!');
 
-                return $this->redirect(['site/upload']);
-            }
-        }
+    //             return $this->redirect(['site/upload']);
+    //         }
+    //     }
 
-        return $this->render('upload', ['model' => $model]);
-    }
+    //     return $this->render('upload', ['model' => $model]);
+    // }
 
     /**
      * Displays homepage.
@@ -199,8 +199,7 @@ class SiteController extends Controller
             } else {
                 Yii::$app->session->setFlash('success', 'Votre mot de passe a été réinitialisé avec succès.');
             }
-    
-            return $this->redirect(['site/login']); // Redirige l'utilisateur vers la page de connexion
+            return $this->redirect(['site/login']); 
         }
     
         return $this->render('resetPassword', [

@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 
 \yii\web\YiiAsset::register($this);
 // Fichier Javascript
-$this->registerJsFile('@web/js/formateur.js', ['depends' => [\yii\web\JqueryAsset::class]]);
+// $this->registerJsFile('@web/js/formateur.js', ['depends' => [\yii\web\JqueryAsset::class]]);
 
 ?>
 <div class="formateurs-view">
