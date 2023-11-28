@@ -55,7 +55,7 @@ $this->title = $model->name;
                 <h3>Plan de formation</h3>
                 <iframe class="pdf-iframe" src="<?= Yii::$app->request->baseUrl . '/' . $model->url_planformation ?>"
                     width="100%" height="400px"></iframe>
-                <?= Html::a('Télécharger l\'attestation d\'assurance', ['download', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('Télécharger le plan de formation', ['download', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             </div>
         <?php else: ?>
             <p>Aucun plan de formation disponible.</p>

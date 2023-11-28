@@ -60,7 +60,7 @@ class Formateurs extends \yii\db\ActiveRecord
      */
     public function getSessionFormateurs()
     {
-        return $this->hasMany(SessionFormateur::class, ['formateur_id' => 'id']);
+        return $this->hasMany(SessionFormateur::class, ['formateur_id' => 'id'])->onDelete('CASCADE');
     }
 
     public function getDisplayName(){

@@ -182,6 +182,7 @@ class FormateursController extends Controller
         // Sauvegarde des anciens chemins pour les PDF
         $oldAttestationUrl = $model->attestation_assurance_url;
         $oldCVUrl = $model->chemin_cv;
+        $oldDiplomeUrl = $model->liste_diplome;
 
 
 
@@ -235,9 +236,9 @@ class FormateursController extends Controller
                 }
 
                 // Enregistrez les nouveaux diplômes téléchargés
-                  $diplomeUploadFormModel = new UploadForm(); 
-                  $diplomeUploadFormModel->listeDiplome = $uploadFormModel->listeDiplome;
-                  if ($diplomeUploadFormModel->listeDiplome) {          
+                $diplomeUploadFormModel = new UploadForm();
+                $diplomeUploadFormModel->listeDiplome = $uploadFormModel->listeDiplome;
+                if ($diplomeUploadFormModel->listeDiplome) {
                     $diplomesDir = $uploadDir . '/diplomes';
                     if (!file_exists($diplomesDir)) {
                         mkdir($diplomesDir, 0777, true);
@@ -270,23 +271,16 @@ class FormateursController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $attestationUrl = $model->attestation_assurance_url;
-        $cvUrl = $model->chemin_cv;
+        $formateurDir = 'upload/formateur/' . $id;
 
         // Suppression du modèle Formateurs et user associé
         $model->delete();
         $model->user->delete();
 
-        // Suppression des dossiers et fichiers
-        if (!empty($attestationUrl) && file_exists($attestationUrl)) {
-            unlink($attestationUrl);
-            $this->deleteDirectory(dirname($attestationUrl));
+        // Suppression du dossier et de son contenu
+        if (file_exists($formateurDir)) {
+            $this->deleteDirectory($formateurDir);
         }
-        if (!empty($cvUrl) && file_exists($cvUrl)) {
-            unlink($cvUrl);
-            $this->deleteDirectory(dirname($cvUrl));
-        }
-
         Yii::$app->session->setFlash('success', 'Formateur supprimé avec succès.');
         return $this->redirect(['index']);
     }
@@ -297,19 +291,22 @@ class FormateursController extends Controller
      */
     private function deleteDirectory($dir)
     {
-        if (is_dir($dir)) {
-            $objects = scandir($dir);
-            foreach ($objects as $object) {
-                if ($object != "." && $object != "..") {
-                    if (is_dir($dir . "/" . $object)) {
-                        $this->deleteDirectory($dir . "/" . $object);
-                    } else {
-                        unlink($dir . "/" . $object);
-                    }
-                }
-            }
-            rmdir($dir);
+        if (!file_exists($dir)) {
+            return true;
         }
+
+        if (!is_dir($dir)) {
+            return unlink($dir);
+        }
+        foreach (scandir($dir) as $item) {
+            if ($item == '.' || $item == '..') {
+                continue;
+            }
+            if (!$this->deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) {
+                return false;
+            }
+        }
+        return rmdir($dir);
     }
 
 

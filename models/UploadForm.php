@@ -20,20 +20,24 @@ class UploadForm extends Model
     {
         return [
             [['pdfFile', 'uploadedCV', 'planFormation'], 'file', 'skipOnEmpty' => true, 'extensions' => ['pdf', 'png', 'jpeg', 'jpg', 'bmp', 'tiff']],
-            [['listeDiplome'], 'file', 'skipOnEmpty' => true, 'extensions' => ['pdf', 'png', 'jpeg', 'jpg', 'bmp', 'tiff'], 'maxFiles' => 5],
+            [['listeDiplome'], 'file', 'skipOnEmpty' => true, 'extensions' => ['pdf', 'png', 'jpeg', 'jpg', 'bmp', 'tiff'], 'maxFiles' => 6],
         ];
     }
     
     public function upload($folderPath)
     {
             if ($this->validate()) {
-
+                $timestamp = time();
+                $shortTimestamp = substr($timestamp, -6); // 6 derniers chiffres du timestamp
+        
                 if ($this->listeDiplome !== null) {
-                foreach ($this->listeDiplome as $file) {
-                    $filePath = $folderPath . '/diplomes/' . $file->baseName . '.' . $file->extension;
-                    $file->saveAs($filePath);
+                    foreach ($this->listeDiplome as $file) {
+                        $randomPart = substr(uniqid(), -6); // 6 derniers caractères de uniqid()
+                        $filePath = $folderPath . '/diplomes/' . $shortTimestamp . '_' . $randomPart . '.' . $file->extension;
+                        $file->saveAs($filePath);
+                    }
                 }
-            }
+                
                 if ($this->pdfFile !== null) {
                     $this->pdfFile->saveAs($folderPath .'/' . $this->pdfFile->baseName . '.' . $this->pdfFile->extension);
                 }
