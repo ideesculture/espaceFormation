@@ -33,7 +33,7 @@ class FormateursController extends Controller
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             $user = Yii::$app->user->identity;
-                            return $user->role === 'admin' || $user->role === 'formateur';
+                            return $user->role === 'admin' || ($user->role === 'formateur'&& $this->isOwnProfile());
                         },
                     ],
                 ],
@@ -48,6 +48,15 @@ class FormateursController extends Controller
                 ],
             ],
         ];
+    }
+
+
+    protected function isOwnProfile()
+    {
+        $userIdInUrl = Yii::$app->request->get('id');
+        $user = Yii::$app->user->identity;
+        $formateurId = $user->formateur->id;
+        return $userIdInUrl !== null && $userIdInUrl == $formateurId;
     }
 
     /**
