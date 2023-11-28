@@ -20,7 +20,7 @@ class UploadForm extends Model
     {
         return [
             [['pdfFile', 'uploadedCV', 'planFormation'], 'file', 'skipOnEmpty' => true, 'extensions' => ['pdf', 'png', 'jpeg', 'jpg', 'bmp', 'tiff']],
-            [['listeDiplome'], 'file', 'skipOnEmpty' => true, 'extensions' => ['pdf', 'png', 'jpeg', 'jpg', 'bmp', 'tiff'], 'maxFiles' => 6],
+            [['listeDiplome'], 'file', 'skipOnEmpty' => true, 'extensions' => ['pdf', 'png', 'jpeg', 'jpg', 'bmp', 'tiff'], 'maxFiles' => 6, 'maxSize' => 1024 * 1024 * 3],
         ];
     }
     

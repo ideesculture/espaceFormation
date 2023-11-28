@@ -53,8 +53,26 @@ main>.container {
     border: none;
 }
 
+.pdf-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.pdf-section2 {
+    width: 48%; 
+}
+
+.pdf-column {
+    margin-bottom: 20px;
+}
+
 .help-block {
     color: red;
+}
+
+.center-titre{
+    text-align: center;
 }
 
 .logo{
@@ -66,7 +84,7 @@ main>.container {
     margin-bottom: 20px;
 }
 
-.site-login, .site-request-password-reset{
+.site-login, .site-request-password-reset, .mes-formations{
     margin-top: 20px;
 }
 
@@ -133,7 +151,6 @@ a.desc:after {
 
 
 /* align the logout "link" (button in form) of the navbar */
-
 .nav li>form>button.logout {
     padding-top: 7px;
     color: rgba(255, 255, 255, 0.5);
@@ -216,8 +233,8 @@ a.desc:after {
     color: #555;
 }
 
-/* .card.future {
-    border-color: #28a745;
+.card.future {
+    background-color: #b8f7c7;
 }
 
 .card.current {
@@ -226,4 +243,4 @@ a.desc:after {
 
 .card.past {
     border-color: transparent;
-} */
+}

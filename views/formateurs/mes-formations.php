@@ -9,7 +9,7 @@ $params['breadcrumbs'][] = $title;
 
 <div class="mes-formations">
 
-    <h1>
+<h1 class="center-titre">
         <?= Html::encode($title) ?>
     </h1>
 
@@ -58,7 +58,6 @@ $params['breadcrumbs'][] = $title;
                     </p>
                 </div>
             </div>
-
             <?php
         }
     } else {

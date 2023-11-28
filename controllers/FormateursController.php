@@ -193,16 +193,16 @@ class FormateursController extends Controller
             $uploadFormModel->uploadedCV = UploadedFile::getInstance($uploadFormModel, 'uploadedCV');
             $uploadFormModel->listeDiplome = UploadedFile::getInstances($uploadFormModel, 'listeDiplome');
 
-            // // Vérifie si les modifs sont sur les champs user
-            // $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
-            // // Si oui alors on save
-            // if ($userAttributesChanged) {
-            //     $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
-            //     if (!$userModel->save()) {
-            //         Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
-            //         return $this->render('update', ['model' => $model]);
-            //     }
-            // }
+            // Vérifie si les modifs sont sur les champs user
+            $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
+            // Si oui alors on save
+            if ($userAttributesChanged) {
+                $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
+                if (!$userModel->save()) {
+                    Yii::$app->session->setFlash('error', 'Erreur lors de la mise à jour de l\'utilisateur.');
+                    return $this->render('update', ['model' => $model]);
+                }
+            }
 
             // Save modèle Formateurs
             if ($model->save()) {
@@ -395,4 +395,36 @@ class FormateursController extends Controller
             return $this->redirect(['view', 'id' => $id]);
         }
     }
+    public function actionMesFormations()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $user = User::findOne(Yii::$app->user->id);
+        $formateur = $user->formateur;
+        $sessions = [];
+        $formations = [];
+
+        if ($user->role === 'formateur' && $formateur !== null) {
+            $sessionsFormateur = $formateur->sessionFormateurs;
+
+            if (!empty($sessionsFormateur)) {
+                foreach ($sessionsFormateur as $sessionFormateur) {
+                    if ($sessionFormateur->session !== null) {
+                        $formation = $sessionFormateur->session->formationrel;
+                        $sessions[] = $sessionFormateur->session;
+                        $formations[] = $formation;
+                    }
+                }
+            }
+        }
+
+        return $this->render('mes-formations', [
+            'sessions' => $sessions,
+            'formations' => $formations,
+        ]);
+    }
+
+
 }
