@@ -32,7 +32,7 @@ class StagiairesController extends Controller
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             $user = Yii::$app->user->identity;
-                            return $user->role === 'admin' || $user->role === 'stagiaire';
+                            return $user->role === 'admin' || ($user->role === 'stagiaire' && $this->isOwnProfile());
                         },
                     ],
                 ],
@@ -47,6 +47,14 @@ class StagiairesController extends Controller
                 ],
             ],
         ];
+    }
+
+    protected function isOwnProfile()
+    {
+        $userIdInUrl = Yii::$app->request->get('id');
+        $user = Yii::$app->user->identity;
+        $stagiaireId = $user->stagiaire->id;
+        return $userIdInUrl !== null && $userIdInUrl == $stagiaireId;
     }
 
     public function actionMesFormations()
