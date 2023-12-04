@@ -31,14 +31,17 @@ main>.container {
 .pdf-flex {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .pdf-section {
-    flex: 0 1 calc(33.33% - 20px); /* Trois colonnes avec espace entre les colonnes */
+    flex: 0 1 calc(33% - 20px);
     border: 1px solid #ccc;
     padding: 10px;
+    box-sizing: border-box;
 }
 
 .iframe-container {

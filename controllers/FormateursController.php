@@ -151,7 +151,6 @@ class FormateursController extends Controller
                     }
                 }
 
-                // Sauvegarde le modèle Formateurs avec les chemins des pdf
                 if (!$model->save()) {
                     throw new \Exception('Erreur lors de la sauvegarde du modèle Formateurs après ajout des chemins complets.');
                 }
@@ -191,9 +190,6 @@ class FormateursController extends Controller
         // Sauvegarde des anciens chemins pour les PDF
         $oldAttestationUrl = $model->attestation_assurance_url;
         $oldCVUrl = $model->chemin_cv;
-        $oldDiplomeUrl = $model->liste_diplome;
-
-
 
         if ($this->request->isPost) {
             $model->load($this->request->post());
@@ -249,11 +245,11 @@ class FormateursController extends Controller
                 $diplomeUploadFormModel->listeDiplome = $uploadFormModel->listeDiplome;
                 if ($diplomeUploadFormModel->listeDiplome) {
                     $diplomesDir = $uploadDir . '/diplomes';
-                    if (!file_exists($diplomesDir)) {
-                        mkdir($diplomesDir, 0777, true);
-                    }
+                    // if (!file_exists($diplomesDir)) {
+                    //     mkdir($diplomesDir, 0777, true);
+                    // }
                     $diplomeUploadFormModel->upload($uploadDir);
-                    $model->liste_diplome = $uploadDir;
+                    $model->liste_diplome = $diplomesDir;
                 }
 
                 Yii::$app->session->setFlash('success', 'Formateur mis à jour avec succès.');

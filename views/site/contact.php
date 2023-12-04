@@ -17,25 +17,18 @@ $this->title = 'Contact';
     <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
 
         <div class="alert alert-success">
-            Thank you for contacting us. We will respond to you as soon as possible.
+            Merci de votre prise de contact, Nous vous répondrons aussi vite que possible.
         </div>
 
         <p>
-            Note that if you turn on the Yii debugger, you should be able
-            to view the mail message on the mail panel of the debugger.
-            <?php if (Yii::$app->mailer->useFileTransport): ?>
-                Because the application is in development mode, the email is not sent but saved as
-                a file under <code><?= Yii::getAlias(Yii::$app->mailer->fileTransportPath) ?></code>.
-                Please configure the <code>useFileTransport</code> property of the <code>mail</code>
-                application component to be false to enable email sending.
-            <?php endif; ?>
+        <?= Html::a('Retour à l\'Accueil' ,Yii::$app->homeUrl, ['class' => 'btn btn-primary']); ?>
         </p>
 
     <?php else: ?>
 
         <p>
-            If you have business inquiries or other questions, please fill out the following form to contact us.
-            Thank you.
+        Si vous avez des demandes commerciales ou d'autres questions, veuillez remplir le formulaire suivant pour nous contacter.
+            Merci.
         </p>
 
         <div class="row">
