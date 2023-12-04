@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Organisations;
 use app\models\Stagiaires;
 use app\models\StagiairesSearch;
 use app\models\SessionStagiaire;
@@ -143,6 +144,12 @@ class StagiairesController extends Controller
                 // Associe le modèle User au modèle stagiaire
                 $model->user_id = $userModel->id;
     
+            // Associer l'organisation au stagiaire
+            $organisation = Organisations::findOne($model->organisationId);
+            if ($organisation) {
+                $model->link('organisation', $organisation);
+            }
+
                 // Valide et sauvegarde le stagiaire
                 if ($model->validate() && $model->save()) {
                     Yii::$app->session->setFlash('success', 'Stagiaire créé avec Succès !');

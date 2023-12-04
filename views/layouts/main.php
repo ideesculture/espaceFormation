@@ -62,6 +62,7 @@ if (Yii::$app->user->isGuest) {
     if ($roleLabel === 'admin') {
         $items[] = ['label' => 'Formations', 'url' => ['/formation/index']];
         $items[] = ['label' => 'Centres', 'url' => ['/centres/index']];
+        $items[] = ['label' => 'Organisations', 'url' => ['/organisations/index']];
         $items[] = ['label' => 'Formateurs', 'url' => ['/formateurs/index']];
         $items[] = ['label' => 'Sessions', 'url' => ['/sessions/index']];
         $items[] = ['label' => 'Stagiaires', 'url' => ['/stagiaires/index']];

@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\Organisations;
+use yii\helpers\ArrayHelper;
 
 /** @var yii\web\View $this */
 /** @var app\models\Stagiaires $model */
@@ -12,7 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-     <!-- Champs stagiaires -->
+    <!-- Champs stagiaires -->
     <?= $form->field($model, 'nom',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
     <?= $form->field($model, 'prenom',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
 
@@ -27,6 +29,11 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'derniere_version_reglement_interieur_accepte')->textInput() ?>
     <?= $form->field($model, 'derniere_version_cgv_acceptee')->textInput() ?>
     <?= $form->field($model, 'derniere_version_cgu_acceptee')->textInput() ?>
+
+    <?= $form->field($model, 'organisationId')->dropDownList(
+        ArrayHelper::map(Organisations::find()->all(), 'id', 'nom'),
+        ['prompt' => 'Sélectionnez une organisation']
+    ) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Sauvegarder', ['class' => 'btn btn-success']) ?>

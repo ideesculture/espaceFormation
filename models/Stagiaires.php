@@ -8,8 +8,9 @@ use Yii;
  * This is the model class for table "Stagiaires".
  *
  * @property int $id
- * @property string|null $nom
- * @property string|null $prenom
+ * @property int $organisationId
+ * @property string $nom
+ * @property string $prenom
  * @property string|null $email2
  * @property string|null $telephone
  * @property string|null $historique_sessions
@@ -17,12 +18,13 @@ use Yii;
  * @property string|null $derniere_version_cgv_acceptee
  * @property string|null $derniere_version_cgu_acceptee
  * 
- *
  * @property User $user
  * @property SessionStagiaire[] $sessionStagiaires
  */
 class Stagiaires extends \yii\db\ActiveRecord
 {
+
+    public $organisationId;
     /**
      * {@inheritdoc}
      */
@@ -31,13 +33,13 @@ class Stagiaires extends \yii\db\ActiveRecord
         return 'Stagiaires';
     }
 
-      /**
+    /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['user_id'], 'integer'],
+            [['user_id', 'organisationId'], 'required'],
             [['nom', 'prenom', 'email2', 'telephone', 'historique_sessions', 'derniere_version_reglement_interieur_accepte', 'derniere_version_cgv_acceptee', 'derniere_version_cgu_acceptee'], 'string'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
             [['nom','prenom'], 'required', 'message' => 'Le champ {attribute} ne peut pas être vide'],
@@ -70,6 +72,12 @@ class Stagiaires extends \yii\db\ActiveRecord
             'derniere_version_cgv_acceptee' => 'Derniere Version Cgv Acceptee',
             'derniere_version_cgu_acceptee' => 'Derniere Version Cgu Acceptee',
         ];
+    }
+
+
+    public function getOrganisation()
+    {
+        return $this->hasOne(Organisations::class, ['id' => 'organisationId']);
     }
 
     /**
