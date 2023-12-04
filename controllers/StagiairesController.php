@@ -13,6 +13,7 @@ use app\models\User;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * StagiairesController implements the CRUD actions for Stagiaires model.
@@ -69,26 +70,25 @@ class StagiairesController extends Controller
         $stagiaire = $user->stagiaire;
         $sessions = [];
         $formations = [];
-    
+
         if ($user->role === 'stagiaire') {
             $stagiaire = $user->stagiaire;
-          
+
             if ($stagiaire !== null) {
-                
+
                 $sessionsStagiaire = $stagiaire->sessionStagiaires;
                 if (!empty($sessionsStagiaire)) {
                     foreach ($sessionsStagiaire as $sessionStagiaire) {
                         if ($sessionStagiaire->session0 !== null) {
                             $formation = $sessionStagiaire->session0->formationrel;
                             // Stocke les sessions et formations dans des tableaux
-                        $sessions[] = $sessionStagiaire->session0;
-                        $formations[] = $formation;
+                            $sessions[] = $sessionStagiaire->session0;
+                            $formations[] = $formation;
                         }
                     }
-                } 
-            } 
-          
-        } 
+                }
+            }
+        }
         return $this->render('mes-formations', [
             'sessions' => $sessions,
             'formations' => $formations,
@@ -134,21 +134,24 @@ class StagiairesController extends Controller
         $model = new Stagiaires();
         $userModel = new User();
 
+
         if ($model->load(Yii::$app->request->post()) && $userModel->load(Yii::$app->request->post())) {
-        
+
             // Valide et sauvegarde l'utilisateur
             $userModel->password = Yii::$app->security->generatePasswordHash($userModel->password);
             $userModel->role = 'stagiaire';
             if ($userModel->validate() && $userModel->save()) {
-                
+
                 // Associe le modèle User au modèle stagiaire
                 $model->user_id = $userModel->id;
-    
-            // Associer l'organisation au stagiaire
-            $organisation = Organisations::findOne($model->organisationId);
-            if ($organisation) {
-                $model->link('organisation', $organisation);
-            }
+
+                // Récupère l'ID de l'organisation à partir du formulaire
+                $organisationId = Yii::$app->request->post('Stagiaires')['organisationId'];
+                // Associe l'organisation au modèle stagiaire
+                $model->organisationId = $organisationId;
+
+                //  // Récupère toutes les organisations pour afficher dans le formulaire
+                // $organisations = Organisations::find()->all();
 
                 // Valide et sauvegarde le stagiaire
                 if ($model->validate() && $model->save()) {
@@ -163,7 +166,7 @@ class StagiairesController extends Controller
         }
         return $this->render('create', [
             'model' => $model,
-            'userModel' => $userModel,
+            'userModel' => $userModel
         ]);
     }
 
@@ -178,10 +181,10 @@ class StagiairesController extends Controller
     {
         $model = $this->findModel($id);
         $userModel = $model->user;
-    
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $userModel->load($this->request->post())) {
-    
+
                 // Vérifie si les modif sont sur le user
                 $userAttributesChanged = $userModel->isAttributeChanged('email') || $userModel->isAttributeChanged('password');
                 // Si oui alors on save
@@ -192,7 +195,7 @@ class StagiairesController extends Controller
                         return $this->render('update', ['model' => $model]);
                     }
                 }
-    
+
                 // Save modèle Formateurs
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', 'Stagiaire mis à jour avec succès.');
@@ -202,7 +205,7 @@ class StagiairesController extends Controller
                 }
             }
         }
-    
+
         return $this->render('update', [
             'model' => $model,
             'userModel' => $userModel,
@@ -219,7 +222,7 @@ class StagiairesController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $user = $model->user; 
+        $user = $model->user;
         if ($this->request->isPost) {
             //On supprime les sessions pour la contriante de clé étrangère
             SessionStagiaire::deleteAll(['stagiaire_id' => $model->id]);
@@ -227,7 +230,7 @@ class StagiairesController extends Controller
                 $user->delete();
             }
             $model->delete();
-        }  
+        }
         return $this->redirect(['index']);
     }
 

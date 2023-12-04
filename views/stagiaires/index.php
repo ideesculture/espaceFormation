@@ -40,6 +40,12 @@ $this->title = 'Stagiaires';
                 'attribute' => 'user.email', 
                 'label' => 'Adresse Email',
             ],
+            [
+                'label' => 'Organisation',
+                'value' => function ($model) {
+                    return $model->organisationNom;
+                },
+            ],
             'email2:ntext',
             [
                 'class' => ActionColumn::className(),

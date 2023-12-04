@@ -36,6 +36,13 @@ $this->title = $model->nom;
         'email2:ntext',
         'telephone:ntext',
         [
+            'label' => 'Organisation',
+            'value' => function ($model) {
+                $organisation = $model->getOrganisation()->one();
+                return $organisation ? $organisation->nom : 'Aucune organisation';
+            },
+        ],
+        [
             'label' => 'Historique Sessions',
             'format' => 'html',
             'value' => function ($model) {
