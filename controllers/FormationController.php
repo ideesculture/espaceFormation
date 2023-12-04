@@ -155,7 +155,7 @@ public function actionCreate()
                 // Vérifier s'il y a un fichier à télécharger
                 if ($uploadFormModel->planFormation !== null) {
                     // Supprime le fichier existant s'il y en a un
-                    if ($model->url_planformation) {
+                    if ($model->url_planformation && file_exists(Yii::getAlias('@webroot') . '/' . $model->url_planformation)) {
                         unlink(Yii::getAlias('@webroot') . '/' . $model->url_planformation);
                     }
 

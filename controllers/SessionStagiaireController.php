@@ -4,12 +4,14 @@ namespace app\controllers;
 
 use app\models\SessionStagiaire;
 use app\models\SessionStagiaireSearch;
+use app\models\Stagiaires;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+
 /**
  * SessionStagiaireController implements the CRUD actions for SessionStagiaire model.
  */
@@ -87,7 +89,7 @@ class SessionStagiaireController extends Controller
             if ($model->load($this->request->post()) && $model->save()) {
                 $sessionId = $model->session_id;
 
-                return $this->redirect(['/sessions/view' ,'id' =>$sessionId]);
+                return $this->redirect(['/sessions/view', 'id' => $sessionId]);
             }
         } else {
             $sessionId = Yii::$app->request->get('session_id');
@@ -133,7 +135,7 @@ class SessionStagiaireController extends Controller
         $sessionId = $this->findModel($id)->session_id;
         $this->findModel($id)->delete();
 
-        return $this->redirect(['/sessions/view' ,'id' =>$sessionId]);
+        return $this->redirect(['/sessions/view', 'id' => $sessionId]);
     }
 
     /**
@@ -150,5 +152,16 @@ class SessionStagiaireController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+
+
+    public function actionChargerStagiaires($organisationId)
+    {
+        $stagiaires = Stagiaires::find()->where(['organisation_id' => $organisationId])->all();
+
+        return $this->renderAjax('_dropdown_stagiaires', [
+            'stagiaires' => $stagiaires,
+        ]);
     }
 }

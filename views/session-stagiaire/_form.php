@@ -16,13 +16,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'session_id')->hiddenInput(['readonly' => true]) ?>
 
-   <?= $form->field($model, 'organisation_id')->dropDownList(
-    ArrayHelper::map(\app\models\Organisations::find()->all(), 'id', 'nom'),
-    ['prompt' => 'Sélectionnez une organisation']
+    <?= $form->field($model, 'organisation_id')->dropDownList(
+     ArrayHelper::map(\app\models\Organisations::find()->all(), 'id', 'nom'),
+     ['prompt' => 'Sélectionnez une organisation', 'id' => 'organisation_id']
 ) ?>
 
+<div id="stagiaire-container">
     <?= $form->field($model, 'stagiaire_id')->dropDownList(
-        ArrayHelper::map(Stagiaires::find()->all(),'id', function($data){ return $data["nom"]." ".$data["prenom"];}));  ?>
+        ArrayHelper::map(Stagiaires::find()->all(), 'id', function ($data) {
+            return $data["nom"] . " " . $data["prenom"];
+        })
+    ); ?>
+</div>
+
 
 
 

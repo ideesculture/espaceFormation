@@ -61,15 +61,35 @@ $this->title = $model->formationrel->name . " - " . date("d/m/Y", strtotime($mod
 
         ],
     ]);
+    ?>
 
+    <!-- Affichage du plan de formation -->
+    <div class="pdf-container">
+        <?php if (!empty( $model->formationrel->url_planformation)): ?>
+            <div class="pdf-section">
+            <h3>Plan de formation</h3>
+                <iframe class="pdf-iframe" src="<?= $model->formationrel->url_planformation ?>" width="100%" height="400px"></iframe>
+                <?php
+                    // Vérifier si le fichier existe avant d'afficher le bouton
+                    $filePath = Yii::getAlias('@webroot') . '/' . $model->formationrel->url_planformation;
+                    if (file_exists($filePath)) {
+                        echo Html::a('Télécharger le plan de formation', $model->formationrel->url_planformation, ['class' => 'btn btn-primary', 'target' => '_blank', 'download' => '']);
+                    } else {
+                        echo '<p>Aucun plan de formation disponible pour le téléchargement.</p>';
+                    }
+                ?>
+            </div>
+        <?php else: ?>
+            <p>Aucun plan de formation disponible.</p>
+        <?php endif; ?>
+    </div> <?php
 
+      // Affichage des Stagiaires inscrits à la session si Admin
     if ($user && $user->role === 'admin'): ?>
     <h1> Liste des stagiaires </h1>
     <a class="btn btn-primary" href="/index.php?r=session-stagiaire%2Fcreate&session_id=<?=$model->id?>">Ajouter un stagiaire</a>
-
     <ul>
         <?php
-        // Affichage des Stagiaires inscrits à la session  
         foreach ($model->getSessionStagiaires()->all() as $response) {
             $sessionStagaire = SessionStagiaire::findOne($response["id"]);
             if ($sessionStagaire && $sessionStagaire->stagiaire0) {

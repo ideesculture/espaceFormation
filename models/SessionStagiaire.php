@@ -62,6 +62,7 @@ class SessionStagiaire extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'session_id' => '',
+            'organisation_id' => 'Organisation',
             'stagiaire_id' => 'Stagiaire',
             'present_demij1' => 'Present Demij1',
             'present_demij2' => 'Present Demij2',
