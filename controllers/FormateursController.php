@@ -50,13 +50,35 @@ class FormateursController extends Controller
         ];
     }
 
-
+    /**
+     * 
+     * Méthode qui vérifie que le formateur est bien sur le profil correspondant à son ID
+     * Il lui sera donc impossible de voir le profil des autres en modifiant l'url
+     */
     protected function isOwnProfile()
     {
         $userIdInUrl = Yii::$app->request->get('id');
         $user = Yii::$app->user->identity;
         $formateurId = $user->formateur->id;
         return $userIdInUrl !== null && $userIdInUrl == $formateurId;
+    }
+
+    /**
+     * Méthode de suppression de diplome.
+     */
+    public function actionDeleteDiplome($id, $diplome)
+    {
+        $model = $this->findModel($id);
+        $diplomePath = 'uploads/formateurs/' . $model->id . '/diplomes/' . $diplome;
+    
+        if (file_exists($diplomePath)) {
+            unlink($diplomePath);
+            Yii::$app->session->setFlash('success', 'Diplôme supprimé avec succès.');
+        } else {
+            Yii::$app->session->setFlash('error', 'Le diplôme n\'existe pas.');
+        }
+    
+        return $this->redirect(['list-diplomes', 'id' => $id]);
     }
 
     /**

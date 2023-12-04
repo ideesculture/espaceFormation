@@ -1,3 +1,4 @@
+
 main>.container {
     padding: 70px 15px 20px;
 }   
@@ -27,7 +28,6 @@ main>.container {
 .navbar-brand:hover img {
     transform: scale(1.1); 
 }
-
 .pdf-flex {
     display: flex;
     flex-wrap: wrap;
@@ -38,10 +38,37 @@ main>.container {
 }
 
 .pdf-section {
-    flex: 0 1 calc(33% - 20px);
     border: 1px solid #ccc;
     padding: 10px;
     box-sizing: border-box;
+}
+
+/* Utilisez les classes de Bootstrap pour la disposition des colonnes */
+@media (min-width: 576px) {
+    .pdf-section {
+        flex: 0 0 calc(50% - 20px);
+        max-width: calc(50% - 20px);
+    }
+}
+
+@media (min-width: 768px) {
+    .pdf-section {
+        flex: 0 0 calc(33.33% - 20px);
+        max-width: calc(33.33% - 20px);
+    }
+}
+
+@media (min-width: 992px) {
+    .pdf-section {
+        flex: 0 0 calc(25% - 20px);
+        max-width: calc(25% - 20px);
+    }
+}
+
+/* Ajustement pour une seule colonne si un seul fichier */
+.pdf-flex:only-child .pdf-section {
+    flex: 0 0 50%; /* Occupera 50% de la largeur */
+    max-width: 50%;
 }
 
 .iframe-container {

@@ -21,21 +21,30 @@ $this->title = $model->getDisplayName();
 
     <h2>Liste des Diplômes :</h2>
     <div class="pdf-container">
-        <?php if (!empty($diplomes)): ?>
+        <?php if (!empty($diplomes)) : ?>
             <div class="pdf-flex">
-                <?php foreach ($diplomes as $diplome): ?>
+                <?php foreach ($diplomes as $diplome) : ?>
                     <div class="pdf-section">
                         <div class="iframe-container">
-                            <?= Html::a(Html::encode($diplome), ['download-diplome', 'id' => $model->id, 'diplome' => $diplome, 'inline' => true], ['target' => '_blank']) ?>
-                            <iframe class="pdf-iframe"
-                                src="<?= Yii::$app->request->baseUrl . '/' . $model->liste_diplome . '/' . $diplome ?>" width="100%"
-                                height="400px"></iframe>
-                            <?= Html::a('Télécharger', ['download-diplome', 'id' => $model->id, 'diplome' => $diplome, 'inline' => false], ['class' => 'btn btn-success']) ?>
+                            <?= Html::a(Html::encode($diplome), [
+                                'download-diplome', 'id' => $model->id, 'diplome' => $diplome,
+                                'inline' => true
+                            ], ['target' => '_blank']) ?>
+                            <iframe class="pdf-iframe" src="<?= Yii::$app->request->baseUrl . '/' . $model->liste_diplome . '/' . $diplome ?>" width="100%" height="400px"></iframe>
+                            <?= Html::a(
+                                'Télécharger',
+                                ['download-diplome', 'id' => $model->id, 'diplome' => $diplome, 'inline' => false],
+                                ['class' => 'btn btn-success']
+                            ) ?>
+                            <?= Html::a('Supprimer', ['delete-diplome', 'id' => $model->id, 'diplome' => $diplome], [
+                                'class' => 'btn btn-danger',
+                                'data' => ['confirm' => 'Êtes-vous sûr de vouloir supprimer ce diplôme ?']
+                            ]) ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
-        <?php else: ?>
+        <?php else : ?>
             <p>Aucun diplôme trouvé.</p>
         <?php endif; ?>
     </div>
