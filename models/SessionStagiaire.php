@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int|null $session_id
  * @property int|null $stagiaire_id
+ * @property int|null $organisation_id
  * @property int|null $present_demij1
  * @property int|null $present_demij2
  * @property int|null $present_demij3
@@ -30,6 +31,7 @@ use Yii;
  */
 class SessionStagiaire extends \yii\db\ActiveRecord
 {
+    public $organisation_id;
     /**
      * {@inheritdoc}
      */
@@ -44,10 +46,11 @@ class SessionStagiaire extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['session_id', 'stagiaire_id', 'present_demij1', 'present_demij2', 'present_demij3', 'present_demij4', 'present_demij5', 'present_demij6', 'present_demij7', 'present_demij8', 'present_demij9', 'present_demij10', 'stagiaire_hors_convention_auditeur_libre'], 'integer'],
+            [['session_id', 'stagiaire_id', 'present_demij1', 'present_demij2', 'present_demij3', 'present_demij4', 'present_demij5', 'present_demij6', 'present_demij7', 'present_demij8', 'present_demij9', 'present_demij10', 'stagiaire_hors_convention_auditeur_libre', 'organisation_id'], 'integer'],
             [['reponses_questionnaire_niveau_initial_json', 'reponses_questionnaire_niveau_final_json', 'reponses_satisfaction_json'], 'string'],
             [['session_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sessions::class, 'targetAttribute' => ['session_id' => 'id']],
             [['stagiaire_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stagiaires::class, 'targetAttribute' => ['stagiaire_id' => 'id']],
+            [['organisation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organisations::class, 'targetAttribute' => ['organisation_id' => 'id']],
         ];
     }
 
@@ -58,7 +61,7 @@ class SessionStagiaire extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'session_id' => 'Session',
+            'session_id' => '',
             'stagiaire_id' => 'Stagiaire',
             'present_demij1' => 'Present Demij1',
             'present_demij2' => 'Present Demij2',
@@ -95,6 +98,16 @@ class SessionStagiaire extends \yii\db\ActiveRecord
     public function getStagiaire0()
     {
         return $this->hasOne(Stagiaires::class, ['id' => 'stagiaire_id']);
+    }
+
+    /**
+     * Gets query for [[Organisation]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrganisation()
+    {
+        return $this->hasOne(Organisations::class, ['id' => 'organisation_id']);
     }
 
 }

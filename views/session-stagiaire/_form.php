@@ -14,10 +14,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-   <?= $form->field($model, 'session_id')->hiddenInput(['readonly' => true]) ?>
+    <?= $form->field($model, 'session_id')->hiddenInput(['readonly' => true]) ?>
+
+   <?= $form->field($model, 'organisation_id')->dropDownList(
+    ArrayHelper::map(\app\models\Organisations::find()->all(), 'id', 'nom'),
+    ['prompt' => 'Sélectionnez une organisation']
+) ?>
 
     <?= $form->field($model, 'stagiaire_id')->dropDownList(
         ArrayHelper::map(Stagiaires::find()->all(),'id', function($data){ return $data["nom"]." ".$data["prenom"];}));  ?>
+
+
 
    <!-- <?= $form->field($model, 'present_demij1')->textInput() ?>
 

@@ -44,7 +44,7 @@ $this->title = 'Stagiaires';
                 'label' => 'Organisation',
                 'value' => function ($model) {
                     return $model->organisationNom;
-                },
+                    },
             ],
             'email2:ntext',
             [
