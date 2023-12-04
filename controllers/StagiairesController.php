@@ -145,14 +145,6 @@ class StagiairesController extends Controller
                 // Associe le modèle User au modèle stagiaire
                 $model->user_id = $userModel->id;
 
-                // Récupère l'ID de l'organisation à partir du formulaire
-                $organisationId = Yii::$app->request->post('Stagiaires')['organisationId'];
-                // Associe l'organisation au modèle stagiaire
-                $model->organisationId = $organisationId;
-
-                //  // Récupère toutes les organisations pour afficher dans le formulaire
-                // $organisations = Organisations::find()->all();
-
                 // Valide et sauvegarde le stagiaire
                 if ($model->validate() && $model->save()) {
                     Yii::$app->session->setFlash('success', 'Stagiaire créé avec Succès !');
@@ -196,7 +188,7 @@ class StagiairesController extends Controller
                     }
                 }
 
-                // Save modèle Formateurs
+                // Save modèle Stagiaire
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', 'Stagiaire mis à jour avec succès.');
                     return $this->redirect(['view', 'id' => $model->id]);

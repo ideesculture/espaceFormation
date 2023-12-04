@@ -6,8 +6,7 @@ use yii\helpers\Html;
 /** @var app\models\Stagiaires $model */
 
 $this->title = 'Créer Stagiaires';
-//$this->params['breadcrumbs'][] = ['label' => 'Stagiaires', 'url' => ['index']];
-//$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="stagiaires-create">
 
@@ -15,7 +14,8 @@ $this->title = 'Créer Stagiaires';
 
     <?= $this->render('_form', [
         'model' => $model,
-        'userModel' => $userModel
+        'userModel' => $userModel,
+
     ]) ?>
 
 </div>

@@ -30,7 +30,7 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'derniere_version_cgv_acceptee')->textInput() ?>
     <?= $form->field($model, 'derniere_version_cgu_acceptee')->textInput() ?>
 
-    <?= $form->field($model, 'organisationId')->dropDownList(
+    <?= $form->field($model, 'organisation_id')->dropDownList(
         ArrayHelper::map(Organisations::find()->all(), 'id', 'nom'),
         ['prompt' => 'Sélectionnez une organisation']
     ) ?>

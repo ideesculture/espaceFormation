@@ -39,10 +39,10 @@ class Stagiaires extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'organisationId'], 'required'],
+            [['user_id', 'organisation_id'], 'required'],
             [['nom', 'prenom', 'email2', 'telephone', 'historique_sessions', 'derniere_version_reglement_interieur_accepte', 'derniere_version_cgv_acceptee', 'derniere_version_cgu_acceptee'], 'string'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
-            [['organisationId'], 'exist', 'skipOnError' => true, 'targetClass' => Organisations::class, 'targetAttribute' => ['organisationId' => 'id']],
+            [['organisation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organisations::class, 'targetAttribute' => ['organisation_id' => 'id']],
             [['nom','prenom'], 'required', 'message' => 'Le champ {attribute} ne peut pas être vide'],
         ];
     }
@@ -59,7 +59,7 @@ class Stagiaires extends \yii\db\ActiveRecord
 
     public function getOrganisation()
     {
-        return $this->hasOne(Organisations::class, ['id' => 'organisationId']);
+        return $this->hasOne(Organisations::class, ['id' => 'organisation_id']);
     }
 
 
@@ -78,7 +78,7 @@ class Stagiaires extends \yii\db\ActiveRecord
             'derniere_version_reglement_interieur_accepte' => 'Derniere Version Reglement Interieur Accepte',
             'derniere_version_cgv_acceptee' => 'Derniere Version Cgv Acceptee',
             'derniere_version_cgu_acceptee' => 'Derniere Version Cgu Acceptee',
-            'organisationId' => 'Nom de l\'Entreprise associées',
+            'organisation_id' => 'Nom de l\'Entreprise associées',
         ];
     }
 
