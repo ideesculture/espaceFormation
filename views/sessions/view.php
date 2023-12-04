@@ -56,8 +56,8 @@ $this->title = $model->formationrel->name . " - " . date("d/m/Y", strtotime($mod
             'contact_financeur_email:ntext',
             'adresse_structure_ou_entreprise:ntext',
             'siret_structure_ou_entreprise:ntext',
-            'plan_de_formation:ntext',
-            'questionnaire_satisfaction_formateur:ntext',
+          //  'plan_de_formation:ntext',
+          //  'questionnaire_satisfaction_formateur:ntext',
 
         ],
     ]);
@@ -68,7 +68,7 @@ $this->title = $model->formationrel->name . " - " . date("d/m/Y", strtotime($mod
         <?php if (!empty( $model->formationrel->url_planformation)): ?>
             <div class="pdf-section">
             <h3>Plan de formation</h3>
-                <iframe class="pdf-iframe" src="<?= $model->formationrel->url_planformation ?>" width="100%" height="400px"></iframe>
+                <iframe class="pdf-iframe" src="<?= $model->formationrel->url_planformation ?>" width="100%" height="600px"></iframe>
                 <?php
                     // Vérifier si le fichier existe avant d'afficher le bouton
                     $filePath = Yii::getAlias('@webroot') . '/' . $model->formationrel->url_planformation;
