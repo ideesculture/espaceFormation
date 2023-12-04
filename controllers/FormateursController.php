@@ -274,6 +274,7 @@ class FormateursController extends Controller
                     $model->liste_diplome = $diplomesDir;
                 }
 
+                $model->save();
                 Yii::$app->session->setFlash('success', 'Formateur mis à jour avec succès.');
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {

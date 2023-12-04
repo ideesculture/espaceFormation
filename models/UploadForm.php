@@ -16,7 +16,6 @@ class UploadForm extends Model
     public $planFormation;
     public $listeDiplome;
 
-
     public function rules()
     {
         return [
@@ -28,32 +27,26 @@ class UploadForm extends Model
     public function upload($folderPath)
     {
         if ($this->validate()) {
-            // $timestamp = time();
-            // $shortTimestamp = substr($timestamp, -6); // 6 derniers chiffres du timestamp
 
             if ($this->listeDiplome !== null) {
                 foreach ($this->listeDiplome as $file) {
-                    $randomPart = substr(uniqid(), -6); // 6 derniers caractères de uniqid()
-                    $filePath = $folderPath . '/diplomes/' . $file->baseName . '_' . $randomPart . '.' . $file->extension;
+                    $filePath = $folderPath . '/diplomes/' . $file->baseName . '.' . $file->extension;
                     $file->saveAs($filePath);
                 }
             }
 
             if ($this->pdfFile !== null) {
-                $randomPart = substr(uniqid(), -6);
-                $filePath = $folderPath . '/' . $this->pdfFile->baseName . '_' . $randomPart . '.' . $this->pdfFile->extension;
+                $filePath = $folderPath . '/' . $this->pdfFile->baseName . '.' . $this->pdfFile->extension;
                 $this->pdfFile->saveAs($filePath);
             }
 
             if ($this->uploadedCV !== null) {
-                $randomPart = substr(uniqid(), -6);
-                $filePath = $folderPath . '/' . $this->uploadedCV->baseName . '_' . $randomPart . '.' . $this->uploadedCV->extension;
+                $filePath = $folderPath . '/' . $this->uploadedCV->baseName . '.' . $this->uploadedCV->extension;
                 $this->uploadedCV->saveAs($filePath);
             }
 
             if ($this->planFormation !== null) {
-                $randomPart = substr(uniqid(), -6);
-                $filePath = $folderPath . '/' . $this->planFormation->baseName . '_' . $randomPart . '.' . $this->planFormation->extension;
+                $filePath = $folderPath . '/' . $this->planFormation->baseName . '.' . $this->planFormation->extension;
                 $this->planFormation->saveAs($filePath);
             }
             return true;
