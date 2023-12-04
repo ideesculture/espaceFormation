@@ -31,9 +31,9 @@ class FormateursController extends Controller
                     [
                         'allow' => true,
                         'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
+                        'matchCallback' => function () {
                             $user = Yii::$app->user->identity;
-                            return $user->role === 'admin' || ($user->role === 'formateur'&& $this->isOwnProfile());
+                            return $user->role === 'admin' || ($user->role === 'formateur' && $this->isOwnProfile());
                         },
                     ],
                 ],

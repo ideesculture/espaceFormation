@@ -107,9 +107,9 @@ class SiteController extends Controller
             //redirection selon le role
             switch ($role) {
                 case 'stagiaire':
-                    return $this->redirect(['stagiaires/mes-formations']);
+                    return $this->redirect(['stagiaires/mes-formations', 'id' => Yii::$app->user->identity->stagiaire->id]);
                 case 'formateur':
-                    return $this->redirect(['formateurs/mes-formations']);
+                    return $this->redirect(['formateurs/mes-formations', 'id' => Yii::$app->user->identity->formateur->id]);
                 case 'admin':
                     return $this->goHome();
                 default:

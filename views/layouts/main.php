@@ -49,13 +49,13 @@ if (Yii::$app->user->isGuest) {
     if ($roleLabel === 'stagiaire') {
         $stagiaireId = Yii::$app->user->identity->stagiaire->id;
         $items[] = ['label' => 'Mes Infos', 'url' => ['/stagiaires/view', 'id' => $stagiaireId]];
-        $items[] = ['label' => 'Mes Formations','url' => ['/stagiaires/mes-formations']];
+        $items[] = ['label' => 'Mes Formations','url' => ['/stagiaires/mes-formations', 'id' => $stagiaireId]];
     }
 
     if ($roleLabel === 'formateur') {
         $formateurId = Yii::$app->user->identity->formateur->id;
         $items[] = ['label' => 'Mes Infos', 'url' => ['/formateurs/view', 'id' => $formateurId]];
-        $items[] = ['label' => 'Mes Formations','url' => ['/formateurs/mes-formations']];
+        $items[] = ['label' => 'Mes Formations','url' => ['/formateurs/mes-formations', 'id' => $formateurId]];
         
     }
 
