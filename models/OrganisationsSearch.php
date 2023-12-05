@@ -18,7 +18,7 @@ class OrganisationsSearch extends Organisations
     {
         return [
             [['id'], 'integer'],
-            [['nom'], 'safe'],
+            [['nom', 'personne_a_contacter1', 'email1', 'telephone1', 'personne_a_contacter2', 'email2', 'telephone2'], 'safe'],
         ];
     }
 
@@ -61,7 +61,13 @@ class OrganisationsSearch extends Organisations
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'nom', $this->nom]);
+        $query->andFilterWhere(['like', 'nom', $this->nom])
+            ->andFilterWhere(['like', 'personne_a_contacter1', $this->personne_a_contacter1])
+            ->andFilterWhere(['like', 'email1', $this->email1])
+            ->andFilterWhere(['like', 'telephone1', $this->telephone1])
+            ->andFilterWhere(['like', 'personne_a_contacter2', $this->personne_a_contacter2])
+            ->andFilterWhere(['like', 'email2', $this->email2])
+            ->andFilterWhere(['like', 'telephone2', $this->telephone2]);
 
         return $dataProvider;
     }

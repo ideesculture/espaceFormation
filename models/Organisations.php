@@ -30,6 +30,9 @@ class Organisations extends \yii\db\ActiveRecord
         return [
             [['nom'], 'required'],
             [['nom'], 'string', 'max' => 255],
+            [['personne_a_contacter1', 'personne_a_contacter2'], 'string', 'max' => 255],
+            [['email1', 'email2'], 'email'],
+            [['telephone1', 'telephone2'], 'string', 'max' => 20],
         ];
     }
 
@@ -41,6 +44,12 @@ class Organisations extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nom' => 'Nom',
+            'personne_a_contacter1'=> 'Personne à Contacter',
+            'email1'=> 'Email',
+            'telephone1'=> 'Telephone',
+            'personne_a_contacter2'=> 'Autre Personne à contacter',
+            'email2'=> 'Email2',
+            'telephone2'=> 'Telephone2',
         ];
     }
 
@@ -53,4 +62,5 @@ class Organisations extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Stagiaires::class, ['organisation_id' => 'id']);
     }
+
 }
