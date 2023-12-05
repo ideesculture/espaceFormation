@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
 <?php $form = ActiveForm::begin(); ?>
 
-<?= $form->field($model, 'nom')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'nom',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
 
 <?= $form->field($model, 'personne_a_contacter1')->textInput(['maxlength' => true]) ?>
 <?= $form->field($model, 'email1')->textInput(['maxlength' => true]) ?>

@@ -210,11 +210,14 @@ COMMIT;
 
 -- Mot de passe hashé : rocknroll
 INSERT INTO `utilisateurs` (`id`, `email`, `password`, `role`, `password_reset_token`) VALUES
-(1, 'admin@test.fr', '$2y$10$taMSgwLS6V68HWgj2vzysuqB1a4TcozOog7gAXmEsM.J2KmQ/YZ.a', 'admin', NULL),
-(2, 'stagiaire@test.fr', '$2y$10$taMSgwLS6V68HWgj2vzysuqB1a4TcozOog7gAXmEsM.J2KmQ/YZ.a', 'stagiaire', NULL),
-(3, 'formateur@test.fr', '$2y$10$taMSgwLS6V68HWgj2vzysuqB1a4TcozOog7gAXmEsM.J2KmQ/YZ.a', 'formateur', NULL),
-(4, 'stagiaire2@test.fr', '$2y$10$taMSgwLS6V68HWgj2vzysuqB1a4TcozOog7gAXmEsM.J2KmQ/YZ.a', 'stagiaire', NULL),
-(5, 'stagiaire3@test.fr', '$2y$10$taMSgwLS6V68HWgj2vzysuqB1a4TcozOog7gAXmEsM.J2KmQ/YZ.a', 'stagiaire', NULL);
+(1,'admin@test.fr','$2y$10$taMSgwLS6V68HWgj2vzysuqB1a4TcozOog7gAXmEsM.J2KmQ/YZ.a','admin',NULL),
+(2,'stagiaire@test.fr','$2y$10$taMSgwLS6V68HWgj2vzysuqB1a4TcozOog7gAXmEsM.J2KmQ/YZ.a','stagiaire',NULL),
+(3,'formateur@test.fr','$2y$10$taMSgwLS6V68HWgj2vzysuqB1a4TcozOog7gAXmEsM.J2KmQ/YZ.a','formateur',NULL),
+(4,'stagiaire2@test.fr','$2y$10$taMSgwLS6V68HWgj2vzysuqB1a4TcozOog7gAXmEsM.J2KmQ/YZ.a','stagiaire',NULL),
+(5,'stagiaire3@test.fr','$2y$10$taMSgwLS6V68HWgj2vzysuqB1a4TcozOog7gAXmEsM.J2KmQ/YZ.a','stagiaire',NULL),
+(6,'chevillot@musee-rodin.fr','$2y$13$wnDnidALBXKJKTECHn2o1eMfz9VDfWnIsnXpGNRoDL5xfXyhGQatG','stagiaire',NULL),
+(7,'nicolas.andry@musee-orsay.fr','$2y$13$cHPUwxGtEZ6MHt585POZd.yZy8Ncb0M3nL6GChIdhkc9y3petQwbC','stagiaire',NULL),
+(8,'france@flagneau.fr','$2y$13$RUfa4WwsPcnUmBwVFZ9O1.G7Z/agxkQkMj.IJZBvYb31NA1mCzU5i','stagiaire',NULL);
 
 INSERT INTO `organisations` (`id`, `nom`, `personne_a_contacter1`, `email1`, `telephone1`,`personne_a_contacter2`,`email2`,`telephone2`) VALUES
 (1, 'Musée d''Orsay - Debuisson', 'sylvie Julé', 'sylvie.jule@musee-orsay.fr', '0620346464', 'Nicolas Andry', 'nicolas.andry@musee-orsay.fr', ''),
@@ -222,10 +225,12 @@ INSERT INTO `organisations` (`id`, `nom`, `personne_a_contacter1`, `email1`, `te
 (3, 'Musée des blindés', 'Jean', 'email@chef.com', '0610813837', 'Autre personne', 'autre@email.com', '0710435476');
 
 INSERT INTO `stagiaires` (`id`, `nom`, `prenom`, `email2`, `telephone`, `historique_sessions`, `derniere_version_reglement_interieur_accepte`, `derniere_version_cgv_acceptee`, `derniere_version_cgu_acceptee`, `user_id`, `organisation_id`) VALUES
-(1, 'Deruelle', 'Marine', 'email@secours.fr', '0620346464', '', '', '', '', 2, 1),
-(2, 'Simon', 'Nicolas 2', 'emaildenico@secours.fr', '0742723278', '', '', '', '', 4, 2),
-(3, 'Sairien', 'Jean', 'emailjeean@secours.fr', '0610813837', '', '', '', '', 4, 3);
-
+(1,'Deruelle','Marine','email@secours.fr','0620346464','','','','',2,1),
+(2,'Simon','Nicolas 2','emaildenico@secours.fr','0742723278','','','','',4,2),
+(3,'Sairien','Jean','emailjeean@secours.fr','0610813837','','','','',4,3),
+(4,'Chevillot','Catherine','','','','','','',12,1),
+(5,'Andry','Nicolas','','','','','','',13,1),
+(6,'Lagneau','France','','','','','','',14,1);
 
 INSERT INTO `centres` (`id`, `name`, `lieu`, `georeference`, `url_lieu1`, `url_lieu2`, `url_lieu3`) VALUES
 (1, 'IdéesCulture Salle de réunion', 'Laigné en belin', '', '', '', '');

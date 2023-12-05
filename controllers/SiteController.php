@@ -11,7 +11,6 @@ use app\models\LoginForm;
 use app\models\UploadForm;
 use app\models\ContactForm;
 use app\models\ResetPasswordForm;
-use yii\web\UploadedFile;
 use app\models\User;
 
 
@@ -58,24 +57,6 @@ class SiteController extends Controller
             ],
         ];
     }
-
-    // public function actionUpload()
-    // {
-    //     $model = new UploadForm();
-
-    //     if (Yii::$app->request->isPost) {
-    //         $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
-    //         $model->uploadedCV = UploadedFile::getInstance($model, 'uploadedCV');
-    //         if ($model->upload()) {
-    //             // Le fichier est téléchargé avec succès
-    //             Yii::$app->session->setFlash('success', 'Fichier téléchargé avec succès!');
-
-    //             return $this->redirect(['site/upload']);
-    //         }
-    //     }
-
-    //     return $this->render('upload', ['model' => $model]);
-    // }
 
     /**
      * Displays homepage.

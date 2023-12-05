@@ -3,6 +3,29 @@ main>.container {
     padding: 70px 15px 20px;
 }   
 
+.checkbox-container {
+   margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.checkbox {
+    width: calc(33.33% - 20px);
+    box-sizing: border-box;
+    margin-bottom: 5px; 
+}
+
+@media (min-width: 768px) {
+    .checkbox {
+        width: calc(25% - 20px);
+    }
+}
+
+.checkbox input {
+    margin-right: 5px; 
+}
+
 .formation {
     border: 1px solid #ccc;
     padding: 10px;
@@ -43,7 +66,6 @@ main>.container {
     box-sizing: border-box;
 }
 
-/* Utilisez les classes de Bootstrap pour la disposition des colonnes */
 @media (min-width: 576px) {
     .pdf-section {
         flex: 0 0 calc(50% - 20px);

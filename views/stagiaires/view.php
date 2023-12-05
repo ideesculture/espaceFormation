@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Stagiaires $model */
 
-$this->title = $model->nom;
+$this->title = $model->nom . ' ' . $model->prenom;
 //$this->params['breadcrumbs'][] = ['label' => 'Stagiaires', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -25,7 +25,10 @@ $this->title = $model->nom;
                 'confirm' => 'Etes-vous sûr(e) de vouloir supprimer cet élément?',
                 'method' => 'post',
             ],
-        ]) ?>  <?php endif; ?>
+        ])  ?> 
+      <?= Html::a('Retour à la liste des stagiaires', ['index'], ['class' => 'btn btn-success']) ?>
+       
+         <?php endif; ?>
     </p>
 
     <?= DetailView::widget([
