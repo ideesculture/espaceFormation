@@ -84,15 +84,13 @@ class SessionStagiaireController extends Controller
     public function actionCreate()
     {
         $model = new SessionStagiaire();
-
+    
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 $sessionId = $model->session_id;
     
                 // Récupérer les ID des stagiaires cochés
-                $selectedStagiaires = $model->selectedStagiaires;
-                var_dump($selectedStagiaires);
-                    die;
+                $selectedStagiaires = $this->request->post('selectedStagiaires');
     
                 // Associer les stagiaires à la session
                 if (!empty($selectedStagiaires)) {
