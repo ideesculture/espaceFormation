@@ -88,16 +88,31 @@ class SessionStagiaireController extends Controller
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 $sessionId = $model->session_id;
-
+    
+                // Récupérer les ID des stagiaires cochés
+                $selectedStagiaires = $model->selectedStagiaires;
+                var_dump($selectedStagiaires);
+                    die;
+    
+                // Associer les stagiaires à la session
+                if (!empty($selectedStagiaires)) {
+                    foreach ($selectedStagiaires as $stagiaireId) {
+                        $sessionStagiaire = new SessionStagiaire();
+                        $sessionStagiaire->session_id = $sessionId;
+                        $sessionStagiaire->stagiaire_id = $stagiaireId;
+                        $sessionStagiaire->save();
+                    }
+                }
+    
                 return $this->redirect(['/sessions/view', 'id' => $sessionId]);
             }
         } else {
             $sessionId = Yii::$app->request->get('session_id');
-
+    
             $model->loadDefaultValues();
             $model->setAttribute("session_id", $sessionId);
         }
-
+    
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -154,12 +169,14 @@ class SessionStagiaireController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-
-
+    /**
+     * Méthode pour charger les stagiaires d'une entrerise
+     */
     public function actionChargerStagiaires($organisationId)
     {
         $stagiaires = Stagiaires::find()->where(['organisation_id' => $organisationId])->all();
 
+        // Utilisation d'une vue partielle
         return $this->renderAjax('_dropdown_stagiaires', [
             'stagiaires' => $stagiaires,
         ]);

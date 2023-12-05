@@ -32,7 +32,10 @@ use yii\widgets\ActiveForm;
 
 
 
-   <!-- <?= $form->field($model, 'present_demij1')->textInput() ?>
+   <!-- 
+   // $this->render('_dropdown_stagiares', ['stagiaires' => $stagiaires])
+   
+   <?= $form->field($model, 'present_demij1')->textInput() ?>
 
     <?= $form->field($model, 'present_demij2')->textInput() ?>
 
@@ -56,7 +59,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'reponses_questionnaire_niveau_final_json')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'reponses_satisfaction_json')->textarea(['rows' => 6]) ?>-->
+    <?= $form->field($model, 'reponses_satisfaction_json')->textarea(['rows' => 6]) ?> -->
 
     <?= $form->field($model, 'stagiaire_hors_convention_auditeur_libre')->textInput() ?>
 

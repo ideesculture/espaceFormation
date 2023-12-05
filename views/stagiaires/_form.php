@@ -19,8 +19,8 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'prenom',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
 
     <!-- Champs pour le modèle User -->
-    <?= $form->field($userModel, 'email')->textInput() ?>
-    <?= $form->field($userModel, 'password')->passwordInput() ?>
+    <?= $form->field($userModel, 'email',['labelOptions' => ['class' => 'required-label control-label']])->textInput() ?>
+    <?= $form->field($userModel, 'password',['labelOptions' => ['class' => 'required-label control-label']])->passwordInput() ?>
 
     <!-- Autres champs stagiaires -->
     <?= $form->field($model, 'telephone')->textInput() ?>

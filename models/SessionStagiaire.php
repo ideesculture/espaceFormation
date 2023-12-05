@@ -32,6 +32,7 @@ use Yii;
 class SessionStagiaire extends \yii\db\ActiveRecord
 {
     public $organisation_id;
+    public $selectedStagiaires;
     /**
      * {@inheritdoc}
      */
@@ -51,6 +52,7 @@ class SessionStagiaire extends \yii\db\ActiveRecord
             [['session_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sessions::class, 'targetAttribute' => ['session_id' => 'id']],
             [['stagiaire_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stagiaires::class, 'targetAttribute' => ['stagiaire_id' => 'id']],
             [['organisation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organisations::class, 'targetAttribute' => ['organisation_id' => 'id']],
+            [['selectedStagiaires'], 'safe'],
         ];
     }
 

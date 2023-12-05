@@ -68,14 +68,14 @@ $config = [
         ],
         'db' => $db,
 
-        // 'urlManager' => [
-        //     'enablePrettyUrl' => true,
-        //     'showScriptName' => false,
-        //     'rules' => [
-        //       'site/upload' => 'site/upload',
-        //         // Ajoutez d'autres règles si nécessaire
-        //     ],
-        // ],
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+              'site/upload' => 'site/upload',
+                // Ajoutez d'autres règles si nécessaire
+            ],
+        ],
     ],
     'params' => $params,
 ];
