@@ -47,6 +47,7 @@ class SessionStagiaire extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+           // [['session_id', 'stagiaire_id'], 'unique', 'targetAttribute' => ['session_id', 'stagiaire_id']],
             [['session_id', 'stagiaire_id', 'present_demij1', 'present_demij2', 'present_demij3', 'present_demij4', 'present_demij5', 'present_demij6', 'present_demij7', 'present_demij8', 'present_demij9', 'present_demij10', 'stagiaire_hors_convention_auditeur_libre', 'organisation_id'], 'integer'],
             [['reponses_questionnaire_niveau_initial_json', 'reponses_questionnaire_niveau_final_json', 'reponses_satisfaction_json'], 'string'],
             [['session_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sessions::class, 'targetAttribute' => ['session_id' => 'id']],

@@ -32,6 +32,7 @@ use yii\widgets\ActiveForm;
 
 
 
+
    <!-- 
    // $this->render('_dropdown_stagiares', ['stagiaires' => $stagiaires])
    

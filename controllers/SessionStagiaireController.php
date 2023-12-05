@@ -87,21 +87,26 @@ class SessionStagiaireController extends Controller
     
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+            
                 $sessionId = $model->session_id;
     
                 // Récupérer les ID des stagiaires cochés
                 $selectedStagiaires = $this->request->post('selectedStagiaires');
-    
-                // Associer les stagiaires à la session
                 if (!empty($selectedStagiaires)) {
                     foreach ($selectedStagiaires as $stagiaireId) {
-                        $sessionStagiaire = new SessionStagiaire();
-                        $sessionStagiaire->session_id = $sessionId;
-                        $sessionStagiaire->stagiaire_id = $stagiaireId;
-                        $sessionStagiaire->save();
+                        // Vérifie si le stagiaire n'est pas déjà associé à cette session
+                        $existingAssociation = SessionStagiaire::findOne(['session_id' => $model->session_id, 'stagiaire_id' => $stagiaireId]);
+            
+                        if ($existingAssociation === null) {
+                            // Le stagiaire n'est pas déjà associé, on peut l'ajouter
+                            $sessionStagiaire = new SessionStagiaire();
+                            $sessionStagiaire->session_id = $model->session_id;
+                            $sessionStagiaire->stagiaire_id = $stagiaireId;
+                            $sessionStagiaire->save();
+                        }
                     }
                 }
-    
+            
                 return $this->redirect(['/sessions/view', 'id' => $sessionId]);
             }
         } else {
@@ -168,13 +173,15 @@ class SessionStagiaireController extends Controller
     }
 
     /**
-     * Méthode pour charger les stagiaires d'une entrerise
+     * Méthode pour charger les stagiaires d'une entrerise non inscrit à la session en cours
      */
     public function actionChargerStagiaires($organisationId)
     {
-        $stagiaires = Stagiaires::find()->where(['organisation_id' => $organisationId])->all();
+        // Récupérer la liste des stagiaires de l'organisation qui ne sont pas inscrits à la session
+        $stagiaires = Stagiaires::find()
+            ->where(['organisation_id' => $organisationId])
+            ->all();
 
-        // Utilisation d'une vue partielle
         return $this->renderAjax('_dropdown_stagiaires', [
             'stagiaires' => $stagiaires,
         ]);
