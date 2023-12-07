@@ -29,6 +29,12 @@ use DateTime;
  */
 class Sessions extends \yii\db\ActiveRecord
 {
+
+    /**
+     * Attribut pour stocker les formats de date
+     */
+    public $dateAttributes = ['debut', 'fin'];
+
     /**
      * {@inheritdoc}
      */
@@ -49,7 +55,8 @@ class Sessions extends \yii\db\ActiveRecord
             [['formationrel'], 'exist', 'skipOnError' => true, 'targetClass' => Formations::class, 'targetAttribute' => ['formation_id' => 'id']],
             [['centrerel'], 'exist', 'skipOnError' => true, 'targetClass' => Centres::class, 'targetAttribute' => ['centre_id' => 'id']],
             [['debut', 'fin'], 'required', 'message' => 'Le champ {attribute} ne peut pas être vide'],
-            [['debut', 'fin'], 'date', 'format' => 'dd-MM-yyyy'],
+          //  [['debut', 'fin'], 'date', 'format' => 'dd-MM-yyyy'],
+            [$this->dateAttributes, 'date', 'format' => 'php:d-m-Y'],
             ['fin', 'compare', 'compareAttribute' => 'debut', 'operator' => '>', 'message' => 'La date de fin doit être ultérieure à la date de début'],
             //  ['debut', 'compare', 'compareAttribute' => 'fin', 'operator' => '<', 'message' => 'La date de début doit être antèrieure à la date de fin'],
         ];
@@ -120,27 +127,30 @@ class Sessions extends \yii\db\ActiveRecord
         return $today->format('Y-m-d') == $sessionEndDate->format('Y-m-d');
     }
 
-    /**
-     * Méthode pour formater les dates avant insertion en Base
-     */
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            $this->debut = Yii::$app->formatter->asDate($this->debut, 'php:Y-m-d');
-            $this->fin = Yii::$app->formatter->asDate($this->fin, 'php:Y-m-d');
-            return true;
-        }
-        return false;
-    }
+//    /**
+//      * Méthode pour formater les dates avant insertion en Base
+//      */
+//     public function beforeSave($insert)
+//     {
+//         if (parent::beforeSave($insert)) {
+//             foreach ($this->dateAttributes as $attribute) {
+//                 $this->$attribute = Yii::$app->formatter->asDate($this->$attribute, 'php:Y-m-d');
+//             }
+//             return true;
+//         }
+//         return false;
+//     }
 
-    /**
-     * Méthode pour formater les dates aprés récupération en base
-     */
-    public function afterFind()
-    {
-        parent::afterFind();
-        $this->debut = Yii::$app->formatter->asDate($this->debut, 'php:d-m-Y');
-        $this->fin = Yii::$app->formatter->asDate($this->fin, 'php:d-m-Y');
-    }
+   
+//     /**
+//      * Méthode pour formater les dates après récupération en base
+//      */
+//     public function afterFind()
+//     {
+//         parent::afterFind();
+//         foreach ($this->dateAttributes as $attribute) {
+//             $this->$attribute = Yii::$app->formatter->asDate($this->$attribute, 'php:d-m-Y');
+//         }
+//     }
 
 }
