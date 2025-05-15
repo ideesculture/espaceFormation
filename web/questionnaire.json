@@ -1,0 +1,527 @@
+[
+	{
+		"$el": "ul",
+		"attrs": {
+			"id": "nav-questionnaire",
+			"class": "nav nav-tabs"
+		},
+		"children": [
+			{
+				"$el": "li",
+				"attrs": {
+					"id": "nav-questionnaire",
+					"class": "nav-item"
+				},
+				"children": [
+					{
+						"$el": "a",
+						"attrs": {
+							"class": "nav-link active",
+							"data-bs-toggle": "tab",
+							"data-bs-target": "#generalites"
+						},
+						"children": "Généralités"
+					}
+				]
+			},
+			{
+				"$el": "li",
+				"attrs": {
+					"id": "nav-stagiaire",
+					"class": "nav-item"
+				},
+				"children": [
+					{
+						"$el": "a",
+						"attrs": {
+							"class": "nav-link",
+							"data-bs-toggle": "tab",
+							"data-bs-target": "#stagiaire"
+						},
+						"children": "Formation"
+					}
+				]
+			},
+			{
+				"$el": "li",
+				"attrs": {
+					"id": "nav-qualite",
+					"class": "nav-item"
+				},
+				"children": [
+					{
+						"$el": "a",
+						"attrs": {
+							"class": "nav-link",
+							"data-bs-toggle": "tab",
+							"data-bs-target": "#qualite"
+						},
+						"children": "Prestation"
+					}
+				]
+			},
+			{
+				"$el": "li",
+				"attrs": {
+					"id": "nav-environnement",
+					"class": "nav-item"
+				},
+				"children": [
+					{
+						"$el": "a",
+						"attrs": {
+							"class": "nav-link",
+							"data-bs-toggle": "tab",
+							"data-bs-target": "#environnement"
+						},
+						"children": "Environnement"
+					}
+				]
+			}
+		]
+	},
+	{
+		"$el": "div",
+		"attrs": {
+			"id": "generalites",
+			"class": "tab-pane fade show active",
+			"role": "tabpanel",
+			"aria-labelledby": "nav-generalites"
+		},
+		"children": [
+			{
+				"$el": "h2",
+				"children": "Généralités",
+				"attrs": {
+					"class": "text-xl font-bold mb-4"
+				}
+			},
+			{
+				"$formkit": "text",
+				"name": "intitule_action_formation",
+				"label": "Quel était l'intitulé de l'action de formation ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "nom_intervenant",
+				"label": "Quel était le nom de l'intervenant ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$formkit": "date",
+				"name": "date_debut_formation",
+				"label": "A quelle date la formation a-t-elle débuté ?",
+				"help": "Date du début de la formation",
+				"validation": "required|date_after:2020-01-01",
+				"value": "2024-05-01",
+				"clearable": true
+			},
+			{
+				"$formkit": "date",
+				"name": "date_fin_formation",
+				"label": "A quelle date la formation s'est-elle terminée ?",
+				"help": "Date de fin de la formation",
+				"validation": "required|date_after:2020-01-01",
+				"value": "2024-05-01",
+				"clearable": true
+			},
+			{
+				"$formkit": "text",
+				"name": "service",
+				"label": "Dans quel service effectuiez-vous votre formation ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "fonction_dans_le_service",
+				"label": "Quelle était votre fonction au sein de ce service ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$el": "div",
+				"attrs": {
+					"class": "progress"
+				},
+				"children": [
+					{
+						"$el": "div",
+						"attrs": {
+							"id": "generalites",
+							"class": "progress-bar",
+							"role": "progressbar",
+							"style": "width: 25%",
+							"aria-valuenow": "25",
+							"aria-valuemin": "0",
+							"aria-valuemax": "100"
+						}
+					}
+				]
+			}
+		]
+	},
+	{
+		"$el": "div",
+		"attrs": {
+			"id": "stagiaire",
+			"class": "tab-pane fade",
+			"role": "tabpanel",
+			"aria-labelledby": "nav-stagiaire"
+		},
+		"children": [
+			{
+				"$el": "h2",
+				"children": "La formation et le stagiaire",
+				"attrs": {
+					"class": "text-xl font-bold mb-4"
+				}
+			},
+			{
+				"$formkit": "text",
+				"name": "objectifs_initiaux",
+				"label": "Quels étaient vos objectifs initiaux ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$formkit": "radio",
+				"name": "adéquation",
+				"label": "La formation était-elle en adéquation avec ces objectifs ?",
+				"options": {
+					"1":"Oui",
+					"0":"Non"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "adequation_non_commentaires",
+				"label": "Si non, quelles en sont les raisons ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$formkit": "radio",
+				"name": "satisfait_contenu",
+				"label": "Êtes-vous satisfait du contenu proposé ?",
+				"options": {
+					"1":"Oui",
+					"0":"Non"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "satisfait_contenu_non_commentaires",
+				"label": "Si non, quelles en sont les raisons ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$formkit": "radio",
+				"name": "conformité",
+				"label": "Le contenu était-il en conformité avec le programme annoncé ?",
+				"options": {
+					"1":"Oui",
+					"0":"Non"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "radio",
+				"name": "mise_en_pratique",
+				"label": "Pensez-vous pouvoir mettre en pratique immédiatement le contenu de cette formation ?",
+				"options": {
+					"1":"Oui",
+					"0":"Non"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "mise_en_pratique_non_commentaires",
+				"label": "Si non, quelles en sont les raisons ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$formkit": "radio",
+				"name": "difficultes",
+				"label": "Avez-vous rencontré des difficultés particulières durant cette formation (rythme, durée, compréhension, ...)",
+				"options": {
+					"1":"Oui",
+					"0":"Non"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "difficultes_commentaires",
+				"label": "Si oui, quelles sont les difficultés que vous avez rencontrées ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "difficultes_préconisations",
+				"label": "Quelles préconisations suggéreriez-vous pour y remédier ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$formkit": "radio",
+				"name": "besoin_formation_complementaire",
+				"label": "Ressentez-vous le besoin d'une formation complémentaire ?",
+				"options": {
+					"1":"Oui",
+					"0":"Non"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "textarea",
+				"name": "besoin_formation_complementaire_commentaires",
+				"label": "Remarques personnelles : ",
+				"placeholder": "Merci de formuler des phrases."
+			},
+			{
+				"$el": "div",
+				"attrs": {
+					"class": "progress"
+				},
+				"children": [
+					{
+						"$el": "div",
+						"attrs": {
+							"id": "generalites",
+							"class": "progress-bar",
+							"role": "progressbar",
+							"style": "width: 50%",
+							"aria-valuenow": "50",
+							"aria-valuemin": "0",
+							"aria-valuemax": "100"
+						}
+					}
+				]
+			}
+		]
+	},
+	{
+		"$el": "div",
+		"attrs": {
+			"id": "qualite",
+			"class": "tab-pane fade",
+			"role": "tabpanel",
+			"aria-labelledby": "nav-qualite"
+		},
+		"children": [
+			{
+				"$el": "h2",
+				"children": "La prestation de l'intervenant",
+				"attrs": {
+					"class": "text-xl font-bold mb-4"
+				}
+			},
+			{
+				"$formkit": "range",
+				"name": "pedagogie_intervenant",
+				"label": "Pédagogie du formateur",
+				"help": "Note de 1 à 6",
+				"prefix-icon": "sad",
+				"suffix-icon": "happy",
+				"min": "1",
+				"max": "6",
+				"validation": "required"
+			},
+			{
+				"$formkit": "textarea",
+				"name": "pedagogie_intervenant_commentaires",
+				"label": "Observations",
+				"placeholder": "Merci de formuler des phrases."
+			},
+			{
+				"$formkit": "range",
+				"name": "adaptation_formateur",
+				"label": "Qualité d'adaptation du formateur au niveau des stagiaires",
+				"help": "Note de 1 à 6",
+				"prefix-icon": "sad",
+				"suffix-icon": "happy",
+				"min": "1",
+				"max": "6",
+				"validation": "required"
+			},
+			{
+				"$formkit": "textarea",
+				"name": "adaptation_formateur_commentaires",
+				"label": "Observations",
+				"placeholder": "Merci de formuler des phrases."
+			},
+			{
+				"$formkit": "range",
+				"name": "ecoute_attentes",
+				"label": "Ecoutes des attentes des stagiaires",
+				"help": "Note de 1 à 6",
+				"prefix-icon": "sad",
+				"suffix-icon": "happy",
+				"min": "1",
+				"max": "6",
+				"validation": "required"
+			},
+			{
+				"$formkit": "textarea",
+				"name": "ecoute_attentes_commentaires",
+				"label": "Observations",
+				"placeholder": "Merci de formuler des phrases."
+			},
+			{
+				"$formkit": "range",
+				"name": "exemples_clairs",
+				"label": "Exemples clairs et concrets",
+				"help": "Note de 1 à 6",
+				"prefix-icon": "sad",
+				"suffix-icon": "happy",
+				"min": "1",
+				"max": "6",
+				"validation": "required"
+			},
+			{
+				"$formkit": "textarea",
+				"name": "exemples_clairs_commentaires",
+				"label": "Observations",
+				"placeholder": "Merci de formuler des phrases."
+			},
+			{
+				"$formkit": "range",
+				"name": "animation_groupe",
+				"label": "Animation du groupe",
+				"help": "Note de 1 à 6",
+				"prefix-icon": "sad",
+				"suffix-icon": "happy",
+				"min": "1",
+				"max": "6",
+				"validation": "required"
+			},
+			{
+				"$formkit": "textarea",
+				"name": "animation_groupe_commentaires",
+				"label": "Observations",
+				"placeholder": "Merci de formuler des phrases."
+			},
+			{
+				"$formkit": "range",
+				"name": "connaissance_sujet",
+				"label": "Connaissance de son sujet",
+				"help": "Note de 1 à 6",
+				"prefix-icon": "sad",
+				"suffix-icon": "happy",
+				"min": "1",
+				"max": "6",
+				"validation": "required"
+			},
+			{
+				"$formkit": "textarea",
+				"name": "connaissance_sujet_commentaires",
+				"label": "Observations",
+				"placeholder": "Merci de formuler des phrases."
+			},
+			{
+				"$el": "div",
+				"attrs": {
+					"class": "progress"
+				},
+				"children": [
+					{
+						"$el": "div",
+						"attrs": {
+							"id": "generalites",
+							"class": "progress-bar",
+							"role": "progressbar",
+							"style": "width: 75%",
+							"aria-valuenow": "75",
+							"aria-valuemin": "0",
+							"aria-valuemax": "100"
+						}
+					}
+				]
+			}
+		]
+	},
+	{
+		"$el": "div",
+		"attrs": {
+			"id": "environnement",
+			"class": "tab-pane fade",
+			"role": "tabpanel",
+			"aria-labelledby": "nav-environnement"
+		},
+		"children": [
+			{
+				"$el": "h2",
+				"children": "L'environnement et les moyens pédagogiques",
+				"attrs": {
+					"class": "text-xl font-bold mb-4"
+				}
+			},
+			{
+				"$formkit": "range",
+				"name": "supports_formation",
+				"label": "Les supports de formation",
+				"help": "Note de 1 à 6",
+				"prefix-icon": "sad",
+				"suffix-icon": "happy",
+				"min": "1",
+				"max": "6",
+				"validation": "required"
+			},
+			{
+				"$formkit": "textarea",
+				"name": "supports_formation_commentaires",
+				"label": "Observations",
+				"placeholder": "Merci de formuler des phrases."
+			},
+			{
+				"$formkit": "range",
+				"name": "agencement_salle",
+				"label": "Agencement de la salle",
+				"help": "Note de 1 à 6",
+				"prefix-icon": "sad",
+				"suffix-icon": "happy",
+				"min": "1",
+				"max": "6",
+				"validation": "required"
+			},
+			{
+				"$formkit": "textarea",
+				"name": "agencement_salle_commentaires",
+				"label": "Observations",
+				"placeholder": "Merci de formuler des phrases."
+			},
+			{
+				"$formkit": "range",
+				"name": "homogeneite_groupe",
+				"label": "Homogénéité du groupe",
+				"help": "Note de 1 à 6",
+				"prefix-icon": "sad",
+				"suffix-icon": "happy",
+				"min": "1",
+				"max": "6",
+				"validation": "required"
+			},
+			{
+				"$formkit": "textarea",
+				"name": "homogeneite_groupe_commentaires",
+				"label": "Observations",
+				"placeholder": "Merci de formuler des phrases."
+			},
+			{
+				"$formkit": "submit",
+				"label": "Valider",
+				"help": "Enregistrer et quitter"
+			}
+		]
+	}
+]

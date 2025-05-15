@@ -1,0 +1,461 @@
+[
+	{
+		"$el": "ul",
+		"attrs": {
+			"id": "nav-questionnaire",
+			"class": "nav nav-tabs"
+		},
+
+
+
+		"children": [
+			{
+				"$el": "li",
+				"attrs": {
+					"id": "nav-generalites",
+					"class": "nav-item"
+				},
+				"children": [
+					{
+						"$el": "a",
+						"attrs": {
+							"class": "nav-link active",
+							"data-bs-toggle": "tab",
+							"data-bs-target": "#generalites"
+						},
+						"children": "Informations générales"
+					}
+				]
+			},
+
+
+			{
+				"$el": "li",
+				"attrs": {
+					"id": "nav-attentes",
+					"class": "nav-item"
+				},
+				"children": [
+					{
+						"$el": "a",
+						"attrs": {
+							"class": "nav-link",
+							"data-bs-toggle": "tab",
+							"data-bs-target": "#attentes"
+						},
+						"children": "Attentes vis-à-vis de la formation"
+					}
+				]
+			},
+
+
+			{
+				"$el": "li",
+				"attrs": {
+					"id": "nav-autoeval",
+					"class": "nav-item"
+				},
+				"children": [
+					{
+						"$el": "a",
+						"attrs": {
+							"class": "nav-link",
+							"data-bs-toggle": "tab",
+							"data-bs-target": "#autoeval"
+						},
+						"children": "Auto-évaluation initiale"
+					}
+				]
+			},
+			{
+				"$el": "li",
+				"attrs": {
+					"id": "nav-organisation",
+					"class": "nav-item"
+				},
+				"children": [
+					{
+						"$el": "a",
+						"attrs": {
+							"class": "nav-link",
+							"data-bs-toggle": "tab",
+							"data-bs-target": "#organisation"
+						},
+						"children": "Organisation et méthode"
+					}
+				]
+			},
+			{
+				"$el": "li",
+				"attrs": {
+					"id": "nav-derniermot",
+					"class": "nav-item"
+				},
+				"children": [
+					{
+						"$el": "a",
+						"attrs": {
+							"class": "nav-link",
+							"data-bs-toggle": "tab",
+							"data-bs-target": "#derniermot"
+						},
+						"children": "Dernier mot"
+					}
+				]
+			}
+		]
+	},
+
+	
+	{
+		"$el": "div",
+		"attrs": {
+			"id": "generalites",
+			"class": "tab-pane fade show active",
+			"role": "tabpanel",
+			"aria-labelledby": "nav-generalites"
+		},
+		"children": [
+			{
+				"$el": "h2",
+				"children": "Informations générales",
+				"attrs": {
+					"class": "text-xl font-bold mb-4"
+				}
+			},
+			{
+				"$formkit": "text",
+				"name": "nom_prenom",
+				"label": "Nom et prénom :",
+				"validation": "required"
+			},
+			{
+				"$formkit": "date",
+				"name": "date",
+				"label": "Date du jour :",
+				"validation": "required",
+				"value": "{{ $today }}",
+				"clearable": true
+			},
+			{
+				"$formkit": "text",
+				"name": "intitule_formation",
+				"label": "Quel est l'intitulé de la formation ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "poste_actuel",
+				"label": "Quel est votre poste actuel ?",
+				"help": "Réponse courte",
+				"validation": "required"
+			},
+			{
+				"$formkit": "radio",
+				"name": "occupation_poste",
+				"label": "Depuis combien de temps occupez-vous ce poste ?",
+				"options": {
+					"0":"Moins de 6 mois",
+					"1":"6 mois à 2 ans",
+					"2":"2 à 5 ans",
+					"3":"Plus de 5 ans"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "radio",
+				"name": "formation_similaire",
+				"label": "Avez-vous déjà suivi une formation sur ce sujet auparavant ?",
+				"options": {
+					"1":"Oui",
+					"0":"Non"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "oui_formation_similaire",
+				"label": "Si oui, laquelle ?",
+				"help": "* facultatif"
+			},
+			{
+				"$el": "div",
+				"attrs": {
+					"class": "progress"
+				},
+				"children": [
+					{
+						"$el": "div",
+						"attrs": {
+							"id": "generalites",
+							"class": "progress-bar",
+							"role": "progressbar",
+							"style": "width: 20%",
+							"aria-valuenow": "20",
+							"aria-valuemin": "0",
+							"aria-valuemax": "100"
+						}
+					}
+				]
+			}
+		]
+	},
+
+
+	{
+		"$el": "div",
+		"attrs": {
+			"id": "attentes",
+			"class": "tab-pane fade",
+			"role": "tabpanel",
+			"aria-labelledby": "nav-attentes"
+		},
+		"children": [
+			{
+				"$el": "h2",
+				"children": "Attentes vis-à-vis de la formation",
+				"attrs": {
+					"class": "text-xl font-bold mb-4"
+				}
+			},
+			{
+				"$formkit": "checkbox",
+				"name": "attentes_formation",
+				"label": "Pour quelles raisons participez-vous à cette formation ? (plusieurs réponses possibles)",
+				"options": {
+					"0":"Développer mes compétences",
+					"1":"Répondre à une demande de mon entreprise",
+					"2":"Obtenir une certification ou un titre",
+					"3":"Mieux comprendre un sujet spécifique",
+					"4":"Autre"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "autre_raison",
+				"label": "Si autre, la(les)quelle(s) ?",
+				"help": "* facultatif"
+			},
+			{
+				"$el": "div",
+				"children": 
+				[
+					{
+					"$el": "label",
+					"children": "Quels sont les 3 objectifs que vous aimeriez atteindre grâce à cette formation ?",
+					"attrs": {
+						"class": "block font-bold mb-2"
+							}
+					},
+					{
+					"$formkit": "text",
+					"name": "objectif_1",
+					"label": "Premier objectif",
+					"validation": "required"
+					},
+					{
+					"$formkit": "text",
+					"name": "objectif_2",
+					"label": "Deuxième objectif",
+					"validation": "required"
+					},
+					{
+					"$formkit": "text",
+					"name": "objectif_3",
+					"label": "Troisième objectif",
+					"validation": "required"
+					}
+				]
+			},
+			{
+				"$formkit": "text",
+				"name": "sujet_question",
+				"label": "Y a-t-il des sujets/questions spécifiques que vous souhaitez voir/abordés ?",
+				"validation": "required"
+			},
+			{
+				"$el": "div",
+				"attrs": {
+					"class": "progress"
+				},
+				"children": [
+					{
+						"$el": "div",
+						"attrs": {
+							"id": "attentes",
+							"class": "progress-bar",
+							"role": "progressbar",
+							"style": "width: 40%",
+							"aria-valuenow": "40",
+							"aria-valuemin": "0",
+							"aria-valuemax": "100"
+						}
+					}
+				]
+			}
+		]
+	},
+
+
+	{
+		"$el": "div",
+		"attrs": {
+			"id": "autoeval",
+			"class": "tab-pane fade",
+			"role": "tabpanel",
+			"aria-labelledby": "nav-autoeval"
+		},
+		"children": [
+			{
+				"$el": "h2",
+				"children": "Auto-évaluation initiale",
+				"attrs": {
+					"class": "text-xl font-bold mb-4"
+				}
+			},
+			{
+				"$formkit": "radio",
+				"name": "niveau_formation",
+				"label": "Sur une échelle de 1 à 5, comment évaluez-vous votre niveau actuel sur le sujet de la formation ?",
+				"options": {
+					"0":"Débutant complet",
+					"1":"Quelques notions",
+					"2":"Niveau intermédiaires",
+					"3":"Bon niveau",
+					"4":"Expert"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "points_fort",
+				"label": "Quels sont, selon vous, vos points forts en lien avec cette thématique ?",
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "points_ameliorer",
+				"label": "Et vos points à améliorer ?",
+				"validation": "required"
+			},
+			{
+				"$el": "div",
+				"attrs": {
+					"class": "progress"
+				},
+				"children": [
+					{
+						"$el": "div",
+						"attrs": {
+							"id": "autoeval",
+							"class": "progress-bar",
+							"role": "progressbar",
+							"style": "width: 60%",
+							"aria-valuenow": "60",
+							"aria-valuemin": "0",
+							"aria-valuemax": "100"
+						}
+					}
+				]
+			}
+		]
+	},
+
+
+	{
+		"$el": "div",
+		"attrs": {
+			"id": "organisation",
+			"class": "tab-pane fade",
+			"role": "tabpanel",
+			"aria-labelledby": "nav-organisation"
+		},
+		"children": [
+			{
+				"$el": "h2",
+				"children": "Organisation et méthode",
+				"attrs": {
+					"class": "text-xl font-bold mb-4"
+				}
+			},
+			{
+				"$formkit": "radio",
+				"name": "orga_groupe",
+				"label": "Préférez-vous :",
+				"options": {
+					"0":"Travailler seul(e)",
+					"1":"Travailler en groupe",
+					"2":"Un mélange des deux"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "radio",
+				"name": "contraintes",
+				"label": "Avez-vous des contraintes spécifiques à signaler (accessibilité, rythme, outils numériques...) ?",
+				"options": {
+					"0":"Oui",
+					"1":"Non"
+				},
+				"validation": "required"
+			},
+			{
+				"$formkit": "text",
+				"name": "oui_contrainte",
+				"label": "Si oui, la(les)quelle(s) ?",
+				"help": "* facultatif"
+			},
+			{
+				"$el": "div",
+				"attrs": {
+					"class": "progress"
+				},
+				"children": [
+					{
+						"$el": "div",
+						"attrs": {
+							"id": "organisation",
+							"class": "progress-bar",
+							"role": "progressbar",
+							"style": "width: 80%",
+							"aria-valuenow": "80",
+							"aria-valuemin": "0",
+							"aria-valuemax": "100"
+						}
+					}
+				]
+			}
+		]
+	},
+	{
+		"$el": "div",
+		"attrs": {
+			"id": "derniermot",
+			"class": "tab-pane fade",
+			"role": "tabpanel",
+			"aria-labelledby": "nav-derniermot"
+		},
+		"children": [
+			{
+				"$el": "h2",
+				"children": "Dernier mot",
+				"attrs": {
+					"class": "text-xl font-bold mb-4"
+				}
+			},
+			{
+				"$formkit": "text",
+				"name": "etat_esprit",
+				"label": "Un mot ou une phrase pour resumer votre état d'esprit en arrivant dans cette formation: ",
+				"validation": "required"
+			},
+			{
+				"$formkit": "submit",
+				"label": "Valider",
+				"help": "Enregistrer et quitter"
+			}
+		]
+	}
+]
