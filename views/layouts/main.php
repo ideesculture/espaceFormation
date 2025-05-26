@@ -365,7 +365,7 @@ echo Nav::widget([
     'items' => $items,
 ]);
 
-print "<a style='float:right;margin-left:12px' href='/index.php?r=site%2Flogout'><span style=color:rgba(255,255,255,0.55)><i class='fas fa-door-open'></i></span></a>";
+print "<a style='float:right;margin-left:12px' href='/site/logout'><span style=color:rgba(255,255,255,0.55)><i class='fas fa-door-open'></i></span></a>";
 
 NavBar::end();
 ?>

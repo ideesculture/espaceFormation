@@ -1,12 +1,12 @@
 <?php
-	//$var_dump($session_id);
-	//$var_dump($stagiaire_id);
+	//var_dump($session_id);
+	//var_dump($stagiaire_id);
 ?>
 
 <h1>Questionnaire de début de formation</h1>
 
 <script>
-	window.questionnaire_url = "https://formation.ideesculture.com/questionnaireDebut.json";
+	window.questionnaire_url = "http://formation.local/questionnaireDebut.json";
 </script>
 
 <script type="module" crossorigin src="/assets/index-CGQy0mow.js"></script>

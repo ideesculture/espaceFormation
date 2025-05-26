@@ -14,6 +14,8 @@ use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
 use Yii;
 use yii\helpers\ArrayHelper;
+use app\models\Sessions;
+use app\models\SessionsSearch;
 
 /**
  * StagiairesController implements the CRUD actions for Stagiaires model.
@@ -252,3 +254,4 @@ class StagiairesController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }
+

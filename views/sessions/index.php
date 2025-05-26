@@ -44,6 +44,7 @@ use yii\grid\GridView;
             ],
             'debut',
             'fin',
+            //'precision_rythme:ntext',
             //'contact_structure_ou_entreprise_nom:ntext',
             //'contact_structure_ou_entreprise_prenom:ntext',
             //'contact_structure_ou_entreprise_email:ntext',

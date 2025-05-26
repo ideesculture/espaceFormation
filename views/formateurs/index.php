@@ -41,17 +41,15 @@ $this->title = 'Formateurs';
           //  'id',
             'nom:ntext',
             'prenom:ntext',
-            'chemin_cv:ntext',
-            'liste_diplome:ntext',
+            //'chemin_cv:ntext',
+            //'liste_diplome:ntext',
             //'numero_decl_activite:ntext',
-            'qualiopi:ntext',
+            //'qualiopi:ntext',
             //'siret:ntext',
             //'adresse:ntext',
             //'attestation_assurance_url:ntext',
-            [
-                'attribute' => 'user.email',
-                'label' => 'Adresse Email',
-            ],
+            'poste:ntext',
+            'organisation:ntext',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Formateurs $model, $key, $index, $column) {

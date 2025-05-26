@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
 $title = 'Mes Formations';
 $params['breadcrumbs'][] = $title;
@@ -52,10 +53,25 @@ $params['breadcrumbs'][] = $title;
                         } else {
                             echo 'Statut: En cours<br>';
                         }
+                        ?>
 
-                        if ($session->isLastDay()): ?>
+                    <?php //if (Html::encode($questionnaire_debut_formation->stagiaire_id) === $stagiaireId): ?>
+                        <span style="color:red;">Merci de remplir le formulaire de début de formation</span> <br>
+                    <?php //endif; ?>
+
+                    <?php //if (Html::encode($questionnaire_fin_formation->stagiaire_id) === $stagiaireId): ?>
+                       <span style="color:red;">Merci de remplir le formulaire de fin de formation</span> <br>
+                    <?php //endif; ?>
+
+                    
+                    <?php // if(! $enable_questionnaire_fin_formation and ! $enable_questionnaire_debut_formation): ?>
+						 <span style="color:red;"> Votre attestation est disponible </span>
+					<?//php endif; ?>
+                        
+
+                    <?php if ($session->isLastDay()): ?>
                             <!-- Afficher le lien vers le formulaire Google -->
-                            <span style="color:red;">Merci de remplir le formulaire de d'évaluation -> </span>
+                            <span style="color:red;">Merci de remplir le formulaire d'évaluation -> </span>
                             <a href="https://docs.google.com/forms/d/1Lgg-XnVakCiR7PS5MiudEbANOr3YBZrFQUzUaDMOd5I/edit?usp=drive_web"
                                 target="_blank" class="text-white">Formulaire d'évaluation de formation</a>
                         <?php endif;

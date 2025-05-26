@@ -38,7 +38,7 @@ class Formateurs extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nom', 'prenom', 'chemin_cv', 'liste_diplome', 'numero_decl_activite', 'qualiopi', 'siret', 'adresse', 'attestation_assurance_url'], 'string'],
+            [['nom', 'prenom', 'chemin_cv', 'liste_diplome', 'numero_decl_activite', 'qualiopi', 'siret', 'adresse', 'attestation_assurance_url', 'poste', 'organisation'], 'string'],
             [['user_id'], 'integer'],
             [['nom', 'prenom'], 'required', 'message' => 'Le champ {attribute} ne peut pas être vide'],
            ];
@@ -83,6 +83,8 @@ class Formateurs extends \yii\db\ActiveRecord
             'siret' => Yii::t('app', 'Siret'),
             'adresse' => Yii::t('app', 'Adresse'),
             'attestation_assurance_url' => Yii::t('app', 'Attestation Assurance Url'),
+            'poste' => Yii::t('app', 'Poste'),
+            'organisation' => Yii::t('app','Organisation'),
         ];
     }
 }

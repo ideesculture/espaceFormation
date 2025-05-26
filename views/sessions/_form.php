@@ -33,6 +33,9 @@ use yii\helpers\ArrayHelper;
     'options' => ['class' => 'form-control'],
     'language' => 'fr',
     'dateFormat' => "dd-MM-yyyy"]) ?>
+
+    <?= $form->field($model, 'precisions_rythme')->textInput() ?>
+
     <?= $form->field($model, 'contact_structure_ou_entreprise')->textInput() ?>
 
     <?= $form->field($model, 'contact_structure_ou_entreprise_email')->textInput() ?>
@@ -46,6 +49,12 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'siret_structure_ou_entreprise')->textInput() ?>
 
     <?= $form->field($model, 'plan_de_formation')->textInput() ?>
+
+        <?= $form->field($model, 'url_1')->textInput() ?>
+        <?= $form->field($model, 'url_2')->textInput() ?>
+        <?= $form->field($model, 'url_3')->textInput() ?>
+        <?= $form->field($model, 'url_4')->textInput() ?>
+        <?= $form->field($model, 'url_5')->textInput() ?>
 
     <?= $form->field($model, 'questionnaire_satisfaction_formateur')->textInput() ?>
 

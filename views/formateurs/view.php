@@ -25,13 +25,15 @@ $this->title = $model->getDisplayName();
             ],
             'nom:ntext',
             'prenom:ntext',
-            //  'chemin_cv:ntext',
-            //  'liste_diplome:ntext',
+            'chemin_cv:ntext',
+            'liste_diplome:ntext',
             'numero_decl_activite:ntext',
             'qualiopi:ntext',
             'siret:ntext',
             'adresse:ntext',
-            // 'attestation_assurance_url:ntext',
+            'attestation_assurance_url:ntext',
+            'poste:ntext',
+            'organisation:ntext'
         ],
     ]) ?>
 

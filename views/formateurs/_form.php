@@ -36,17 +36,24 @@ use yii\widgets\ActiveForm;
                         ->textInput()->label('Prénom') ?>
                     </div>
                     <div class="mb-3">
-
+                        <?= $form->field($model, 'poste',['labelOptions' => ['class' => 'required-label control-label']])
+                        ->textInput()->label('Poste') ?>
+                    </div>
+                    <div class="mb-3">
+                        <?= $form->field($model, 'organisation',['labelOptions' => ['class' => 'required-label control-label']])
+                        ->textInput()->label('Organisation') ?>
+                    </div>
+                    <div class="mb-3">
                         <?= $form->field($model, 'adresse')->textarea(['rows' => 4])->label('Adresse') ?>
                     </div>
+                </div>
+                <div class="col-md-6">
                     <div class="mb-3">
                         <?= $form->field($model, 'chemin_cv')->textInput(['disabled' => true])->label('URL du CV') ?>
                     </div>
                     <div class="mb-3">
                         <?= $form->field($uploadFormModel, 'uploadedCV')->fileInput()->label('Curriculum vitæ (PDF, JPEG, PNG') ?>
                     </div>
-                </div>
-                <div class="col-md-6">
                     <div class="mb-3">
                         <?= $form->field($model, 'liste_diplome')->textInput(['disabled' => true])->label('Liste des Diplômes (6 fichiers max)') ?>
 

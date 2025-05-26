@@ -35,9 +35,7 @@ class FormationController extends Controller
                     ],
                 ],
                 'denyCallback' => function ($rule, $action) {
-					print "ici";
-					die();
-                    //throw new ForbiddenHttpException('Access denied.');
+                    throw new ForbiddenHttpException('Access denied.');
                 },
             ],
             'verbs' => [
@@ -58,7 +56,7 @@ class FormationController extends Controller
     {
         $searchModel = new FormationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-		
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

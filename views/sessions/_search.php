@@ -25,6 +25,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'fin') ?>
 
+    <?php // echo $form->field($model, 'precisions_rythme') ?>
+
     <?php // echo $form->field($model, 'contact_structure_ou_entreprise_nom') ?>
 
     <?php // echo $form->field($model, 'contact_structure_ou_entreprise_prenom') ?>

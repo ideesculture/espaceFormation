@@ -82,11 +82,16 @@ class SessionsController extends Controller {
 		if($stagiaire->id) {
 			$command = $connection->createCommand("SELECT count(id) as num FROM questionnaire_fin_formation where session_id = ".$id." and stagiaire_id = ".$stagiaire->id);
 			$result = $command->queryAll();
+
+            $command2 = $connection->createCommand("SELECT count(id) as num FROM questionnaire_debut_formation where session_id = ".$id." and stagiaire_id = ".$stagiaire->id);
+			$result2 = $command2->queryAll();
 			
 			return $this->render('view', [
 				'model' => $this->findModel($id),
 				'stagiaire' => $stagiaire,
-				'enable_questionnaire_fin_formation' => !$result[0]['num']
+				'enable_questionnaire_fin_formation' => !$result[0]['num'],
+                'enable_questionnaire_debut_formation' => !$result2[0]['num'],
+
 			]);
 		} else {
 			return $this->render('view', [
@@ -94,6 +99,8 @@ class SessionsController extends Controller {
 			]);
 		}
 
+    
+        
 		
 		
 
@@ -250,6 +257,7 @@ class SessionsController extends Controller {
 				$result = $command->queryAll();
 			}
 		}
+        
 
 		// Now insert the values into the database
 		$columns = implode(", ", array_keys($allParams));

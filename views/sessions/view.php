@@ -37,37 +37,50 @@ $this->title = $model->formationrel->name . " - " . date("d/m/Y", strtotime($mod
         <?php endif; ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            [
-                'attribute' => 'formation_id',
-                'value' => Formations::findOne(["id" => $model->formationrel])->name
-            ],
-            [
-                'attribute' => 'centre_id',
-                'value' => Centres::findOne(["id" => $model->centrerel])->name
-            ],
-            [
-                'attribute' => 'debut',
-                'value' => date("d/m/Y", strtotime($model->debut))
-            ],
-            [
-                'attribute' => 'fin',
-                'value' => date("d/m/Y", strtotime($model->fin))
-            ],
-            'contact_structure_ou_entreprise:ntext',
-            'contact_structure_ou_entreprise_email:ntext',
-            'contact_financeur:ntext',
-            'contact_financeur_email:ntext',
-            'adresse_structure_ou_entreprise:ntext',
-            'siret_structure_ou_entreprise:ntext',
-            //  'plan_de_formation:ntext',
-            //  'questionnaire_satisfaction_formateur:ntext',
-    
-        ],
-    ]);
-    ?>
+   <?php
+// Préparer le tableau des attributs
+$attributes = [
+    [
+        'attribute' => 'formation_id',
+        'value' => Formations::findOne(["id" => $model->formationrel])->name
+    ],
+    [
+        'attribute' => 'centre_id',
+        'value' => Centres::findOne(["id" => $model->centrerel])->name
+    ],
+    [
+        'attribute' => 'debut',
+        'value' => date("d/m/Y", strtotime($model->debut))
+    ],
+    [
+        'attribute' => 'fin',
+        'value' => date("d/m/Y", strtotime($model->fin))
+    ],
+    'precisions_rythme:ntext',
+    'contact_structure_ou_entreprise:ntext',
+    'contact_structure_ou_entreprise_email:ntext',
+    'contact_financeur:ntext',
+    'contact_financeur_email:ntext',
+    'adresse_structure_ou_entreprise:ntext',
+    'siret_structure_ou_entreprise:ntext'
+];
+
+// Ajouter dynamiquement les URLs
+for ($i = 1; $i <= 5; $i++) {
+    $urlAttribute = 'url_' . $i;
+    if (!empty($model->$urlAttribute)) {
+        $attributes[] = $urlAttribute . ':ntext';
+    }
+}
+
+// Afficher le widget
+echo DetailView::widget([
+    'model' => $model,
+    'attributes' => $attributes
+]);
+?>
+
+
 
     <div class="container-base">
         <div class="row">
@@ -108,14 +121,24 @@ $this->title = $model->formationrel->name . " - " . date("d/m/Y", strtotime($mod
 					else: ?>
 						<p>Aucun plan de formation disponible.</p>
 					<?php endif; ?>
-						
-					<a href="/sessions/questionnaire-debut-formation&session?<?= $model->id ?>&stagiaire=<?= $stagiaire->id ?>"><button class="btn btn-primary">Questionnaire de début de formation </button></a>
-					<?php if($enable_questionnaire_fin_formation): ?>
-						<a href="/sessions/questionnaire-fin-formation&session?<?= $model->id ?>&stagiaire=<?= $stagiaire->id ?>"><button class="btn btn-primary">Questionnaire de fin de formation</button></a> 
+				
+                    <?php if($enable_questionnaire_debut_formation): ?>
+						<a href="/sessions/questionnaire-debut-formation?session=<?= $model->id ?>&stagiaire=<?= $stagiaire->id ?>"><button class="btn btn-primary">Questionnaire de début de formation </button></a> 
+					<?php else: ?>
+						<button class="btn btn-primary" disabled>Questionnaire de début déjà rempli</button>
+					<?php endif; ?>
+					
+                    <?php if($enable_questionnaire_fin_formation): ?>
+						<a href="/sessions/questionnaire-fin-formation?session=<?= $model->id ?>&stagiaire=<?= $stagiaire->id ?>"><button class="btn btn-primary">Questionnaire de fin de formation</button></a> 
 					<?php else: ?>
 						<button class="btn btn-primary" disabled>Questionnaire de fin déjà rempli</button>
 					<?php endif; ?>
-
+                        
+                    
+                    <?php if(! $enable_questionnaire_fin_formation and ! $enable_questionnaire_debut_formation): ?>
+						<a href="/attestation/view?session=<?= $model->id ?>&stagiaire=<?= $stagiaire->id ?>"><button class="btn btn-primary">Attestation de formation</button></a>
+					<?php endif; ?>
+                    
 				</div>
             </div>
         </div>

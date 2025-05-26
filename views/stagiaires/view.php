@@ -2,9 +2,12 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+
+
 /** @var yii\web\View $this */
 /** @var app\models\Stagiaires $model */
 $stagiaire = $model;
+
 
 // Chargement des versions des CGU, CGV et règlement
 $administratif_dir = __DIR__ .'/../../_administratif';
@@ -204,8 +207,28 @@ if(
 			</ul>
 			<h5 class="card-title">Formations passées</h5>
 			<ul>
-				<?php foreach ($sessionNames as $sessionName) : ?>
-					<li><?= $sessionName ?></li>
+				<?php foreach ($sessionNames as $sessionName) : //http://formation.local/sessions/view?id=9 ?>
+					<li>
+						<?= $sessionName ?>
+					</li>
+					<?php
+					//print $user-
+
+
+					?>
+					 <?php //if (Html::encode($questionnaire_debut_formation->stagiaire_id) === $stagiaireId): ?>
+                        <span style="color:red;">Formulaire de debut de formation non remplie</span> <br>
+                    <?php //endif; ?>
+
+                    <?php //if (Html::encode($questionnaire_fin_formation->stagiaire_id) === $stagiaireId): ?>
+                       <span style="color:red;">Formulaire de fin de formation non remplie</span> <br>
+                    <?php //endif; ?>
+
+                    
+                    <?php // if(! $enable_questionnaire_fin_formation and ! $enable_questionnaire_debut_formation): ?>
+						 <span style="color:red;">Attestation</span>
+					<?//php endif; ?>
+
 				<?php endforeach; ?>
 			</ul>
 		</div>

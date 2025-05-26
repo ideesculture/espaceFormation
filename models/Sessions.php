@@ -13,6 +13,7 @@ use DateTime;
  * @property int|null $centre_id
  * @property string|null $debut
  * @property string|null $fin
+ * @property string|null $precisions_rythme
  * @property string|null $contact_structure_ou_entreprise
  * @property string|null $contact_structure_ou_entreprise_email
  * @property string|null $contact_financeur
@@ -51,7 +52,7 @@ class Sessions extends \yii\db\ActiveRecord
         return [
             [['formation_id', 'centre_id'], 'integer'],
             [['debut', 'fin'], 'safe'],
-            [['contact_structure_ou_entreprise', 'contact_structure_ou_entreprise_email', 'contact_financeur', 'contact_financeur_email', 'adresse_structure_ou_entreprise', 'siret_structure_ou_entreprise', 'plan_de_formation', 'questionnaire_satisfaction_formateur'], 'string'],
+            [['precisions_rythme','contact_structure_ou_entreprise', 'contact_structure_ou_entreprise_email', 'contact_financeur', 'contact_financeur_email', 'adresse_structure_ou_entreprise', 'siret_structure_ou_entreprise', 'plan_de_formation', 'url_1','url_2','url_3', 'url_4', 'url_5','questionnaire_satisfaction_formateur'], 'string'],
             [['formationrel'], 'exist', 'skipOnError' => true, 'targetClass' => Formations::class, 'targetAttribute' => ['formation_id' => 'id']],
             [['centrerel'], 'exist', 'skipOnError' => true, 'targetClass' => Centres::class, 'targetAttribute' => ['centre_id' => 'id']],
             [['debut', 'fin'], 'required', 'message' => 'Le champ {attribute} ne peut pas être vide'],
@@ -73,6 +74,7 @@ class Sessions extends \yii\db\ActiveRecord
             'centre_id' => 'Centre',
             'debut' => 'Date de début',
             'fin' => 'Date de fin',
+            'precisions_rythme' => 'Jours de formation',
             'contact_structure_ou_entreprise' => "Nom de la personne à contacter",
             'contact_structure_ou_entreprise_email' => 'Email de la personne à contacter',
             'contact_financeur' => 'Nom de la personne à contacter pour la comptabilité',
@@ -80,6 +82,11 @@ class Sessions extends \yii\db\ActiveRecord
             'adresse_structure_ou_entreprise' => 'Adresse',
             'siret_structure_ou_entreprise' => 'Numéro de SIRET',
             'plan_de_formation' => 'Plan de formation',
+            'url_1'=>'Url',
+            'url_2'=>'Url',
+            'url_3'=>'Url',
+            'url_4'=>'Url',
+            'url_5'=>'Url',
             'questionnaire_satisfaction_formateur' => 'Questionnaire de satisfaction formateur',
         ];
     }

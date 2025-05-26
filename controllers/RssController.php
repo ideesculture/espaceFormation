@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use yii\web\Controller;
 use SimplePie;
-use Yii;
 
 class RssController extends Controller
 {
@@ -63,30 +62,16 @@ class RssController extends Controller
 
         $feeds = [];
 
-		// Store the feed content in file cache
-		$cacheFile = $cacheDir . '/centre-inffo-cache.txt';
-		$cacheTime = 3600; // Cache duration in seconds
-		if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTime)) {
-			$feeds = unserialize(file_get_contents($cacheFile));
-		} else {
-			foreach ($feedUrls as $url) {
-				// Création d'une nouvelle instance de SimplePie
-				$feed = new SimplePie\SimplePie();
-				$feed->enable_cache(true); // Activer la mise en cache
-				$cacheDir = \Yii::getAlias('@webroot') . '/cache'; // Répertoire de cache
-				$feed->set_cache_location($cacheDir); // Répertoire de cache
-				$feed->set_cache_class('SimplePie_Cache_File'); // Utiliser la classe de cache par défaut
-				$feed->set_cache_duration(3600); // Durée de mise en cache (en secondes)
-				$feed->set_feed_url($url);
-				//$feed->set_cache_location($cacheDir);
-				
-				$feed->init();
+        foreach ($feedUrls as $url) {
+            // Création d'une nouvelle instance de SimplePie
+            $feed = new SimplePie();
+            $feed->set_feed_url($url);
+            $feed->set_cache_location($cacheDir);
+            $feed->init();
 
-				// Ajouter le flux à la liste des flux
-				$feeds[] = $feed;
-			}
-			file_put_contents($cacheFile, serialize($feeds));
-		}
+            // Ajouter le flux à la liste des flux
+            $feeds[] = $feed;
+        }
 
         return $this->render('centre-inffo', [
             'feeds' => $feeds,
